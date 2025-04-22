@@ -13,3 +13,9 @@ No hacemos la clase visualizador porque no se guarda ningún dato de este y no t
 Decidimos agregar un userID para los contribuyentes de manera tal que si en un futuro el administrador necesita eliminarlo, tiene una forma de identificarlo unívocamente.
 
 Pusimos un atributo anonimato en el Hecho para que, si este es true, no se asocie a a los datos del contribuyente, y si es false, que se asocie.
+
+Asumimos que en una fuente estática puede haber hechos con el mismo nombre, y solo nos quedaremos con el más reciente.
+
+Decidimos que como las fuentes son servicios, cada fuente tiene un conjunto de orígenes, en el caso de estática datasets, en el caso de dinámica contribuyentes.
+
+Dejamos los proxys para después

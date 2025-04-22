@@ -20,4 +20,11 @@ RESP: El enunciado por el momento no es muy claro respecto a la diferencia entre
 "● una fuente estática: un servicio de solo lectura para publicar información estática, utilizando datasets que provengan de archivos u otras fuentes de datos provistas por otras ONGs,
 ● una fuente dinámica: un servicio propio para la subida colaborativa de información, por perfiles anónimos y/o registrados"
 Esto quiere decir que, ¿Una fuente dinámica incluye muchos contribuyentes, o cada contribuyente es una fuente dinámica en sí? Misma pregunta para las fuentes estáticas: ¿Una fuente estática incluye muchos datasets, o cada dataset es una fuente estática en sí?
+RESP: En ambas definiciones dice que una fuente (dinámica o estática) es un servicio. Un servicio es una parte de nuestra aplicación que está diseñada para intercambiar mensajes con otra aplicación, permitiéndonos enviar y recibir información.
+
+Respondiendo a tus preguntas, depende como lo diseñes. Por ejemplo, podés exponer un solo servicio (fuente dinámica) que consumen muchos contribuyentes para subir su información o podés tener varios servicios para distintos tipos de contribuyentes. Asimismo, podés consumir varios servicios de terceros (fuentes estáticas) que pueden darte acceso a uno o varios datasets.
+
+Espero haber contestado tu consulta, cualquier cosa no dudes en preguntar nuevamente.
+
+7. 
 RESP:
