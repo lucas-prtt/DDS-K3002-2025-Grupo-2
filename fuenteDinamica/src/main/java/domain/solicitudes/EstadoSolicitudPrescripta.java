@@ -1,38 +1,42 @@
 package domain.solicitudes;
 
 public class EstadoSolicitudPrescripta extends EstadoSolicitud {
-    @Override
-    void aceptar(SolicitudEliminacion s) {
+    public EstadoSolicitudPrescripta(SolicitudEliminacion slt) {
+        super(slt);
     }
 
     @Override
-    void rechazar(SolicitudEliminacion s) {
-        s.setEstado(new EstadoSolicitudRechazada());
+    void aceptar () {
     }
 
     @Override
-    void prescribir(SolicitudEliminacion s) {
+    void rechazar () {
+        solicitud.setEstado(new EstadoSolicitudRechazada(solicitud));
     }
 
     @Override
-    void marcarSpam(SolicitudEliminacion s) {
-        s.setEstado(new EstadoSolicitudSpam());
+    void prescribir () {
     }
 
     @Override
-    void anularAceptacion(SolicitudEliminacion s) {
+    void marcarSpam () {
+        solicitud.setEstado(new EstadoSolicitudSpam(solicitud));
     }
 
     @Override
-    void anularRechazo(SolicitudEliminacion s) {
+    void anularAceptacion () {
     }
 
     @Override
-    void anularPrescripcion(SolicitudEliminacion s) {
-        s.setEstado(new EstadoSolicitudPrescripta());
+    void anularRechazo () {
     }
 
     @Override
-    void anularMarcaSpam(SolicitudEliminacion s) {
+    void anularPrescripcion () {
+        solicitud.setEstado(new EstadoSolicitudPrescripta(solicitud));
+    }
+
+    @Override
+    void anularMarcaSpam () {
     }
 }

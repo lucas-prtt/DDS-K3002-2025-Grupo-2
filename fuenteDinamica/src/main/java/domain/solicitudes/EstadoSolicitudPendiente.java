@@ -3,42 +3,46 @@ package domain.solicitudes;
 import java.time.LocalDateTime;
 
 public class EstadoSolicitudPendiente extends EstadoSolicitud {
-    @Override
-    void aceptar(SolicitudEliminacion s) {
-    s.setEstado(new EstadoSolicitudAceptada());
-    s.preescribirCosolicitudes();
-    s.esconderHecho();
-    s.setFechaResolucion(LocalDateTime.now());
+    public EstadoSolicitudPendiente(SolicitudEliminacion slt) {
+        super(slt);
     }
 
     @Override
-    void rechazar(SolicitudEliminacion s) {
-    s.setEstado(new EstadoSolicitudRechazada());
+    void aceptar () {
+    solicitud.setEstado(new EstadoSolicitudAceptada(solicitud));
+    solicitud.preescribirCosolicitudes();
+    solicitud.esconderHecho();
+    solicitud.setFechaResolucion(LocalDateTime.now());
     }
 
     @Override
-    void prescribir(SolicitudEliminacion s) {
-    s.setEstado(new EstadoSolicitudPrescripta());
+    void rechazar () {
+    solicitud.setEstado(new EstadoSolicitudRechazada(solicitud));
     }
 
     @Override
-    void marcarSpam(SolicitudEliminacion s) {
-    s.setEstado(new EstadoSolicitudSpam());
+    void prescribir () {
+    solicitud.setEstado(new EstadoSolicitudPrescripta(solicitud));
     }
 
     @Override
-    void anularAceptacion(SolicitudEliminacion s) {
+    void marcarSpam () {
+    solicitud.setEstado(new EstadoSolicitudSpam(solicitud));
     }
 
     @Override
-    void anularRechazo(SolicitudEliminacion s) {
+    void anularAceptacion () {
     }
 
     @Override
-    void anularPrescripcion(SolicitudEliminacion s) {
+    void anularRechazo () {
     }
 
     @Override
-    void anularMarcaSpam(SolicitudEliminacion s) {
+    void anularPrescripcion () {
+    }
+
+    @Override
+    void anularMarcaSpam () {
     }
 }
