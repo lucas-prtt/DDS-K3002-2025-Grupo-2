@@ -12,12 +12,16 @@ public enum Estado{
 }*/
 
 public abstract class EstadoSolicitud {
-    abstract void aceptar(SolicitudEliminacion s);
-    abstract void rechazar(SolicitudEliminacion s);
-    abstract void prescribir(SolicitudEliminacion s);
-    abstract void marcarSpam(SolicitudEliminacion s);
-    abstract void anularAceptacion(SolicitudEliminacion s);
-    abstract void anularRechazo(SolicitudEliminacion s);
-    abstract void anularPrescripcion(SolicitudEliminacion s);
-    abstract void anularMarcaSpam(SolicitudEliminacion s);
+     SolicitudEliminacion solicitud;  //Solicitud a la que apunta
+    public EstadoSolicitud(SolicitudEliminacion slt){
+        solicitud = slt;
+    }
+    abstract void aceptar();
+    abstract void rechazar();
+    abstract void prescribir();
+    abstract void marcarSpam();
+    abstract void anularAceptacion();
+    abstract void anularRechazo();
+    abstract void anularPrescripcion();
+    abstract void anularMarcaSpam();
 }

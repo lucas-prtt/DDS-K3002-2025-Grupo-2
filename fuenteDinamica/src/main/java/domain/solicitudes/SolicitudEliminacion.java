@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 /// + void anularPrescripcion()
 /// + void marcarSpam()
 /// + void anularMarcaSpam()
-/// + boolean esSpam(String texto)
+/// + boolean esSpam()
 /// - void preescribirCosolicitudes()
 /// - void anularPrescripcionCosolicitudes()
 
@@ -34,7 +34,7 @@ import java.time.LocalDateTime;
 // TODO: Cuando se haga esto de la persistencia, hay que hacer que los cambios de estado de la solicitud se vean reflejados en el medio persistente
 
 // SOLICITUD DE ELIMINACION
-public class SolicitudEliminacion implements DetectorDeSpam{
+public class SolicitudEliminacion {
     private EstadoSolicitud estado;
     private final Contribuyente solicitante;
     private Contribuyente administrador;
@@ -54,15 +54,17 @@ public class SolicitudEliminacion implements DetectorDeSpam{
 
 
     public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo) {
-        if (this.esSpam(motivo)){
-            this.estado = new EstadoSolicitudSpam();
+        if (this.esSpam()){
+            this.estado = new EstadoSolicitudSpam(this);
+        }else{
             if(hecho.esVisible()){
-                this.estado = new EstadoSolicitudPendiente();
+                this.estado = new EstadoSolicitudPendiente(this);
             }else{
-                this.estado = new EstadoSolicitudPrescripta();
+                this.estado = new EstadoSolicitudPrescripta(this);
                 // Si por algun motivo "llega tarde" una solicitud y ya se elimino el hecho
             }
         }
+
         this.solicitante = solicitante;
         this.administrador = null;
         this.fecha_subida = LocalDateTime.now();
@@ -77,38 +79,38 @@ public class SolicitudEliminacion implements DetectorDeSpam{
     /////////////////////////////////////
 
     public void aceptar(Contribuyente admin){
-        estado.aceptar(this);
+        estado.aceptar();
         this.administrador = admin;
     }
 
     public void anularAceptacion(){
-        estado.anularAceptacion(this);
+        estado.anularAceptacion();
     }
 
     public void rechazar(Contribuyente admin){
-        estado.rechazar(this);
+        estado.rechazar();
         this.administrador = admin;
     }
 
     public void anularRechazo(){
-        estado.anularRechazo(this);
+        estado.anularRechazo();
     }
 
     public void prescribir(){
-        estado.prescribir(this);
+        estado.prescribir();
     }
 
     public void anularPrescripcion(){
-        estado.anularPrescripcion(this);
+        estado.anularPrescripcion();
     }
 
     public void marcarSpam(Contribuyente admin){
-        estado.marcarSpam(this);
+        estado.marcarSpam();
         this.administrador = admin;
     }
 
     public void anularMarcaSpam(){
-    estado.anularMarcaSpam(this);
+    estado.anularMarcaSpam();
     }
 
     /////////////////////////////////////
@@ -144,13 +146,9 @@ public class SolicitudEliminacion implements DetectorDeSpam{
     //////////////////////////////////////
 
 
-        public Boolean esSpam(String texto){
-        // TODO : NO SABEMOS AÚN CÓMO SE IMPLEMENTA
-        if (texto.contains("wasd")) // PLACEHOLDER
-            return Boolean.TRUE;
-        else
-            return Boolean.FALSE;
-    }
+        public Boolean esSpam(){
+                return new DetectorDeSpam().esSpam(this.motivo);
+        }
 
     public String getMotivo() {
         return motivo;
