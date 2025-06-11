@@ -1,17 +1,24 @@
 package domain.colecciones;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import domain.hechos.Hecho;
 import domain.criterios.CriterioDePertenencia;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-import java.io.InputStream;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 // COLECCION
+@Service
 public class Coleccion{
 
     private String titulo;
@@ -44,8 +51,26 @@ public class Coleccion{
     }
 
     public List<Hecho> mostrarHechos(){
-        // TODO: llamado de api fuente
-        return null;
+        try {
+            ResponseEntity<String> response = (new RestTemplate()).getForEntity(fuente, String.class);
+            String json =  response.getBody();
+
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+            List<Hecho> hechos = mapper.readValue(json, new TypeReference<List<Hecho>>() {}); // Convierte el JSON en una lista de hechos
+
+
+            return hechos;
+        } catch (Exception e) {
+            System.err.println("Error al consumir la API: " + e.getMessage());
+            return List.of(); // Si hay error retorna lista vacia
+        }
+    }
+
+    public String getIdentificador() {
+        return identificador_handle;
     }
 
     public Boolean cumpleCriterios(Hecho hecho){

@@ -1,5 +1,6 @@
 package domain.hechos;
 
+
 import domain.hechos.multimedias.Multimedia;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.IdentidadContribuyente;
@@ -7,6 +8,7 @@ import domain.usuarios.IdentidadContribuyente;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 
 // HECHO
 public class Hecho {
@@ -51,6 +53,18 @@ public class Hecho {
 
     public String getTitulo() {
         return titulo;
+    }
+
+    public LocalDate getFechaAcontecimiento() {
+        return fecha_acontecimiento;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
     }
 
     public void ocultar() {

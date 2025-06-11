@@ -1,11 +1,15 @@
 package domain.hechos;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 // UBICACION
 public class Ubicacion {
     private Double latitud;
     private Double longitud;
 
-    public Ubicacion(Double latitud, Double longitud) {
+    @JsonCreator
+    public Ubicacion(@JsonProperty("latitud") Double latitud, @JsonProperty("longitud") Double longitud) {
         this.latitud = latitud;
         this.longitud = longitud;
     }
@@ -16,6 +20,14 @@ public class Ubicacion {
 
     public Double getLongitud() {
         return longitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
     }
 
     public double distanciaA(Ubicacion otra_ubicacion) {
