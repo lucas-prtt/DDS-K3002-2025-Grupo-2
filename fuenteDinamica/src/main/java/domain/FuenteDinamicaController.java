@@ -6,6 +6,8 @@ import domain.hechos.Hecho;
 import domain.hechos.Origen;
 import domain.repositorios.RepositorioDeHechos;
 import domain.repositorios.RepositorioDeSolicitudes;
+import domain.solicitudes.DetectorDeSpam;
+import domain.solicitudes.DetectorDeSpamPrueba;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.Contribuyente;
 import domain.usuarios.IdentidadContribuyente;
@@ -29,7 +31,7 @@ public class FuenteDinamicaController {
         Contribuyente juanceto01 = new Contribuyente("juanceto01", false);
         Hecho hecho = new Hecho("Titulo prueba","Descripcion prueba",new Categoria("soyCategoria"),13.0,14.5,LocalDate.parse("2004-07-08"), Origen.CONTRIBUYENTE,"hola soy un contenido texto :v",null,false, new IdentidadContribuyente("pepe","gonzalez", LocalDate.parse("2004-10-31"), juanceto01));
         fuente.agregarHecho(hecho);  //String nombre, String apellido, LocalDate fecha_nacimiento,  Contribuyente contribuyente
-        SolicitudEliminacion solicitud = new SolicitudEliminacion(juanceto01, hecho,"momito fue sin querer sacame el ban porque quiero seguir comentando wasd");
+        SolicitudEliminacion solicitud = new SolicitudEliminacion(juanceto01, hecho,"momito fue sin querer sacame el ban porque quiero seguir comentando wasd", new DetectorDeSpamPrueba());
         fuente.agregarSolicitud(solicitud);
 
         fuentes.put(fuente.getId(), fuente);
