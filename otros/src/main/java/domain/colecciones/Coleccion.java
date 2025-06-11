@@ -1,41 +1,58 @@
 package domain.colecciones;
 
-import domain.colecciones.criterios.CriterioDePertenencia;
-import domain.fuentes.Fuente;
 import domain.hechos.Hecho;
 import domain.criterios.CriterioDePertenencia;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 // COLECCION
 public class Coleccion{
+
     private String titulo;
     private String descripcion;
     private List<CriterioDePertenencia> criterios_pertenencia;
-    private String identificadorHandle;
+    private String fuente;
+    private String identificador_handle;
 
-    public Coleccion(String titulo, String descripcion, String identificadorHandle) {
+    public Coleccion(String titulo, String descripcion) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.criterios_pertenencia = new ArrayList<>();
-        this.identificadorHandle = identificadorHandle; // TODO: No recibirlo en el constructor, sino pedirlo a una pagina que genere UUID
+        this.identificador_handle = UUID.randomUUID().toString().replace("-", "");
+        // Tal vez convenga delegar esto en otra clase
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            // Leemos config.json desde el classpath (src/main/resources)
+            InputStream input = getClass().getClassLoader().getResourceAsStream("config.json");
+            if (input == null) {
+                throw new RuntimeException("No se encontró config.json en resources");
+            }
+
+            // Parseamos el JSON y extraemos el campo "fuente"
+            JsonNode root = mapper.readTree(input);
+            this.fuente = root.get("fuente").asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al cargar config.json", e);
+        }
     }
 
     public List<Hecho> mostrarHechos(){
-        //TODO
+        // TODO: llamado de api fuente
+        return null;
     }
 
     public Boolean cumpleCriterios(Hecho hecho){
         return criterios_pertenencia.stream().allMatch(criterio -> criterio.cumpleCriterio(hecho));
     }
 
-    public List<Hecho> mostrarHechosFiltrados(List<CriterioDePertenencia> filtros){
-        //TODO
-    }
-
-    public void validarIdentificador(String identificador){
-        //TODO : Ver si solo retornamos Boolean o debemos tirar alguna excepcion
-	// Se debe validar que sea alfanumérico sin espacios
+    public List<Hecho> mostrarHechosFiltrados(){
+        return mostrarHechos().stream().filter(hecho -> criterios_pertenencia.stream().allMatch(criterio -> criterio.cumpleCriterio(hecho))).collect(Collectors.toList());
     }
 }
