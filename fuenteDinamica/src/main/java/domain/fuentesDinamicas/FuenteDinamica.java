@@ -2,42 +2,47 @@ package domain.fuentesDinamicas;
 
 import domain.hechos.Hecho;
 import domain.repositorios.Repositorio;
+import domain.repositorios.RepositorioDeHechos;
+import domain.repositorios.RepositorioDeSolicitudes;
+import domain.solicitudes.SolicitudEliminacion;
 
 import java.util.List;
 
 // FUENTE DINAMICA
 public class FuenteDinamica implements Fuente {
-    private Repositorio repositorio;
+    private Repositorio repositorio_hechos;
+    private Repositorio repositorio_solicitudes;
 
-    public FuenteDinamica(Repositorio repositorio){
-        this.repositorio = repositorio;
+    public FuenteDinamica(RepositorioDeHechos repositorio_hechos, RepositorioDeSolicitudes repositorio_solicitudes) {
+        this.repositorio_hechos = repositorio_hechos;
+        this.repositorio_solicitudes = repositorio_solicitudes;
     }
 
     public void agregarHecho(Hecho hecho){
-        repositorio.agregar(hecho);
+        repositorio_hechos.agregar(hecho);
     }
 
     public void quitarHecho(Hecho hecho){
-        repositorio.quitar(hecho);
+        repositorio_hechos.quitar(hecho);
     }
 
     public Hecho buscarHecho(Hecho hecho){
-        return repositorio.buscar(hecho);
+        return repositorio_hechos.buscar(hecho);
     }
 
     public List<Hecho> importarHechos() {
-        return repositorio.listar();
+        return repositorio_hechos.listar();
     }
 
     public void agregarSolicitud(SolicitudEliminacion solicitud){
-        repositorio.agregar(solicitud);
+        repositorio_solicitudes.agregar(solicitud);
     }
 
     public void quitarSolicitud(SolicitudEliminacion solicitud){
-        repositorio.quitar(solicitud);
+        repositorio_solicitudes.quitar(solicitud);
     }
 
     public SolicitudEliminacion buscarSolicitud(SolicitudEliminacion solicitud){
-        return repositorio.buscar(solicitud);
+        return repositorio_solicitudes.buscar(solicitud);
     }
 }
