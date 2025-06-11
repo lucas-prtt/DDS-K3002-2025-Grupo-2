@@ -42,6 +42,7 @@ public class SolicitudEliminacion {
     private LocalDate fecha_resolucion;
     private final Hecho hecho;
     private final String motivo;
+    private DetectorDeSpam detector;
 
 
     public void setEstado(EstadoSolicitud estado) {
@@ -50,7 +51,9 @@ public class SolicitudEliminacion {
 
 
 
-    public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo) {
+    public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo, DetectorDeSpam detector) {
+        this.motivo = motivo;
+        this.detector = detector;
         if (this.esSpam()){
             this.estado = new EstadoSolicitudSpam(this);
         }else{
@@ -67,7 +70,6 @@ public class SolicitudEliminacion {
         this.fecha_subida = LocalDate.now();
         this.fecha_resolucion = null;
         this.hecho = hecho;
-        this.motivo = motivo;
         hecho.agregarASolicitudes(this);
         // Le manda mensaje a su hecho para que lo agregue
         // IMPORTANTE: debe estar cargado el hecho en memoria
@@ -144,7 +146,7 @@ public class SolicitudEliminacion {
 
 
         public Boolean esSpam(){
-                return new DetectorDeSpam().esSpam(this.motivo);
+                return detector.esSpam(this.motivo);
         }
 
     public String getMotivo() {
