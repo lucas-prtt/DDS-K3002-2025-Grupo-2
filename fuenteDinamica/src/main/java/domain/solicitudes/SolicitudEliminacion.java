@@ -51,6 +51,7 @@ public class SolicitudEliminacion {
 
 
     public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo) {
+        this.motivo = motivo;
         if (this.esSpam()){
             this.estado = new EstadoSolicitudSpam(this);
         }else{
@@ -67,7 +68,6 @@ public class SolicitudEliminacion {
         this.fecha_subida = LocalDate.now();
         this.fecha_resolucion = null;
         this.hecho = hecho;
-        this.motivo = motivo;
         hecho.agregarASolicitudes(this);
         // Le manda mensaje a su hecho para que lo agregue
         // IMPORTANTE: debe estar cargado el hecho en memoria
