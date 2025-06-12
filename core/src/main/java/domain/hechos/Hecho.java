@@ -1,6 +1,6 @@
 package domain.hechos;
 
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.hechos.multimedias.Multimedia;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.IdentidadContribuyente;
@@ -15,7 +15,8 @@ public class Hecho {
     private String titulo;
     private String descripcion;
     private Categoria categoria;
-    private Ubicacion ubicacion_acontecimiento;
+    private Ubicacion ubicacion;
+    @JsonProperty("fechaAcontecimiento")
     private LocalDate fecha_acontecimiento;
     private LocalDate fecha_carga;
     private List<SolicitudEliminacion> solicitudes;
@@ -28,11 +29,13 @@ public class Hecho {
     private Boolean anonimato;
     private IdentidadContribuyente autor;
 
+    public Hecho() {} // Constructor vacio para que se pueda deserealizar el JSON
+
     public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fecha_acontecimiento, Origen origen, String contenido_texto, List<Multimedia> contenido_multimedia, Boolean anonimato, IdentidadContribuyente autor) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
-        this.ubicacion_acontecimiento = new Ubicacion(latitud, longitud);
+        this.ubicacion = new Ubicacion(latitud, longitud);
         this.fecha_acontecimiento = fecha_acontecimiento;
         this.fecha_carga = LocalDate.now();
         this.solicitudes = new ArrayList<>();
@@ -88,7 +91,7 @@ public class Hecho {
             this.categoria = categoria;
         }
         if (ubicacion != null) {
-            this.ubicacion_acontecimiento = ubicacion;
+            this.ubicacion = ubicacion;
         }
         if (fecha != null) {
             this.fecha_acontecimiento = fecha;
@@ -110,7 +113,7 @@ public class Hecho {
     }
 
     public Ubicacion getUbicacion() {
-        return ubicacion_acontecimiento;
+        return ubicacion;
     }
 
     public boolean contieneEtiqueta(Etiqueta etiqueta) {
@@ -118,7 +121,7 @@ public class Hecho {
     }
 
     public Boolean ocurrioEntre(LocalDate fecha_inicial, LocalDate fecha_final) {
-        return fecha_acontecimiento.isAfter(fecha_inicial) && fecha_acontecimiento.isBefore(fecha_final);
+        return ocurrioDespuesDe(fecha_inicial) && ocurrioAntesDe(fecha_final);
     }
 
     public void agregarASolicitudes(SolicitudEliminacion solicitud) {
@@ -138,4 +141,21 @@ public class Hecho {
         }
     }
 
+    public Boolean ocurrioAntesDe(LocalDate fecha)
+    {
+        return fecha_acontecimiento.isBefore(fecha);
+    }
+
+    public Boolean ocurrioDespuesDe(LocalDate fecha)
+    {
+        return fecha_acontecimiento.isAfter(fecha);
+    }
+
+    public Boolean seCargoAntesDe(LocalDate fecha) {
+        return fecha_carga.isBefore(fecha);
+    }
+
+    public Boolean seCargoDespuesDe(LocalDate fecha) {
+        return fecha_carga.isAfter(fecha);
+    }
 }
