@@ -1,12 +1,15 @@
 package domain.hechos;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 //CATEGORIA
 public class Categoria {
     private String nombre;
     private LocalDate fecha_creacion;
 
-    public Categoria(String nombre) {
+    @JsonCreator
+    public Categoria(@JsonProperty("nombre") String nombre) {
         this.nombre = nombre;
         this.fecha_creacion = LocalDate.now();
     }
@@ -19,3 +22,4 @@ public class Categoria {
         return this.nombre.equals(categoria_nombre);
     }
 }
+
