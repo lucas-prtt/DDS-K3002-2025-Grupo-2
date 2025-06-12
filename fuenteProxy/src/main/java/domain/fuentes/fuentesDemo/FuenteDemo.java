@@ -1,21 +1,25 @@
-package domain.fuentesDemo;
+package domain.fuentes.fuentesDemo;
+
+import domain.fuentes.FuenteProxy;
+import domain.hechos.Hecho;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 
 // FUENTE DEMO
-public class FuenteDemo extends FuenteProxy {
+public class FuenteDemo /*extends FuenteProxy*/ {
     private LocalDate ultima_consulta;
     private Conexion biblioteca;
 
     public FuenteDemo(Long id, Conexion biblioteca) {
-        super(id);
+        //super(id);
         this.ultima_consulta = LocalDate.now();
         this.biblioteca = biblioteca;
     }
 
-    public  Map<String,Object> siguienteHecho(String url, LocalDate fecha_ultima_consulta) {
+    /*public  Map<String,Object> siguienteHecho(String url, LocalDate fecha_ultima_consulta) {
         //TODO
-    }
+    }*/
 }

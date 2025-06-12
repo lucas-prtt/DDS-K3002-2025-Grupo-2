@@ -1,7 +1,6 @@
-package domain.fuentesDemo;
+package domain.fuentes;
 
 import domain.hechos.Hecho;
-
 import java.util.List;
 
 // FUENTE PROXY
