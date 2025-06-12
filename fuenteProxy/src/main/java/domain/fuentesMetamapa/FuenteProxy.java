@@ -13,7 +13,9 @@ public abstract class FuenteProxy extends Fuente {
 
 
 
-
+    public FuenteProxy(Long id) {
+        super(id);
+    }
     private static final RestTemplate restTemplate = new RestTemplate(); //esto se usa para luego hacer las peticiones HTTP (get/post..)
 
     protected static <T> T get(String url, Class<T> clase_de_respuesta) {// este metodo hace una peticion get,Usa generics (<T>) para que el tipo de dato que devuelve sea flexible.

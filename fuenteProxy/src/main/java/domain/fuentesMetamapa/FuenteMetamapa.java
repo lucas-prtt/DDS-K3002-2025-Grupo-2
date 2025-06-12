@@ -10,6 +10,10 @@ import java.util.Map;
 
 // METAMAPA EXTERNO
 public class FuenteMetamapa extends FuenteProxy {
+    public FuenteMetamapa(Long id) {
+        super(id);
+    }
+
     public static List<Hecho> obtenerHechos() {
         String url = "https://mocki.io/v1/f7baa69f-a201-4766-b1e8-2618ebc381fb";
         List<Hecho> hechosObtenidos = List.of(get(url, Hecho[].class)); //

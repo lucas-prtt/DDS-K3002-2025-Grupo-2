@@ -9,7 +9,8 @@ public class FuenteDemo extends FuenteProxy {
     private LocalDate ultima_consulta;
     private Conexion biblioteca;
 
-    public FuenteDemo(Conexion biblioteca) {
+    public FuenteDemo(Long id, Conexion biblioteca) {
+        super(id);
         this.ultima_consulta = LocalDate.now();
         this.biblioteca = biblioteca;
     }
