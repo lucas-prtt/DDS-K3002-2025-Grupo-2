@@ -1,4 +1,4 @@
-package domain.fuentesDemo;
+package domain.fuentes.fuentesDemo;
 import java.time.LocalDate;
 import java.util.Map;
 
