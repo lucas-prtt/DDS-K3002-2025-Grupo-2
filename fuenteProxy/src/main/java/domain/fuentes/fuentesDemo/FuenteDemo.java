@@ -9,17 +9,24 @@ import java.util.Map;
 
 
 // FUENTE DEMO
-public class FuenteDemo /*extends FuenteProxy*/ {
+public class FuenteDemo extends FuenteProxy {
     private LocalDate ultima_consulta;
     private Conexion biblioteca;
+    private List<Hecho> hechos;
 
     public FuenteDemo(Long id, Conexion biblioteca) {
-        //super(id);
+        super(id);
         this.ultima_consulta = LocalDate.now();
         this.biblioteca = biblioteca;
     }
 
-    /*public  Map<String,Object> siguienteHecho(String url, LocalDate fecha_ultima_consulta) {
-        //TODO
-    }*/
+    public void pedirHechos() {
+        // todo: basicamente pide hechos hasta que el map que llega esta vacio. Es la logica de negocio que indica el enunciado y es lo que hay que seguir
+        // delegar peticion de hechos a la biblioteca
+    }
+
+    @Override
+    public List<Hecho> importarHechos() {
+        return hechos;
+    }
 }
