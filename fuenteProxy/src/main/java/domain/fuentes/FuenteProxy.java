@@ -7,9 +7,9 @@ import java.util.List;
 public abstract class FuenteProxy extends Fuente {
     public abstract List<Hecho> importarHechos();
 
+    public abstract void pedirHechos();
+
     public FuenteProxy(Long id) {
         super(id);
     }
-
-    public void pedirHechos() {return;}
 }
