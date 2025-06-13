@@ -10,4 +10,6 @@ public abstract class FuenteProxy extends Fuente {
     public FuenteProxy(Long id) {
         super(id);
     }
+
+    public void pedirHechos() {return;}
 }

@@ -1,5 +1,6 @@
 package domain;
 
+import domain.fuentes.fuentesDemo.ProgramacionPedirHechos;
 import domain.fuentes.fuentesMetamapa.FuenteMetamapa;
 import domain.fuentes.FuenteProxy;
 import domain.hechos.Hecho;
@@ -24,6 +25,7 @@ public class FuenteProxyController {
 
         fuentes.put(fuente.getId(), fuente);
     }
+    private ProgramacionPedirHechos tareaScheduleada = new ProgramacionPedirHechos(fuentes);
 
 
     @GetMapping("/{id}/hechos")
