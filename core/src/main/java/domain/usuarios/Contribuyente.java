@@ -1,6 +1,7 @@
 package domain.usuarios;
 
 import domain.solicitudes.SolicitudEliminacion;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 //CONTRIBUYENTE
 public class Contribuyente {
     private String contribuyente_id;
+    @Setter
     private Boolean es_administrador;
     private List<IdentidadContribuyente> identidades;
     private List<SolicitudEliminacion> solicitudes_eliminacion;
@@ -28,10 +30,6 @@ public class Contribuyente {
 
     public IdentidadContribuyente getUltimaIdentidad() {
         return identidades.getLast();
-    }
-
-    public void setAdministrador(Boolean admin) {
-        this.es_administrador = admin;
     }
 
     public void agregarIdentidad(IdentidadContribuyente identidad){

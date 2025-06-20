@@ -1,18 +1,16 @@
 package domain.fuentes;
 import domain.hechos.Hecho;
+import lombok.Getter;
 
 import java.util.List;
 
 // FUENTE
 public abstract class Fuente {
+    @Getter
     private Long id;
 
     public Fuente(Long id) {
         this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public abstract List<Hecho> importarHechos();

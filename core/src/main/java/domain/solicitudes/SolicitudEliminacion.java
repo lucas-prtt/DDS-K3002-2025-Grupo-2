@@ -2,6 +2,8 @@ package domain.solicitudes;
 
 import domain.hechos.Hecho;
 import domain.usuarios.Contribuyente;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -35,12 +37,14 @@ import java.time.LocalDate;
 
 // SOLICITUD DE ELIMINACION
 public class SolicitudEliminacion {
+    @Setter
     private EstadoSolicitud estado;
-    private final Contribuyente solicitante;
-    private Contribuyente administrador;
-    private final LocalDate fecha_subida;
-    private LocalDate fecha_resolucion;
+    @Getter private final Contribuyente solicitante;
+    @Getter @Setter private Contribuyente administrador;
+    @Getter private final LocalDate fecha_subida;
+    @Getter @Setter private LocalDate fecha_resolucion;
     private final Hecho hecho;
+    @Getter
     private final String motivo;
     private final DetectorDeSpam detector;
 
@@ -67,11 +71,6 @@ public class SolicitudEliminacion {
         // Le manda mensaje a su hecho para que lo agregue
         // IMPORTANTE: debe estar cargado el hecho en memoria
     }
-
-    public void setEstado(EstadoSolicitud estado) {
-        this.estado = estado;
-    }
-
 
     /////////////////////////////////////
 
@@ -139,32 +138,4 @@ public class SolicitudEliminacion {
     public Boolean esSpam(){
                 return detector.esSpam(this.motivo);
         }
-
-    public String getMotivo() {
-        return motivo;
-    }
-
-    public LocalDate getFecha_subida() {
-        return fecha_subida;
-    }
-
-    public Contribuyente getSolicitante() {
-        return solicitante;
-    }
-
-    public LocalDate getFecha_resolucion() {
-        return fecha_resolucion;
-    }
-
-    public void setFecha_resolucion(LocalDate fecha_resolucion) {
-        this.fecha_resolucion = fecha_resolucion;
-    }
-
-    public Contribuyente getAdministrador() {
-        return administrador;
-    }
-
-    public void setAdministrador(Contribuyente administrador) {
-            this.administrador = administrador;
-    }
 }
