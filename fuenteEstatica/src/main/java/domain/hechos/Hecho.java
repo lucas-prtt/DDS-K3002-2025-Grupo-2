@@ -1,9 +1,6 @@
 package domain.hechos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import domain.hechos.multimedias.Multimedia;
-import domain.solicitudes.SolicitudEliminacion;
-import domain.usuarios.IdentidadContribuyente;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -20,39 +17,22 @@ public class Hecho {
     @JsonProperty("fechaAcontecimiento")
     @Getter private LocalDate fecha_acontecimiento;
     private LocalDate fecha_carga;
-    private List<SolicitudEliminacion> solicitudes;
-    private LocalDate fecha_ultimaModificacion;
     private Origen origen;
-    private String contenido_texto;
-    private List<Multimedia> contenido_multimedia;
     private List<Etiqueta> etiquetas;
     private Boolean visible;
-    private Boolean anonimato;
-    private IdentidadContribuyente autor;
 
     public Hecho() {} // Constructor vacio para que se pueda deserealizar el JSON
 
-    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fecha_acontecimiento, Origen origen, String contenido_texto, List<Multimedia> contenido_multimedia, Boolean anonimato, IdentidadContribuyente autor) {
+    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fecha_acontecimiento, Origen origen) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.ubicacion = new Ubicacion(latitud, longitud);
         this.fecha_acontecimiento = fecha_acontecimiento;
         this.fecha_carga = LocalDate.now();
-        this.solicitudes = new ArrayList<>();
-        this.fecha_ultimaModificacion = this.fecha_carga;
         this.origen = origen;
-        this.contenido_texto = contenido_texto;
-        this.contenido_multimedia = contenido_multimedia;
         this.etiquetas = new ArrayList<>();
         this.visible = true;
-        this.anonimato = anonimato;
-        if (anonimato) {
-            this.autor = autor;
-        }
-        else {
-            this.autor = null;
-        }
     }
 
     public void ocultar() {
@@ -65,7 +45,7 @@ public class Hecho {
 
     public void mostrar() { visible = true; }
 
-    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDate fecha, String contenido_texto, List<Multimedia> contenido_multimedia) {
+    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDate fecha) {
         if (titulo != null) {
             this.titulo = titulo;
         }
@@ -80,12 +60,6 @@ public class Hecho {
         }
         if (fecha != null) {
             this.fecha_acontecimiento = fecha;
-        }
-        if (contenido_texto != null) {
-            this.contenido_texto = contenido_texto;
-        }
-        if (contenido_multimedia != null) {
-            this.contenido_multimedia = contenido_multimedia;
         }
     }
 
@@ -103,23 +77,6 @@ public class Hecho {
 
     public Boolean ocurrioEntre(LocalDate fecha_inicial, LocalDate fecha_final) {
         return ocurrioDespuesDe(fecha_inicial) && ocurrioAntesDe(fecha_final);
-    }
-
-    public void agregarASolicitudes(SolicitudEliminacion solicitud) {
-        solicitudes.add(solicitud);
-    }
-
-    public void prescribirSolicitudes(){
-        // Cuando se acepta una solicitud, todas las demas se prescriben (solo afecta las pendientes)
-        for(SolicitudEliminacion sol : this.solicitudes){
-            sol.prescribir();
-        }
-    }
-    public void anularPrescripcionSolicitudes(){
-        // Cuando se anula una solicitud aceptada, todas las demás se de-prescriben (Solo afecta a las prescriptas)
-        for(SolicitudEliminacion sol : this.solicitudes){
-            sol.anularPrescripcion();
-        }
     }
 
     public Boolean ocurrioAntesDe(LocalDate fecha)

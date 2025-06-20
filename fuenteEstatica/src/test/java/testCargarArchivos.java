@@ -28,7 +28,7 @@ public class testCargarArchivos {
             System.out.println("Categoria: " + h.getCategoria().getNombre());
             System.out.println("Latitud: " + h.getUbicacion().getLatitud().toString());
             System.out.println("Longitud: " + h.getUbicacion().getLongitud().toString());
-            System.out.println("Fecha del hecho: " + h.getFechaAcontecimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            System.out.println("Fecha del hecho: " + h.getFecha_acontecimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             System.out.println();
         }
     }

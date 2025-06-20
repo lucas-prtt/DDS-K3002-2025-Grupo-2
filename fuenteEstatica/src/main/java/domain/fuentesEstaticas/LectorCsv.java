@@ -56,7 +56,7 @@ public class LectorCsv{
     }
 
     public Hecho formatearHecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fecha_hecho){
-        return new Hecho(titulo, descripcion, categoria, latitud, longitud, fecha_hecho, Origen.DATASET, null, null, true, null);
+        return new Hecho(titulo, descripcion, categoria, latitud, longitud, fecha_hecho, Origen.DATASET);
     }
 
     // TODO: cuando hagamos el agregador el chequeo de categoria se debe hacer ahi ya que ahi se almacenaran todas las categorias existentes en el sistema

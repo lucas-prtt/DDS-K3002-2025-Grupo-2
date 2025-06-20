@@ -1,8 +1,10 @@
 package domain.hechos;
-import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+
+import java.time.LocalDate;
 
 //CATEGORIA
 public class Categoria {
