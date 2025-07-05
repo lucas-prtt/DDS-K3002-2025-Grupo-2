@@ -1,4 +1,4 @@
-/*package domain.repositorios;
+package domain.repositorios;/*package domain.repositorios;
 
 import domain.colecciones.Coleccion;
 
