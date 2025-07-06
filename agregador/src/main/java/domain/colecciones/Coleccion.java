@@ -10,9 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import domain.repositorios.RepositorioHechosXColeccion;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
@@ -22,14 +20,15 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 // COLECCION
-
-
+@Entity
 public class Coleccion{
     private String titulo;
     private String descripcion;
     private List<CriterioDePertenencia> criterios_pertenencia;
+    @Getter
     private List<Fuente> fuentes;
     @Getter
+    @Id
     private String identificador_handle;
     private Algoritmo algoritmo_consenso;
     private RepositorioHechosXColeccion repositorio_hechos;
@@ -71,9 +70,9 @@ public class Coleccion{
         }
     }
 
-    public mostrarHechosIrrestrictos(List<CriterioDePertenencia> filtros) {
+    public List<Hecho> mostrarHechosIrrestrictos(List<CriterioDePertenencia> filtros) {
         // logica de buscar los hechos del repositorio
-        return todosLosHechos.stream().filter(hecho -> cumpleCriterios(filtros, hecho)).collect(Collectors.toList());
+        return repositorio_hechos.findAll().stream().filter(hecho -> cumpleCriterios(filtros, (Hecho)(hecho)).collect(Collectors.toList());
     }
 
     public void cargarHechos(){
@@ -102,7 +101,7 @@ public class Coleccion{
         }
 
         // Agrega todos los hechos que cumplen con los filtros pasados
-        repositorio_hechos.agregarTodos(todosLosHechos);
+        repositorio_hechos.agregarTodos(todosLosHechos,identificador_handle);
     }
 
     // Metodo sobrecargado sin parámetros que usa una lista vacía por defecto

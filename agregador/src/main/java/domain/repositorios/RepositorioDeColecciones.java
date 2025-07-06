@@ -1,33 +1,14 @@
-package domain.repositorios;/*package domain.repositorios;
+package domain.repositorios;
 
 import domain.colecciones.Coleccion;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class RepositorioDeColecciones implements Repositorio {
+
+@Repository
+public interface RepositorioDeColecciones extends JpaRepository<Coleccion, String> {
     // REPOSITORIO DE COLECCIONES
 
-        private List<Coleccion> colecciones;
-
-        public RepositorioDeColecciones() {
-            this.colecciones = new ArrayList<Coleccion>();
-        }
-
-        public void agregar(Coleccion Coleccion){
-            // TODO
-        }
-
-        public void quitar(Coleccion Coleccion) {
-            // TODO
-        }
-
-        public Coleccion buscar(Coleccion Coleccion) {
-            // TODO
-        }
-
-        public List<Coleccion> listar(){
-            // TODO
-        }
-    }
-}*/
+}
