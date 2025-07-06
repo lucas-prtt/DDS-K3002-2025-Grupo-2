@@ -5,20 +5,22 @@ import domain.hechos.multimedias.Multimedia;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.IdentidadContribuyente;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 // HECHO
+@Getter
+@Setter
 public class Hecho {
-    @Getter
     private String titulo;
-    @Getter private String descripcion;
-    @Getter private Categoria categoria;
-    @Getter private Ubicacion ubicacion;
+    private String descripcion;
+    private Categoria categoria;
+    private Ubicacion ubicacion;
     @JsonProperty("fechaAcontecimiento")
-    @Getter private LocalDate fecha_acontecimiento;
+    private LocalDate fecha_acontecimiento;
     private LocalDate fecha_carga;
     private List<SolicitudEliminacion> solicitudes;
     private LocalDate fecha_ultimaModificacion;
