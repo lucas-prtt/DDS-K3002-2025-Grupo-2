@@ -1,4 +1,4 @@
-package domain;
+package domain.controllers;
 
 import domain.fuentesEstaticas.Fuente;
 import domain.fuentesEstaticas.FuenteEstatica;

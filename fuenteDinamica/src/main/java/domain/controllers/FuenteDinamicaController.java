@@ -1,4 +1,4 @@
-package domain;
+package domain.controllers;
 
 import domain.fuentesDinamicas.Fuente;
 import domain.fuentesDinamicas.FuenteDinamica;
@@ -7,13 +7,11 @@ import domain.hechos.Hecho;
 import domain.hechos.Origen;
 import domain.repositorios.RepositorioDeHechos;
 import domain.repositorios.RepositorioDeSolicitudes;
-import domain.solicitudes.DetectorDeSpam;
 import domain.solicitudes.DetectorDeSpamPrueba;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.Contribuyente;
 import domain.usuarios.IdentidadContribuyente;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
 
 import java.time.LocalDate;
 import java.util.*;

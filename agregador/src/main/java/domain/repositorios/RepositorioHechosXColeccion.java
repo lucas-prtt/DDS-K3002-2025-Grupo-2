@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+/*
 @Repository
 public interface RepositorioHechosXColeccion extends JpaRepository<Hecho, Long> {
-
+    //TODO:
     public void agregarTodos(List<Hecho> todosLosHechos, String idColeccion) {
 
     }
@@ -20,3 +20,4 @@ public interface RepositorioHechosXColeccion extends JpaRepository<Hecho, Long> 
     List<Hecho> findByColeccionIdAndConsensuadoTrue(Long coleccionId);
 
 }
+*/

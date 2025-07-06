@@ -1,6 +1,6 @@
 package domain.algoritmos;
-
-public class AlgoritmoAbsoluto extends Algoritmo {
+/*
+public class AlgoritmoAbsoluto implements Algoritmo {
 
     public list<Hecho> hechosCurados(List<List<Hecho>> hechos) {
         // Se verifica cada hecho que este en todas las fuentes
@@ -16,4 +16,4 @@ public class AlgoritmoAbsoluto extends Algoritmo {
         return null;
     }
 
-}
+}*/

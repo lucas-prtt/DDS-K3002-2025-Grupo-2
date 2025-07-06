@@ -1,34 +1,30 @@
 package domain.services;
 
-import domain.dto.HechoInEstaticaDTO;
 import domain.hechos.Hecho;
 import domain.colecciones.Coleccion;
 import domain.colecciones.Fuente;
 import domain.repositorios.RepositorioDeColecciones;
 import domain.repositorios.RepositorioDeHechos;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class HechoService {
-    @Autowired
-    private RepositorioDeColecciones repositorio_de_colecciones;
-    @Autowired
-    private RepositorioDeHechos repositorio_de_hechos;
+    private final RepositorioDeColecciones repositorio_de_colecciones;
+    private final RepositorioDeHechos repositorio_de_hechos;
 
-    public List<Hecho> hechosDeColeccion(String id_coleccion) {
-        return new ArrayList<Hecho>();
+    public HechoService(RepositorioDeColecciones repositorio_de_colecciones, RepositorioDeHechos repositorio_de_hechos) {
+        this.repositorio_de_colecciones = repositorio_de_colecciones;
+        this.repositorio_de_hechos = repositorio_de_hechos;
     }
 
-    @Scheduled(fixedRate = 3600000) // Se ej*ecuta cada 1 hora
+    @Scheduled(fixedRate = 3600000) // Se ejecuta cada 1 hora
     public void cargarHechos() {
-        System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. Mientras tanto, escuche la cucaracha");try { Desktop.getDesktop().browse(new java.net.URI("https://www.youtube.com/watch?v=6sn8bIzWacw")); } catch (Exception ignored) {};
+        System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato.");
         List<Coleccion> colecciones = repositorio_de_colecciones.findAll(); // TRAE TODOS LAS COLECCIONES DEL REPOSITORIO DE COLECCIONES
         List<Fuente> fuentes = colecciones.stream().flatMap(coleccion -> coleccion.getFuentes().stream()).toList();
         List<Fuente> fuentes_sin_repetir = filtrarFuentesRepetidas(fuentes);

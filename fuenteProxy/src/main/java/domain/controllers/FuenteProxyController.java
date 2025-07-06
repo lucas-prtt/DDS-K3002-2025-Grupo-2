@@ -1,4 +1,4 @@
-package domain;
+package domain.controllers;
 
 import domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
 import domain.fuentesProxy.FuenteProxy;

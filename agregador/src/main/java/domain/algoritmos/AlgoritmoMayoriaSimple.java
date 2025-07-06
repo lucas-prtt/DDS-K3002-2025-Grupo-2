@@ -1,4 +1,4 @@
 package domain.algoritmos;
-
-public class AlgoritmoMayoriaSimple extends Algoritmo{
-}
+/*
+public class AlgoritmoMayoriaSimple implements Algoritmo{
+}*/
