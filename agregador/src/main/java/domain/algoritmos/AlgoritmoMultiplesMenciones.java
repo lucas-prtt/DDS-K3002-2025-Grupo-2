@@ -1,4 +1,4 @@
 package domain.algoritmos;
-
-public class AlgoritmoMultiplesMenciones extends Algoritmo {
-}
+/*
+public class AlgoritmoMultiplesMenciones implements Algoritmo {
+}*/
