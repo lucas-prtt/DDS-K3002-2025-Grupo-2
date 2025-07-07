@@ -4,6 +4,8 @@ import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
 import domain.repositorios.RepositorioDeFuentes;
 import domain.repositorios.RepositorioDeHechos;
+import domain.services.FuenteService;
+import domain.services.HechoService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +15,14 @@ import java.util.List;
 public class CargarHechosScheduller {
     private final RepositorioDeHechos repositorioDeHechos;
     private final RepositorioDeFuentes repositorioDeFuentes;
+    private final FuenteService fuenteService;
+    private final HechoService hechoService;
 
-    public CargarHechosScheduller(RepositorioDeHechos repositorioDeHechos, RepositorioDeFuentes repositorioDeFuentes) {
+    public CargarHechosScheduller(RepositorioDeHechos repositorioDeHechos, RepositorioDeFuentes repositorioDeFuentes, FuenteService fuenteService, HechoService hechoService) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.repositorioDeFuentes = repositorioDeFuentes;
+        this.fuenteService = fuenteService;
+        this.hechoService = hechoService;
     }
 
     @Scheduled(fixedRate = 3600000) // Se ejecuta cada 1 hora
@@ -25,15 +31,8 @@ public class CargarHechosScheduller {
         //List<Coleccion> colecciones = repositorio_de_colecciones.findAll(); // TRAE TODOS LAS COLECCIONES DEL REPOSITORIO DE COLECCIONES
         //List<Fuente> fuentes = colecciones.stream().flatMap(coleccion -> coleccion.getFuentes().stream()).toList();
         //List<Fuente> fuentes_sin_repetir = filtrarFuentesRepetidas(fuentes);
-        List<Fuente> fuentes = repositorioDeFuentes.findAll();
-
-        for (Fuente fuente : fuentes) {
-            List<Hecho> hechosRecibidos = fuente.hechos(); // Maneja automaticamente las fechas y todo eso
-            //TODO: repositorio_de_hechos.acaTenesTusHechosNuevos(hechosRecibidos, fuente);
-            // Actualiza el repositorio con los nuevos hechos
-            //System.out.println("Hechos recibidos de fuente \"" + fuente.getId_externo() + "-" + fuente.getId_interno() + "\" : " + hechosRecibidos.size());
-            repositorioDeHechos.saveByFuente(hechosRecibidos, fuente);
-        }
+        List<Hecho> ultimosHechos = fuenteService.hechosUltimaPeticion();
+        hechoService.guardarHechos(ultimosHechos);
     }
 /*
     private List<Fuente> filtrarFuentesRepetidas(List<Fuente> fuentes) {

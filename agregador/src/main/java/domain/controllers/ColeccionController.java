@@ -2,21 +2,22 @@ package domain.controllers;
 
 import domain.colecciones.Coleccion;
 import domain.hechos.Hecho;
+import domain.services.ColeccionService;
 import domain.services.FuenteService;
-import domain.services.HechoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/agregador")
 public class ColeccionController {
-    private final HechoService hechoService;
+    private final ColeccionService coleccionService;
     private final FuenteService fuenteService;
 
-    public ColeccionController(HechoService hechoService, FuenteService fuenteService) {
-        this.hechoService = hechoService;
+    public ColeccionController(ColeccionService coleccionService, FuenteService fuenteService) {
+        this.coleccionService = coleccionService;
         this.fuenteService = fuenteService;
     }
 
@@ -24,7 +25,7 @@ public class ColeccionController {
     @PostMapping("/colecciones")
     public ResponseEntity<Coleccion> crearColeccion(Coleccion coleccion) {
         // logica de crear una coleccion en el repositorio //todo
-        hechoService.guardarColeccion(coleccion);
+        coleccionService.guardarColeccion(coleccion);
         fuenteService.guardarFuentes(coleccion.getFuentes());
         return ResponseEntity.ok(coleccion);
     }
@@ -33,23 +34,52 @@ public class ColeccionController {
     @GetMapping("/colecciones")
     public List<Coleccion> mostrarColecciones() {
         // logica de buscar las colecciones del repositorio //todo
-        return hechoService.obtenerColecciones();
+        return coleccionService.obtenerColecciones();
     }
 
+    // todo: ponerle los request params
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public List<Hecho> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion) {
+    public List<Hecho> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
+                                                 @RequestParam(required=false) String categoria_buscada,
+                                                 @RequestParam(required=false) LocalDate fechaReporteDesde,
+                                                 @RequestParam(required=false) LocalDate fechaReporteHasta,
+                                                 @RequestParam(required=false) LocalDate fechaAcontecimientoDesde,
+                                                 @RequestParam(required=false) LocalDate fechaAcontecimientoHasta,
+                                                 @RequestParam(required=false) Double latitud,
+                                                 @RequestParam(required=false) Double longitud) {
         // logica de buscar los hechos del repositorio //todo
-        return hechoService.obtenerHechosIrrestrictosPorColeccion(idColeccion);
+        return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
+    // todo: ponerle los request params
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public List<Hecho> mostrarHechosCurados(@PathVariable("id") String idColeccion){
-
-
-        return hechoService.obtenerHechosCuradosPorColeccion(idColeccion);
+    public List<Hecho> mostrarHechosCurados(@PathVariable("id") String idColeccion,
+                                            @RequestParam(required=false) String categoria_buscada,
+                                            @RequestParam(required=false) LocalDate fechaReporteDesde,
+                                            @RequestParam(required=false) LocalDate fechaReporteHasta,
+                                            @RequestParam(required=false) LocalDate fechaAcontecimientoDesde,
+                                            @RequestParam(required=false) LocalDate fechaAcontecimientoHasta,
+                                            @RequestParam(required=false) Double latitud,
+                                            @RequestParam(required=false) Double longitud){
+        return coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
-    // Operaciones UPDATE sobre Colecciones
-
-    // Operaciones DELETE sobre Colecciones
+    @DeleteMapping("/colecciones/{id}")
+    public ResponseEntity<Void> eliminarColeccion(@PathVariable("id") String idColeccion) {
+        // logica de eliminar una coleccion del repositorio
+        coleccionService.eliminarColeccion(idColeccion);
+        return ResponseEntity.noContent().build();
+    }
 }
+
+// Operaciones UPDATE sobre Colecciones
+//PATCH MAPPING
+// Operaciones DELETE sobre Colecciones
+//DELETE MAPPING
+
+// modificacion del algoritmo: PATCH sobre coleccion
+// Agregar o quitar fuentes de hechos de una colección.: PATCH sobre coleccion
+// Aprobar o denegar una solicitud de eliminación de un hecho.: PATCH sobre solicitud
+
+// Generar una solicitud de eliminación a un hecho.: POST sobre solicitud
+// Reportar un hecho: POST sobre reporte ???

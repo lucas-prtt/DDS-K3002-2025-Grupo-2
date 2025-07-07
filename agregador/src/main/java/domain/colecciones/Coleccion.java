@@ -28,7 +28,7 @@ public class Coleccion{
     private String identificadorHandle;
     @Getter
     @Enumerated(EnumType.STRING)
-    private AlgoritmoConsenso algoritmoConsenso;
+    private AlgoritmoConsenso algoritmoConsenso = AlgoritmoConsenso.IRRESTRICTO;
     //tiene todos los hechos que de las fuentes de esta coleccion
     //TODO: SUPONEMOS QUE REPOSITORIO HECHOS X COLECCION ES UN REPOSITORIO QUE CONTIENE TODOS LOS HECHOS DE ESTA COLECCION
     //JUNTO CON SUS RESPECTIVOS ATRIBUTOS.
@@ -40,7 +40,6 @@ public class Coleccion{
     // Como se sabe que algoritmo usar?
 
     // TODO: Ver que no se cargue dos veces el mismo hecho si dos colecciones comparten la fuente
-
 
     public Coleccion(String titulo, String descripcion, List<CriterioDePertenencia> criteriosDePertenencia, List<Fuente> fuentes, AlgoritmoConsenso algoritmo) {
         this.titulo = titulo;

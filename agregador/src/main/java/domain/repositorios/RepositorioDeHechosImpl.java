@@ -4,6 +4,8 @@ import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,10 +19,5 @@ public class RepositorioDeHechosImpl implements RepositorioDeHechosCustom {
     public void saveByFuente(List<Hecho> hechos, Fuente fuente) {
         //this.saveAll(hechos); TODO: Usar el entity manager para guardar los hechos
         // TODO hacer que el repositorio de hechosXColeccion guarde de cada hecho, de que coleccion viene
-    }
-
-    @Override
-    public List<Hecho> findByColeccionId(String idColeccion) {
-        return null;// TODO implementar la logica de busqueda de hechos por coleccion
     }
 }
