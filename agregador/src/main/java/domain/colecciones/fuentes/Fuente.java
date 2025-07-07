@@ -10,6 +10,7 @@ import domain.mappers.HechoInEstaticaDTOToHecho;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,14 +24,17 @@ public class Fuente{
     @EmbeddedId
     @Getter
     private FuenteId id;
+    @Getter
     private TipoFuente tipo;
+    @Getter
+    @Setter
     private LocalDate ultimaPeticion;
 
     public Fuente(String idExterno, TipoFuente tipo) {
         this.id = new FuenteId(UUID.randomUUID().toString(), idExterno);
         this.id.setIdExterno(idExterno);
         this.tipo = tipo;
-        this.ultimaPeticion = null;
+        this.ultimaPeticion = null; // Arranca en null para que si es la primera petición, traer todos los hechos
     }
 
     public Fuente() {
@@ -46,46 +50,14 @@ public class Fuente{
             case DINAMICA:
                 url += "8081/fuentesDinamicas/";
                 break;
-            case PROXY:
-                url += "8082/fuentesProxy/";
+            case PROXY_METAMAPA:
+                url += "8082/fuentesMetamapa/";
+                break;
+            case PROXY_DEMO:
+                url += "8082/fuentesDemo/";
                 break;
         }
         url += id.getIdExterno();
         return url;
-    }
-
-    // TODO: Ver si esto realmente debe estar en la clase Fuente o si es mejor moverlo a un servicio
-    public List<Hecho> hechos() {
-        List<Hecho> todosLosHechos = new ArrayList<>();
-        String url = getUrl() + "/hechos";
-        ObjectMapper mapper = new ObjectMapper(); // Creo un object mapper para mappear el resultado del json a un objeto Hecho
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        RestTemplate restTemplate = new RestTemplate();
-        HechoInEstaticaDTOToHecho mapperDto = new HechoInEstaticaDTOToHecho(); // Mapper para mapear de HechoInEstaticaDTO a Hecho
-        List<Hecho> hechos;
-        if (ultimaPeticion != null) { // Si no es la primera vez que se hace una peticion, trae los hechos desde la ultima peticion
-            url += "?fechaMayorA=" + ultimaPeticion; // TODO: Agregar esto de fechaMayorA a la API de las fuentes
-        }
-        ultimaPeticion = LocalDate.now();
-        try {
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-            String json = response.getBody();
-
-            if (Objects.requireNonNull(tipo) == TipoFuente.ESTATICA) { // Si la fuente es estatica, mapeo a HechoInEstaticaDTO
-                List<HechoInEstaticaDTO> hechosDto = mapper.readValue(json, new TypeReference<>() {
-                });
-                hechos = hechosDto.stream().map(mapperDto::map).toList();
-                todosLosHechos.addAll(hechos);
-            } else { // Si la fuente es dinamica o proxy, mapeo a Hecho
-                hechos = mapper.readValue(json, new TypeReference<>() {
-                });
-                todosLosHechos.addAll(hechos);
-            }
-        } catch (Exception e) {
-            System.err.println("Error al consumir la API en " + id.getIdExterno() + ": " + e.getMessage());
-        }
-
-        return todosLosHechos; // Retorna una lista de hechos obtenidos de la fuente
     }
 }

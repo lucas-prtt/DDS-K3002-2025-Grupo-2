@@ -7,6 +7,8 @@ import domain.hechos.Hecho;
 import domain.repositorios.RepositorioDeColecciones;
 import domain.repositorios.RepositorioDeHechos;
 import domain.repositorios.RepositorioHechosXColeccion;
+import domain.services.ColeccionService;
+import domain.services.HechoService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -14,20 +16,21 @@ import java.util.List;
 
 @Component
 public class EjecutarAlgoritmoConsensoScheduller {
-    private final RepositorioDeHechos repositorioDeHechos;
-    private final RepositorioDeColecciones repositorioDeColecciones;
+    private final HechoService hechoService;
+    private final ColeccionService coleccionService;
     private final RepositorioHechosXColeccion respositorioDeHechosXColeccion;
+    private final ColeccionService coleccionService;
     private Algoritmo algoritmo;
 
-    public EjecutarAlgoritmoConsensoScheduller(RepositorioDeHechos repositorioDeHechos, RepositorioDeColecciones repositorioDeColecciones, RepositorioHechosXColeccion respositorioDeHechosXColeccion) {
-        this.repositorioDeHechos = repositorioDeHechos;
-        this.repositorioDeColecciones = repositorioDeColecciones;
+    public EjecutarAlgoritmoConsensoScheduller(HechoService hechoService, ColeccionService coleccionService, RepositorioHechosXColeccion respositorioDeHechosXColeccion, ColeccionService coleccionService) {
+        this.hechoService = hechoService;
+        this.coleccionService = coleccionService;
         this.respositorioDeHechosXColeccion = respositorioDeHechosXColeccion;
     }
 
     @Scheduled(cron = "0 0 3 * * *") // Se ejecuta a las 3 AM
     public void curarHechos() {
-        List<Coleccion> colecciones = repositorioDeColecciones.findAll();
+        List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         for (Coleccion coleccion : colecciones) {
             AlgoritmoConsenso algoritmoConsenso = coleccion.getAlgoritmoConsenso();
             switch (algoritmoConsenso) {
@@ -37,12 +40,17 @@ public class EjecutarAlgoritmoConsensoScheduller {
                 case ABSOLUTO -> algoritmo = new AlgoritmoAbsoluto();
             }
 
-            List<Hecho> hechos = repositorioDeHechos.findByColeccionId(coleccion.getIdentificadorHandle()); // ESTE SUPUESTAMENTE SE CONECTA CON HECHOXCOLECCOIN PARA OBTENER ESOS HECHOS
-            List<Hecho> hechosCurados = algoritmo.curarHechos(hechos);
-            RepositorioHechosXColeccion.update(hechosCurados);
+            List<Hecho> hechos = hechoService.obtenerHechosPorColeccion(coleccion.getIdentificadorHandle()); // todo TESTEAR EL SELECT
+            List<Hecho> hechosCurados = algoritmo.curarHechos(hechos); // TODO: seguir desde acá
+            repositorioHechosXColeccion.update(hechosCurados);
         }
         // por cada coleccion me fijo su algoritmo
         // busco en el repositorio de hechos por coleccion y me fijo la cantidad de veces que aparecen
         // taggeo los hechos como consensuados/curados
     }
 }
+//findByColeccionId(Long idColeccion) {
+// SELECT * FROM hechos
+// JOIN hechos_x_coleccion ON hechos.id = hechos_x_coleccion.hecho_id
+// WHERE hechos_x_coleccion.coleccion_id = idColeccion
+//}

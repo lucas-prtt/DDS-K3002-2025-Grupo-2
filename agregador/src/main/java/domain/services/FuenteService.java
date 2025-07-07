@@ -1,10 +1,23 @@
 package domain.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import domain.colecciones.fuentes.TipoFuente;
+import domain.dto.HechoInEstaticaDTO;
+import domain.hechos.Hecho;
+import domain.mappers.HechoInEstaticaDTOToHecho;
 import domain.repositorios.RepositorioDeFuentes;
 import domain.colecciones.fuentes.Fuente;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FuenteService {
@@ -15,6 +28,44 @@ public class FuenteService {
     }
 
     public void guardarFuentes(List<Fuente> fuentes) {
-        repositorioDeFuentes.saveOnlyNew(fuentes);
+        repositorioDeFuentes.saveAllIfNotExists(fuentes); // Se guarda las fuentes que no existan en el repositorio, porque podría ocurrir que entre colecciones repitan fuentes
+    }
+
+    public List<Hecho> hechosUltimaPeticion() {
+        List<Fuente> fuentes = repositorioDeFuentes.findAll();
+        List<Hecho> hechos = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper(); // Creo un object mapper para mappear el resultado del json a un objeto Hecho
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        RestTemplate restTemplate = new RestTemplate();
+        HechoInEstaticaDTOToHecho mapperDto = new HechoInEstaticaDTOToHecho(); // Mapper para mapear de HechoInEstaticaDTO a Hecho
+
+        for (Fuente fuente : fuentes) {
+            String url = fuente.getUrl() + "/hechos";
+            LocalDate fecha = fuente.getUltimaPeticion();
+            if (fecha != null) {
+                url += "?fechaMayorA=" + fecha; // TODO: Agregar esto de fechaMayorA a la API de las fuentes
+
+            }
+
+            try {
+                ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+                String json = response.getBody();
+
+                if (Objects.requireNonNull(fuente.getTipo()) == TipoFuente.ESTATICA) { // Si la fuente es estatica, mapeo a HechoInEstaticaDTO
+                    List<HechoInEstaticaDTO> hechosDto = mapper.readValue(json, new TypeReference<>() {
+                    });
+                    hechos = hechosDto.stream().map(mapperDto::map).toList();
+                } else { // Si la fuente es dinamica o proxy, mapeo a Hecho
+                    hechos = mapper.readValue(json, new TypeReference<>() {
+                    });
+                }
+
+                fuente.setUltimaPeticion(LocalDate.now()); //actualizar fuente con la fecha de la ultima peticion
+            } catch (Exception e) {
+                System.err.println("Error al consumir la API en " + fuente.getId().getIdExterno() + ": " + e.getMessage());
+            }
+        }
+        return hechos;
     }
 }

@@ -33,7 +33,6 @@ public class FuenteProxyController {
         //todo necesitamos crear una clase nueva para realizar esta tarea
     }
 
-
     @GetMapping("/{id}/hechos")
     public List<Hecho> obtenerHechos(@PathVariable("id") Long id,
                                      @RequestParam(required=false) String categoria_buscada,
