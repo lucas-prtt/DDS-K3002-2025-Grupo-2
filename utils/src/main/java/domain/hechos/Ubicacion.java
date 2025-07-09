@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 // UBICACION
 @Embeddable
+@NoArgsConstructor
 public class Ubicacion {
     @Getter private Double latitud;
     @Getter private Double longitud;
@@ -17,10 +19,6 @@ public class Ubicacion {
         this.longitud = longitud;
     }
 
-    public Ubicacion() {
-
-    }
-
     public double distanciaA(Ubicacion otraUbicacion) {
         return haversine(this.latitud, this.longitud, otraUbicacion.getLatitud(), otraUbicacion.getLongitud());
     }
@@ -28,12 +26,12 @@ public class Ubicacion {
     public Double haversine(Double latitud1, Double longitud1, Double latitud2, Double longitud2) {
         final int R = 6371; // Radio de la Tierra en km
 
-        Double dLat = Math.toRadians(latitud2 - latitud1);
-        Double dLon = Math.toRadians(longitud2 - longitud1);
+        double dLat = Math.toRadians(latitud2 - latitud1);
+        double dLon = Math.toRadians(longitud2 - longitud1);
 
-        Double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(latitud1)) * Math.cos(Math.toRadians(latitud2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(latitud1)) * Math.cos(Math.toRadians(latitud2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
-        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return R * c; // Distancia en km
     }

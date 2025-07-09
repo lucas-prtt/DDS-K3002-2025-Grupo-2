@@ -11,24 +11,25 @@ public enum Estado{
     SPAM
 }*/
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
-@Embeddable
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@NoArgsConstructor
 public abstract class EstadoSolicitud {
-     @ManyToOne
-     SolicitudEliminacion solicitud;  //Solicitud a la que apunta
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @OneToOne(mappedBy = "estado")
+    protected SolicitudEliminacion solicitud;  //Solicitud a la que apunta
 
     public EstadoSolicitud(SolicitudEliminacion slt){
         solicitud = slt;
-    }
-
-    public EstadoSolicitud() {
-
     }
 
     public abstract void aceptar();

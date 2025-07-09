@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RepositorioDeHechos extends JpaRepository<Hecho, Long> {
+public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     // TODO: Revisar la query
     @Query("""
         SELECT h
         FROM Hecho h
-        JOIN HechoXColeccion hc ON h = hc.hecho
-        WHERE hc.coleccion = :idColeccion
+        JOIN HechoXColeccion hc ON h.id = hc.hecho.id
+        WHERE hc.coleccion.identificadorHandle = :idColeccion
     """)
     List<Hecho> findByCollectionId(@Param("idColeccion") String idColeccion);
 
@@ -23,8 +23,8 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, Long> {
     @Query("""
         SELECT h
         FROM Hecho h
-        JOIN HechoXColeccion hc ON h = hc.hecho
-        WHERE hc.coleccion = :idColeccion AND hc.consensuado = true
+        JOIN HechoXColeccion hc ON h.id = hc.hecho.id
+        WHERE hc.coleccion.identificadorHandle = :idColeccion AND hc.consensuado = true
     """)
     List<Hecho> findCuredByCollectionId(@Param("idColeccion") String idColeccion);
 }

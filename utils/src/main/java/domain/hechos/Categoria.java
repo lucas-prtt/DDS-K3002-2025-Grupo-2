@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 //CATEGORIA
 @Embeddable
+@NoArgsConstructor
 public class Categoria {
     @Getter
     private String nombre;
@@ -16,10 +18,6 @@ public class Categoria {
     public Categoria(@JsonProperty("nombre") String nombre) {
         this.nombre = nombre;
         this.fechaCreacion = LocalDateTime.now();
-    }
-
-    public Categoria() {
-
     }
 
     public Boolean esIdenticaA(String categoria_nombre) {

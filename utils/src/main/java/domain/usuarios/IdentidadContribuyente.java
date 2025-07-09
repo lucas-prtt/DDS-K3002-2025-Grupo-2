@@ -2,6 +2,7 @@ package domain.usuarios;
 
 import domain.hechos.Hecho;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -10,6 +11,7 @@ import java.util.List;
 
 // IDENTIDAD CONTRIBUYENTE
 @Entity
+@NoArgsConstructor
 public class IdentidadContribuyente {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
@@ -19,6 +21,7 @@ public class IdentidadContribuyente {
     private LocalDate fechaNacimiento;
     @ManyToOne
     private Contribuyente contribuyente;
+    @OneToMany(mappedBy = "autor")
     private List<Hecho> hechosContribuidos;
 
     public IdentidadContribuyente(String nombre, String apellido, LocalDate fechaNacimiento, Contribuyente contribuyente){
@@ -26,10 +29,6 @@ public class IdentidadContribuyente {
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
         this.contribuyente = contribuyente;
-    }
-
-    public IdentidadContribuyente() {
-
     }
 
     public Integer getEdad() {

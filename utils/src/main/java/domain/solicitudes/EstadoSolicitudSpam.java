@@ -1,8 +1,12 @@
 package domain.solicitudes;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
+@Entity
+@NoArgsConstructor
 public class EstadoSolicitudSpam extends EstadoSolicitud {
     public EstadoSolicitudSpam(SolicitudEliminacion slt) {
         super(slt);

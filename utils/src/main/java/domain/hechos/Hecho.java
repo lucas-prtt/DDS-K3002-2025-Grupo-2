@@ -4,23 +4,24 @@ import domain.hechos.multimedias.Multimedia;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.IdentidadContribuyente;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 // HECHO
 @Getter
 @Setter
 @Entity
+@Builder
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class Hecho {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // TODO: Cambiar por UUID jijojijo se jijean los jijolines
+    private String id;
     private String titulo;
     private String descripcion;
     @Embedded
@@ -29,13 +30,13 @@ public class Hecho {
     private Ubicacion ubicacion;
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
-    @OneToMany
+    @OneToMany(mappedBy = "hecho") // Indica que SolicitudEliminacion es el dueño de la relación bidireccional
     private List<SolicitudEliminacion> solicitudes;
     private LocalDateTime fechaUltimaModificacion;
     @Embedded
     private Origen origen;
     private String contenidoTexto;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
     private List<Multimedia> contenidoMultimedia;
     @ManyToMany
     private List<Etiqueta> etiquetas;
@@ -44,9 +45,8 @@ public class Hecho {
     @ManyToOne
     private IdentidadContribuyente autor;
 
-    public Hecho() {} // Constructor vacio para que se pueda deserealizar el JSON
-
     public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDateTime fechaAcontecimiento, Origen origen, String contenidoTexto, List<Multimedia> contenidoMultimedia, Boolean anonimato, IdentidadContribuyente autor) {
+        this.id = UUID.randomUUID().toString().replace("-", "");
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;

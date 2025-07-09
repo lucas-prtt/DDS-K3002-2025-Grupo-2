@@ -1,7 +1,12 @@
 package domain.solicitudes;
 
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
+@Entity
+@NoArgsConstructor
 public class EstadoSolicitudPrescripta extends EstadoSolicitud {
     public EstadoSolicitudPrescripta(SolicitudEliminacion slt) {
         super(slt);

@@ -4,6 +4,7 @@ import domain.colecciones.fuentes.Fuente;
 
 import java.util.List;
 
+// Repositorio de Fuentes con métodos personalizados
 public interface RepositorioDeFuentesCustom {
     void saveIfNotExists(Fuente nuevaFuente);
 
