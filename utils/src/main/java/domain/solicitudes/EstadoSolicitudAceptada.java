@@ -1,5 +1,10 @@
 package domain.solicitudes;
 
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
+
+@Entity
+@NoArgsConstructor
 public class EstadoSolicitudAceptada extends EstadoSolicitud {
     public EstadoSolicitudAceptada(SolicitudEliminacion slt) {
         super(slt);

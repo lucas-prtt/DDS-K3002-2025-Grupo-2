@@ -13,12 +13,12 @@ import java.io.Serializable;
 public class HechoXFuenteId implements Serializable {
 
     @Column(name = "hecho_id")
-    private Long hechoId;
+    private String hechoId;
 
     @Column(name = "fuente_id")
     private FuenteId fuenteId;
 
-    public HechoXFuenteId(Long hechoId, FuenteId fuenteId) {
+    public HechoXFuenteId(String hechoId, FuenteId fuenteId) {
         this.hechoId = hechoId;
         this.fuenteId = fuenteId;
     }

@@ -43,7 +43,7 @@ public class SolicitudEliminacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
     private Long id;
     @Setter
-    @Embedded
+    @OneToOne
     private EstadoSolicitud estado;
     @Getter
     @ManyToOne

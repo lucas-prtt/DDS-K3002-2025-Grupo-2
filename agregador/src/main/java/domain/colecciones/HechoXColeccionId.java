@@ -12,12 +12,12 @@ import java.io.Serializable;
 @Embeddable
 @EqualsAndHashCode
 public class HechoXColeccionId implements Serializable {
-    private Long hechoId;
+    private String hechoId;
     private String coleccionId;
 
     public HechoXColeccionId() {}
 
-    public HechoXColeccionId(Long hechoId, String coleccionId) {
+    public HechoXColeccionId(String hechoId, String coleccionId) {
         this.hechoId = hechoId;
         this.coleccionId = coleccionId;
     }

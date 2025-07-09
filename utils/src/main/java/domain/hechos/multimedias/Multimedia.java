@@ -1,9 +1,11 @@
 package domain.hechos.multimedias;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 // MULTIMEDIA
 @Entity
+@NoArgsConstructor
 public abstract class Multimedia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,10 +16,6 @@ public abstract class Multimedia {
     public Multimedia(String formato, Integer tamanio){
         this.formato = formato;
         this.tamanio = tamanio;
-    }
-
-    public Multimedia() {
-
     }
 
     public abstract void reproducir();
