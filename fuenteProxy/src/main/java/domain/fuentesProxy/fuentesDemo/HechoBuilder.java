@@ -3,6 +3,7 @@ package domain.fuentesProxy.fuentesDemo;
 import domain.hechos.Categoria;
 import domain.hechos.Hecho;
 import domain.hechos.Origen;
+import domain.hechos.Ubicacion;
 import domain.hechos.multimedias.Multimedia;
 import domain.usuarios.IdentidadContribuyente;
 
@@ -30,8 +31,7 @@ public class HechoBuilder {
                 titulo,
                 descripcion,
                 categoria,
-                latitud,
-                longitud,
+                new Ubicacion(latitud, longitud),
                 fechaAcontecimiento,
                 origen,
                 contenidoTexto,
