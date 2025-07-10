@@ -2,10 +2,13 @@ package domain.fuentesProxy.fuentesDemo;
 
 import domain.fuentesProxy.FuenteProxy;
 import domain.hechos.Hecho;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +19,9 @@ import java.util.Map;
 @NoArgsConstructor
 public class FuenteDemo extends FuenteProxy {
     private LocalDateTime ultimaConsulta;
+    @Embedded
     private Conexion biblioteca;
+    @ManyToMany
     private List<Hecho> hechos;
     private String url;
 
@@ -24,6 +29,7 @@ public class FuenteDemo extends FuenteProxy {
         this.ultimaConsulta = LocalDateTime.now();
         this.biblioteca = biblioteca;
         this.url = url;
+        this.hechos = new ArrayList<>();
     }
 
     @Override

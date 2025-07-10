@@ -14,9 +14,9 @@ public class FuenteMetamapa extends FuenteProxy {
     private String endpointHechos = "https://7239874289/agregador/hechos";
     //private String endpointColecciones = "https://7239874289/agregador/coleccion/1";
     //private String endpointSolicitudes = "https://7239874289/agregador/solicitud";
-    RestTemplate restTemplate = new RestTemplate();
 
     public List<Hecho> importarHechos() {
+        RestTemplate restTemplate = new RestTemplate();
         //String url = "https://mocki.io/v1/66ea9586-9ada-4bab-a974-58abbe005292";
         //RestTemplate restTemplate = new RestTemplate();
         List<Hecho> hechos = List.of(restTemplate.getForObject(endpointHechos, Hecho[].class));
