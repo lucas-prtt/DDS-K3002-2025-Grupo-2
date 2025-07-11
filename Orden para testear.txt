@@ -78,6 +78,6 @@ Request body:
   ],
   "algoritmoConsenso": "ABSOLUTO"
 }
-Esperar 1 minuto a que arranque la carga de hechos
+Esperar 30 segundos a que arranque la carga de hechos
 Finaliza carga de hechos
 Probar get de hechos totales, irrestrictos y curados
