@@ -2,6 +2,10 @@ Orden para testear:
 Abrir swaggers
 http://localhost:puerto/documentacion-apis
 
+Nota: Para abrir bases de datos embebidas
+http://localhost:puerto/h2-console
+y en JDBC URL poner: jdbc:h2:mem:testdb
+
 Levantar Fuente Estática
 Postear una Fuente Estática
 Request body:
