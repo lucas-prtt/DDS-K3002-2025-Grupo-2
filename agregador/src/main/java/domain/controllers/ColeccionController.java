@@ -1,6 +1,5 @@
 package domain.controllers;
 
-import domain.colecciones.AlgoritmoConsenso;
 import domain.colecciones.Coleccion;
 import domain.colecciones.fuentes.Fuente;
 import domain.colecciones.fuentes.FuenteId;
@@ -70,7 +69,7 @@ public class ColeccionController {
 
     @PatchMapping("/colecciones/{id}/algoritmo")
     public ResponseEntity<Void> modificarAlgoritmo(@PathVariable("id") String idColeccion,
-                                                   @RequestBody AlgoritmoConsenso nuevoAlgoritmo) {
+                                                   @RequestBody String nuevoAlgoritmo) {
         coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
         return ResponseEntity.ok().build();
     }

@@ -1,6 +1,6 @@
 package domain.services;
 
-import domain.colecciones.AlgoritmoConsenso;
+import domain.algoritmos.*;
 import domain.colecciones.Coleccion;
 import domain.colecciones.fuentes.Fuente;
 import domain.colecciones.fuentes.FuenteId;
@@ -97,11 +97,21 @@ public class ColeccionService {
         }
     }
 
-    public void modificarAlgoritmoDeColeccion(String idColeccion, AlgoritmoConsenso nuevoAlgoritmo) {
+    public void modificarAlgoritmoDeColeccion(String idColeccion, String nuevoAlgoritmo) {
         Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
-        coleccion.setAlgoritmoConsenso(nuevoAlgoritmo);
+        coleccion.setAlgoritmoConsenso(crearAlgoritmoDesdeNombre(nuevoAlgoritmo));
         repositorioDeColecciones.save(coleccion); // Updatea en la base de datos la colección con el nuevo algoritmo
+    }
+
+    private AlgoritmoConsenso crearAlgoritmoDesdeNombre(String nombre) {
+        return switch (nombre) {
+            case "irrestricto" -> new AlgoritmoConsensoIrrestricto();
+            case "absoluto" -> new AlgoritmoConsensoAbsoluto();
+            case "mayoriaSimple" -> new AlgoritmoConsensoMayoriaSimple();
+            case "multiplesMenciones" -> new AlgoritmoConsensoMultiplesMenciones();
+            default -> throw new IllegalArgumentException("Algoritmo desconocido: " + nombre);
+        };
     }
 
     public void agregarFuenteAColeccion(String idColeccion, Fuente fuente) {

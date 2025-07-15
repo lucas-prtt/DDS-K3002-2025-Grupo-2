@@ -2,10 +2,13 @@ package domain.algoritmos;
 
 import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
+import jakarta.persistence.*;
 
 import java.util.*;
 
-public class AlgoritmoMultiplesMenciones implements Algoritmo {
+@Entity
+@DiscriminatorValue("multiplesMenciones")
+public class AlgoritmoConsensoMultiplesMenciones extends AlgoritmoConsenso {
     @Override
     public List<Hecho> curarHechos(Map<Fuente, List<Hecho>> hechosPorFuente) {
         Map<Hecho, Set<Fuente>> ocurrencias = new HashMap<>();
