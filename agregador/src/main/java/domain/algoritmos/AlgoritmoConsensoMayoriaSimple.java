@@ -2,11 +2,14 @@ package domain.algoritmos;
 
 import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
+import jakarta.persistence.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AlgoritmoMayoriaSimple implements Algoritmo {
+@Entity
+@DiscriminatorValue("mayoriaSimple")
+public class AlgoritmoConsensoMayoriaSimple extends AlgoritmoConsenso {
     @Override
     public List<Hecho> curarHechos(Map<Fuente, List<Hecho>> hechosPorFuente) {
         if (hechosPorFuente.isEmpty()) return List.of();

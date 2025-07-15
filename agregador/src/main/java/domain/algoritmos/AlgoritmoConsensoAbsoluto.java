@@ -2,10 +2,13 @@ package domain.algoritmos;
 
 import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
+import jakarta.persistence.*;
 
 import java.util.*;
 
-public class AlgoritmoAbsoluto implements Algoritmo {
+@Entity
+@DiscriminatorValue("absoluto")
+public class AlgoritmoConsensoAbsoluto extends AlgoritmoConsenso {
     @Override
     public List<Hecho> curarHechos(Map<Fuente, List<Hecho>> hechosPorFuente) {
         if (hechosPorFuente.isEmpty()) return List.of();

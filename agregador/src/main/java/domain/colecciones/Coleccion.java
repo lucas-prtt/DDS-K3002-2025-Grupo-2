@@ -2,6 +2,8 @@ package domain.colecciones;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import domain.algoritmos.AlgoritmoConsenso;
+import domain.algoritmos.AlgoritmoConsensoIrrestricto;
 import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
 import domain.criterios.CriterioDePertenencia;
@@ -14,7 +16,6 @@ import lombok.Setter;
 
 import java.io.InputStream;
 import java.util.List;
-import java.util.UUID;
 
 // COLECCION
 @Entity
@@ -32,8 +33,9 @@ public class Coleccion{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String identificadorHandle;
-    @Enumerated(EnumType.STRING)
-    private AlgoritmoConsenso algoritmoConsenso = AlgoritmoConsenso.IRRESTRICTO;
+    @ManyToOne
+    @JoinColumn(name = "algoritmo_id")
+    private AlgoritmoConsenso algoritmoConsenso = new AlgoritmoConsensoIrrestricto();
 
     @JsonCreator
     public Coleccion(
@@ -41,7 +43,7 @@ public class Coleccion{
             @JsonProperty("descripcion") String descripcion,
             @JsonProperty("criteriosDePertenencia") List<CriterioDePertenencia> criteriosDePertenencia,
             @JsonProperty("fuentes") List<Fuente> fuentes,
-            @JsonProperty("algoritmo") AlgoritmoConsenso algoritmo) {
+            @JsonProperty("algoritmoConsenso") AlgoritmoConsenso algoritmo) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.criteriosDePertenencia = criteriosDePertenencia;

@@ -1,7 +1,6 @@
 package domain.schedullers;
 
 import domain.algoritmos.*;
-import domain.colecciones.AlgoritmoConsenso;
 import domain.colecciones.Coleccion;
 import domain.colecciones.HechoXColeccion;
 import domain.colecciones.HechoXColeccionId;
@@ -21,7 +20,7 @@ public class EjecutarAlgoritmoConsensoScheduller {
     private final HechoService hechoService;
     private final ColeccionService coleccionService;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
-    private Algoritmo algoritmo;
+    private AlgoritmoConsenso algoritmoConsenso;
 
     public EjecutarAlgoritmoConsensoScheduller(HechoService hechoService, ColeccionService coleccionService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion) {
         this.hechoService = hechoService;
@@ -35,15 +34,9 @@ public class EjecutarAlgoritmoConsensoScheduller {
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         for (Coleccion coleccion : colecciones) {
             AlgoritmoConsenso algoritmoConsenso = coleccion.getAlgoritmoConsenso();
-            switch (algoritmoConsenso) {
-                case IRRESTRICTO -> algoritmo = new AlgoritmoIrrestricto();
-                case MAYORIA_SIMPLE -> algoritmo = new AlgoritmoMayoriaSimple();
-                case MULTIPLES_MENCIONES -> algoritmo = new AlgoritmoMultiplesMenciones();
-                case ABSOLUTO -> algoritmo = new AlgoritmoAbsoluto();
-            }
 
             Map<Fuente,List<Hecho>> hechos = hechoService.obtenerHechosPorColeccionPorFuente(coleccion.getIdentificadorHandle());
-            List<Hecho> hechosCurados = algoritmo.curarHechos(hechos);
+            List<Hecho> hechosCurados = algoritmoConsenso.curarHechos(hechos);
             for (Hecho hecho : hechosCurados) {
                 HechoXColeccion hechoXColeccion = repositorioDeHechosXColeccion.findById(new HechoXColeccionId(hecho.getId(), coleccion.getIdentificadorHandle()))
                         .orElseThrow(() -> new RuntimeException("No existe la relación"));

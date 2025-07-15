@@ -3,8 +3,6 @@ package domain.services;
 import java.util.List;
 
 
-import domain.colecciones.AlgoritmoConsenso;
-import domain.colecciones.Coleccion;
 import domain.repositorios.RepositorioDeSolicitudes;
 import domain.solicitudes.*;
 import org.springframework.stereotype.Service;
