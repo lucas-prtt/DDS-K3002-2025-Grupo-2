@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 // UBICACION
+@Getter
 public class Ubicacion {
-    @Getter private Double latitud;
-    @Getter private Double longitud;
+    private Double latitud;
+    private Double longitud;
 
     @JsonCreator
     public Ubicacion(@JsonProperty("latitud") Double latitud, @JsonProperty("longitud") Double longitud) {

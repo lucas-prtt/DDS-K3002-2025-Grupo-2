@@ -49,7 +49,7 @@ public class HechoService {
 
     @Transactional(readOnly = true)
     public List<Hecho> obtenerHechosDeFuenteConFechaMayorA(Long id, LocalDateTime fechaMayorA) {
-        return obtenerHechosDeFuente(id).stream().filter(hecho -> hecho.seActualizoDespuesDe(fechaMayorA))
+        return obtenerHechosDeFuente(id).stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA))
                 .toList();
     }
 

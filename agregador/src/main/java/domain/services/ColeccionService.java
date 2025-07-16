@@ -75,10 +75,10 @@ public class ColeccionService {
                                                Double longitud) {
         return hechos.stream()
                 .filter(h -> categoria_buscada == null || h.getCategoria().getNombre().equalsIgnoreCase(categoria_buscada))
-                .filter(h -> fechaReporteDesde == null ||  h.seCargoDespuesDe(fechaReporteDesde))
-                .filter(h -> fechaReporteHasta == null || h.seCargoAntesDe(fechaReporteHasta))
-                .filter(h -> fechaAcontecimientoDesde == null || h.ocurrioDespuesDe(fechaAcontecimientoDesde))
-                .filter(h -> fechaAcontecimientoHasta == null || h.ocurrioAntesDe(fechaAcontecimientoHasta))
+                .filter(h -> fechaReporteDesde == null ||  h.getFechaCarga().isAfter(fechaReporteDesde))
+                .filter(h -> fechaReporteHasta == null || h.getFechaCarga().isBefore(fechaReporteHasta))
+                .filter(h -> fechaAcontecimientoDesde == null || h.getFechaAcontecimiento().isAfter(fechaAcontecimientoDesde))
+                .filter(h -> fechaAcontecimientoHasta == null || h.getFechaAcontecimiento().isBefore(fechaAcontecimientoHasta))
                 .filter(h -> latitud == null || h.getUbicacion().getLatitud().equals(latitud))
                 .filter(h -> longitud == null || h.getUbicacion().getLongitud().equals(longitud))
                 .collect(Collectors.toList()); //convierte el stream de elementos (después de aplicar los .filter(...), .map(...), etc.) en una lista (List<T>) de resultados.
