@@ -19,20 +19,25 @@ import java.util.UUID;
 @Setter
 @Entity
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // Solo se incluyen los minimos para diferenciar a dos hechos. Fechas de cargas, solicitudes de eliminacion y otras cosas no
 @NoArgsConstructor
 @AllArgsConstructor
 public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    @EqualsAndHashCode.Include
     private String titulo;
     @Column(length = 1000) // Le asigno VARCHAR(1000)
+    @EqualsAndHashCode.Include
     private String descripcion;
     @Embedded
+    @EqualsAndHashCode.Include
     private Categoria categoria;
     @Embedded
+    @EqualsAndHashCode.Include
     private Ubicacion ubicacion;
+    @EqualsAndHashCode.Include
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
     @OneToMany(mappedBy = "hecho") // Indica que SolicitudEliminacion es el dueño de la relación bidireccional
@@ -41,10 +46,12 @@ public class Hecho {
     private LocalDateTime fechaUltimaModificacion;
     @Enumerated(EnumType.STRING)
     private Origen origen;
+    @EqualsAndHashCode.Include
     private String contenidoTexto;
     // todo: quitar el fetch type eager, es temporal
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
     @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
+    @EqualsAndHashCode.Include
     private List<Multimedia> contenidoMultimedia;
     @ManyToMany
     @JsonIgnore
@@ -128,10 +135,6 @@ public class Hecho {
         return etiquetas.contains(etiqueta);
     }
 
-    public Boolean ocurrioEntre(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
-        return ocurrioDespuesDe(fechaInicial) && ocurrioAntesDe(fechaFinal);
-    }
-
     public void agregarASolicitudes(SolicitudEliminacion solicitud) {
         solicitudes.add(solicitud);
     }
@@ -147,24 +150,5 @@ public class Hecho {
         for(SolicitudEliminacion sol : this.solicitudes){
             sol.anularPrescripcion();
         }
-    }
-
-    public Boolean ocurrioAntesDe(LocalDateTime fecha)
-    {
-        return fechaAcontecimiento.isBefore(fecha);
-    }
-
-    public Boolean ocurrioDespuesDe(LocalDateTime fecha) { return fechaAcontecimiento.isAfter(fecha); }
-
-    public Boolean seCargoAntesDe(LocalDateTime fecha) {
-        return fechaCarga.isBefore(fecha);
-    }
-
-    public Boolean seCargoDespuesDe(LocalDateTime fecha) {
-        return fechaCarga.isAfter(fecha);
-    }
-
-    public Boolean seActualizoDespuesDe(LocalDateTime fecha) {
-        return fechaUltimaModificacion.isAfter(fecha);
     }
 }

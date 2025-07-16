@@ -29,6 +29,7 @@ public class CriterioDeFecha extends CriterioDePertenencia{
 
     @Override
     public Boolean cumpleCriterio(Hecho hecho){
-        return hecho.ocurrioEntre(fechaInicial, fechaFinal);
+        LocalDateTime fechaAcontecimiento = hecho.getFechaAcontecimiento();
+        return fechaAcontecimiento.isAfter(fechaInicial) && fechaAcontecimiento.isBefore(fechaFinal);
     }
 }

@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Map;
 
-// Regla de negocio: Consideramos hecho repetido por fuente a aquellos que contengan los mismos atributos.
+// Regla de negocio: Consideramos hecho repetido por fuente a aquellos que contengan los mismos atributos que incluimos en EqualsAndHashCode en el Hecho.
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_algoritmo")
