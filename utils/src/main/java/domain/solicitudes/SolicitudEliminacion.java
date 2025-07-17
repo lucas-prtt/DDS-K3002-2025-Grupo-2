@@ -1,5 +1,7 @@
 package domain.solicitudes;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.hechos.Hecho;
 import domain.usuarios.Contribuyente;
 import jakarta.persistence.*;
@@ -45,7 +47,7 @@ public class SolicitudEliminacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
     private Long id;
     @Setter @Getter
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Contribuyente solicitante;
     @Setter @Getter
     @OneToOne(cascade = CascadeType.ALL)
@@ -65,7 +67,11 @@ public class SolicitudEliminacion {
     @Getter
     private String motivo;
 
-    public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo) {
+    @JsonCreator
+    public SolicitudEliminacion
+            (@JsonProperty("solicitante") Contribuyente solicitante,
+             @JsonProperty("hecho") Hecho hecho,
+             @JsonProperty("motivo") String motivo) {
         this.motivo = motivo;
 
         if (this.esSpam()){

@@ -31,7 +31,11 @@ public class HechoController {
             @RequestParam(value = "fechaMayorA", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
     ) {
-        return hechoService.obtenerHechosConFechaMayorA(fechaMayorA);
+        if (fechaMayorA != null) {
+            return hechoService.obtenerHechosConFechaMayorA(fechaMayorA);
+        }
+
+        return hechoService.obtenerHechos();
     }
 
     @GetMapping("/hechos/{id}")
@@ -47,7 +51,6 @@ public class HechoController {
     ) {
         if (fechaMayorA != null) {
             return hechoService.obtenerHechosDeFuenteConFechaMayorA(id, fechaMayorA);
-
         }
 
         return hechoService.obtenerHechosDeFuente(id);
