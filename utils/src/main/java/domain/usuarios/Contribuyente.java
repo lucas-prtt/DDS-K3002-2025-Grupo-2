@@ -21,13 +21,12 @@ public class Contribuyente {
     private Long contribuyenteId;
     @Setter
     private Boolean esAdministrador;
-    @OneToMany(mappedBy = "contribuyente")
+    @OneToMany(mappedBy = "contribuyente", fetch = FetchType.EAGER)
     private List<IdentidadContribuyente> identidades;
     @OneToMany(mappedBy = "solicitante")
     private List<SolicitudEliminacion> solicitudesEliminacion;
 
-    public Contribuyente(Long contribuyenteId, Boolean esAdministrador) {
-        this.contribuyenteId = contribuyenteId;
+    public Contribuyente(Boolean esAdministrador) {
         this.esAdministrador = esAdministrador;
         this.identidades = new ArrayList<>();
         this.solicitudesEliminacion = new ArrayList<>();
@@ -39,6 +38,9 @@ public class Contribuyente {
     }
 
     public IdentidadContribuyente getUltimaIdentidad() {
+        if (identidades == null || identidades.isEmpty()) {
+            return null;
+        }
         return identidades.getLast();
     }
 

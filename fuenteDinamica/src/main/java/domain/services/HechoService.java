@@ -25,6 +25,11 @@ public class HechoService {
     }
 
     @Transactional(readOnly = true) // Asegura que la sesión esté abierta cuando se haga la serialización
+    public List<Hecho> obtenerHechos() {
+        return repositorioDeHechos.findAll();
+    }
+
+    @Transactional(readOnly = true)
     public List<Hecho> obtenerHechosConFechaMayorA(LocalDateTime fechaMayorA) {
         return repositorioDeHechos.findAll().stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).toList();
     }
