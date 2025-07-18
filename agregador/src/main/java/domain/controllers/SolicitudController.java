@@ -1,6 +1,8 @@
 package domain.controllers;
 
 import java.util.List;
+
+import domain.dto.SolicitudDTO;
 import domain.services.HechoService;
 import domain.services.SolicitudService;
 import domain.solicitudes.SolicitudEliminacion;
@@ -18,8 +20,8 @@ public class SolicitudController {
     }
 
     @PostMapping("/solicitudes/")
-    public ResponseEntity<SolicitudEliminacion> crearSolicitud(SolicitudEliminacion solicitud) {
-        solicitudService.guardarSolicitud(solicitud);
+    public ResponseEntity<SolicitudEliminacion> crearSolicitud(@RequestBody SolicitudDTO solicitudDto) {
+        SolicitudEliminacion solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
         return ResponseEntity.ok(solicitud);
     }
 
@@ -31,7 +33,7 @@ public class SolicitudController {
         SolicitudEliminacion sol;
         try {
             solis = solicitudService.solicitudesRelacionadas(id);
-            sol = solis.getFirst(); // El primero es la solicitud a cambiar
+            sol = solicitudService.obtenerSolicitud(id); // El primero es la solicitud a cambiar
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
@@ -39,9 +41,9 @@ public class SolicitudController {
         solicitudService.actualizarEstadoSolicitud(sol, nuevoEstado);
 
         for (SolicitudEliminacion solicitud : solis) {
-            solicitudService.guardarSolicitud(solicitud);
+            solicitudService.guardarSolicitud(solicitud); // TODO: se deben actualizar tambien estas
         }
-        hechoService.guardarHecho(sol.getHecho()); // Actualizamos el hecho (visible)
+        hechoService.guardarHecho(sol.getHecho()); // Actualizamos el hecho (visible) TODO: se debe actualizar el hecho antes de volver a guardarlo, es decir quitarle las solicitudes
 
         return ResponseEntity.ok().build();
     }

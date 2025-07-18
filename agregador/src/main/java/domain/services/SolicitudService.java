@@ -3,9 +3,9 @@ package domain.services;
 import java.util.List;
 
 
-import java.util.Optional;
+import domain.dto.SolicitudDTO;
 import domain.hechos.Hecho;
-import domain.repositorios.RepositorioDeContribuyentes;
+import domain.mappers.SolicitudMapper;
 import domain.repositorios.RepositorioDeSolicitudes;
 import domain.solicitudes.*;
 import domain.usuarios.Contribuyente;
@@ -15,13 +15,11 @@ import org.springframework.stereotype.Service;
 public class SolicitudService {
 
     private final RepositorioDeSolicitudes repositorioDeSolicitudes;
-    private final RepositorioDeContribuyentes repositorioDeContribuyentes;
     private final HechoService hechoService;
 
-    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService, RepositorioDeContribuyentes repositorioDeContribuyentes) {
+    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService) {
         this.repositorioDeSolicitudes = repositorioDeSolicitudes;
         this.hechoService = hechoService;
-        this.repositorioDeContribuyentes = repositorioDeContribuyentes;
     }
 
     public List<SolicitudEliminacion> solicitudesRelacionadas(Long id) {
@@ -31,26 +29,26 @@ public class SolicitudService {
             throw new IllegalArgumentException("Solicitud no encontrada con ID: " + id);
         }
 
-        List <SolicitudEliminacion> solicitudesADevolver = repositorioDeSolicitudes.findByHechoId(sol.getHecho().getId());
-        solicitudesADevolver.add(sol);
-        return solicitudesADevolver;
+        return repositorioDeSolicitudes.findByHecho(sol.getHecho());
     }
 
-    public void guardarSolicitud(SolicitudEliminacion solicitud) {
+    public SolicitudEliminacion obtenerSolicitud(Long id) {
+        return repositorioDeSolicitudes.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
+    }
+
+    public SolicitudEliminacion guardarSolicitud(SolicitudEliminacion solicitud) {
         Hecho hecho = hechoService.obtenerHechoPorId(solicitud.getHecho().getId());
-        solicitud.setHecho(hecho);
-        // Soy consciente que deberia haber un contribuyente service. Si lees esto, crealo vos
-        Contribuyente solicitante = solicitud.getSolicitante();
-        Optional<Contribuyente> existente = repositorioDeContribuyentes.findById(solicitante.getContribuyenteId());
-        if (existente.isPresent()) {
-            solicitante = existente.get();
-        } else {
-            solicitante = repositorioDeContribuyentes.save(solicitante);
-        }
-        solicitud.setSolicitante(solicitante);
-        repositorioDeSolicitudes.save(solicitud);
+        SolicitudEliminacion solicitudGuardada = repositorioDeSolicitudes.save(solicitud);
         hecho.agregarASolicitudes(solicitud);
         hechoService.guardarHecho(hecho);
+        return solicitudGuardada;
+    }
+
+    public SolicitudEliminacion guardarSolicitudDto(SolicitudDTO solicitudDto) {
+        Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
+        SolicitudEliminacion solicitud = new SolicitudMapper().map(solicitudDto, hecho);
+        return guardarSolicitud(solicitud);
     }
 
     public void actualizarEstadoSolicitud(SolicitudEliminacion solicitud, String nuevoEstado) {
@@ -86,7 +84,5 @@ public class SolicitudService {
             default:
                 throw new IllegalArgumentException("Estado no válido: " + nuevoEstado);
         }
-
-
     }
 }
