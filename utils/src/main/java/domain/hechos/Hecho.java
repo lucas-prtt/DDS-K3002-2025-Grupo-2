@@ -40,6 +40,7 @@ public class Hecho {
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
     @OneToMany(mappedBy = "hecho", fetch = FetchType.EAGER) // Indica que SolicitudEliminacion es el dueño de la relación bidireccional
+    @JsonIgnore // Evita que se serialice la lista de solicitudes al convertir a JSON, para evitar ciclos infinitos
     private List<SolicitudEliminacion> solicitudes;
     private LocalDateTime fechaUltimaModificacion;
     @Enumerated(EnumType.STRING)
