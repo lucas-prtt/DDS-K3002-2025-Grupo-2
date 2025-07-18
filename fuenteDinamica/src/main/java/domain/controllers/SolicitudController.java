@@ -1,5 +1,6 @@
 package domain.controllers;
 
+import domain.dto.SolicitudDTO;
 import domain.services.SolicitudService;
 import domain.solicitudes.SolicitudEliminacion;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,8 @@ public class SolicitudController {
     }
 
     @PostMapping("/solicitudes")
-    public ResponseEntity<Void> crearSolicitud(@RequestBody SolicitudEliminacion solicitud) {
-        solicitudService.guardarSolicitud(solicitud);
+    public ResponseEntity<Void> crearSolicitud(@RequestBody SolicitudDTO solicitudDto) {
+        solicitudService.guardarSolicitudDto(solicitudDto);
         return ResponseEntity.ok().build();
     }
 
