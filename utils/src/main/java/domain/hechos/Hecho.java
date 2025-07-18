@@ -39,8 +39,7 @@ public class Hecho {
     @EqualsAndHashCode.Include
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
-    @OneToMany(mappedBy = "hecho") // Indica que SolicitudEliminacion es el dueño de la relación bidireccional
-    @JsonIgnore
+    @OneToMany(mappedBy = "hecho", fetch = FetchType.EAGER) // Indica que SolicitudEliminacion es el dueño de la relación bidireccional
     private List<SolicitudEliminacion> solicitudes;
     private LocalDateTime fechaUltimaModificacion;
     @Enumerated(EnumType.STRING)
@@ -52,8 +51,7 @@ public class Hecho {
     @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
     @EqualsAndHashCode.Include
     private List<Multimedia> contenidoMultimedia;
-    @ManyToMany
-    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Etiqueta> etiquetas;
     private Boolean visible;
     private Boolean anonimato;
