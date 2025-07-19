@@ -69,15 +69,15 @@ Request body:
   "fuentes": [
     {
       "id": {
+        "tipo": "ESTATICA",
         "idExterno": 1
-      },
-      "tipo": "ESTATICA"
+      }
     },
     {
       "id": {
+        "tipo": "DINAMICA",
         "idExterno": 1
-      },
-      "tipo": "DINAMICA"
+      }
     }
   ],
   "algoritmoConsenso": {
