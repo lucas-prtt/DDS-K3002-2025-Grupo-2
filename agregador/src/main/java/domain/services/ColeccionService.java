@@ -128,9 +128,8 @@ public class ColeccionService {
             Fuente fuente = fxc.getFuente();
             coleccion.quitarFuente(fuente);
             repositorioDeFuentesXColeccion.delete(fxc);
+            repositorioDeColecciones.save(coleccion); // Updatea la colección después de quitar la fuente
         });
-
-        guardarColeccion(coleccion); // Updateo la colección después de quitar la fuente
 
         fuenteXColeccionOpt.ifPresent(repositorioDeFuentesXColeccion::delete);
     }

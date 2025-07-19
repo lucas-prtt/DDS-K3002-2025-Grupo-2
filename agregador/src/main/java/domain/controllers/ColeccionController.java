@@ -83,7 +83,7 @@ public class ColeccionController {
         Coleccion coleccion = coleccionService.obtenerColeccion(idColeccion);
         coleccionService.agregarFuenteAColeccion(coleccion, fuente);
         coleccionService.guardarColeccion(coleccion);
-        System.out.println("Coleccion: " + idColeccion + ", nueva fuente: " + fuente.getId());
+        System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuente.getId().getIdExterno() + " tipo: " + fuente.getId().getTipo());
         return ResponseEntity.ok().build();
     }
 
@@ -92,8 +92,8 @@ public class ColeccionController {
                                              @RequestBody FuenteId fuenteId) {
         Coleccion coleccion = coleccionService.obtenerColeccion(idColeccion);
         coleccionService.quitarFuenteDeColeccion(coleccion, fuenteId); // TODO: Hacer que se updatee bien la colección
-        System.out.println("Coleccion: " + idColeccion + ", fuente quitada: " + fuenteId);
-        return ResponseEntity.noContent().build();
+        System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId.getIdExterno() + " tipo: " + fuenteId.getTipo());
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/colecciones/{id}")
@@ -101,6 +101,6 @@ public class ColeccionController {
         // logica de eliminar una coleccion del repositorio
         coleccionService.eliminarColeccion(idColeccion);
         System.out.println("Coleccion: " + idColeccion + "eliminada");
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }
