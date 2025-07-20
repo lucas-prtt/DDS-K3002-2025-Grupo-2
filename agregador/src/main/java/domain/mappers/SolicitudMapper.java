@@ -6,9 +6,8 @@ import domain.solicitudes.SolicitudEliminacion;
 
 public class SolicitudMapper {
     public SolicitudEliminacion map(SolicitudDTO solicitudDto, Hecho hecho) {
-         SolicitudEliminacion jijo = new SolicitudEliminacion(solicitudDto.getSolicitante(),
-                hecho,
-                solicitudDto.getMotivo());
-        return jijo;
+        return new SolicitudEliminacion(solicitudDto.getSolicitante(),
+               hecho,
+               solicitudDto.getMotivo());
     }
 }
