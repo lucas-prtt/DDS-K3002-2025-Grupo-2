@@ -21,23 +21,6 @@ import java.time.LocalDateTime;
 /// Esta aceptada: Se la puede anularAceptacion() : Pasa a Pendiente
 /// Esta rechazada: Se la puede anularRechazo() : Pasa a Pendiente o Prescripta
 /// Esta spam: Se la puede anularMarcaSpam() : Pasa a Pendiente o Prescripta
-///
-/// Metodos de la clase:
-/// + SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo)
-/// + void aceptar()
-/// + void anularAceptacion()
-/// + void rechazar()
-/// + void anularRechazo()
-/// + void prescribir()
-/// + void anularPrescripcion()
-/// + void marcarSpam()
-/// + void anularMarcaSpam()
-/// + boolean esSpam()
-/// - void preescribirCosolicitudes()
-/// - void anularPrescripcionCosolicitudes()
-
-
-// TODO: Cuando se haga esto de la persistencia, hay que hacer que los cambios de estado de la solicitud se vean reflejados en el medio persistente
 
 // SOLICITUD DE ELIMINACION
 @Entity

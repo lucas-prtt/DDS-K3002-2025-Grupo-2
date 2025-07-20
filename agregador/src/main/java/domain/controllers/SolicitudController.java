@@ -42,9 +42,9 @@ public class SolicitudController {
         solicitudService.actualizarEstadoSolicitud(sol, nuevoEstado);
 
         for (SolicitudEliminacion solicitud : solis) {
-            solicitudService.guardarSolicitud(solicitud); // TODO: se deben actualizar tambien estas
+            solicitudService.guardarSolicitud(solicitud);
         }
-        hechoService.guardarHecho(sol.getHecho()); // Actualizamos el hecho (visible) TODO: se debe actualizar el hecho antes de volver a guardarlo, es decir quitarle las solicitudes
+        hechoService.guardarHecho(sol.getHecho()); // Actualizamos el hecho (visible)
 
         System.out.println("Solicitud actualizada: " + sol.getId() + " a estado: " + nuevoEstado);
         return ResponseEntity.ok().build();

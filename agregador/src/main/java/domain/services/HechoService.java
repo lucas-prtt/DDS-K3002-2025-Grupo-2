@@ -36,7 +36,7 @@ public class HechoService {
     }
 
     public List<Hecho> obtenerHechos() {
-        return repositorioDeHechos.findAll();
+        return repositorioDeHechos.findAll(); // TODO: Cambiar esto por traer los hechos de HechoXColeccion joineado con Hecho y que solo traiga los distinct
     }
 
     public void guardarHechosPorFuente(Map<Fuente, List<Hecho>> hechosPorFuente) {

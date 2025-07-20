@@ -47,7 +47,7 @@ public class Hecho {
     private Origen origen;
     @EqualsAndHashCode.Include
     private String contenidoTexto;
-    // todo: quitar el fetch type eager, es temporal
+    // todo: evaluar si es necesario el fetch type eager, es temporal para que pasen los tests
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
     @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
     @EqualsAndHashCode.Include

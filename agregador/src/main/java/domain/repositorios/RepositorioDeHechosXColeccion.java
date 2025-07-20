@@ -14,9 +14,6 @@ import java.util.List;
 
 @Repository
 public interface RepositorioDeHechosXColeccion extends JpaRepository<HechoXColeccion, HechoXColeccionId> {
-    // TODO: usar estos metodos
-    List<HechoXColeccion> findByColeccion_IdentificadorHandle(String idColeccion);
-
     @Transactional
     @Modifying
     @Query("""
@@ -26,5 +23,4 @@ public interface RepositorioDeHechosXColeccion extends JpaRepository<HechoXColec
     )
 """)
     void deleteAllByFuenteId(@Param("fuenteId") FuenteId fuenteId);
-    //List<HechoXColeccion> findByColeccionIdAndConsensuadoIsTrue(Long idColeccion);
 }
