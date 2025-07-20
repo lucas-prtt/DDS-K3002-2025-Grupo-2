@@ -118,8 +118,8 @@ public class AutomatizacionTest {
         )));
 
         List<Map<String, Object>> fuentes = List.of(
-                Map.of("id", Map.of("idExterno", 1), "tipo", "ESTATICA"),
-                Map.of("id", Map.of("idExterno", 1), "tipo", "DINAMICA")
+                Map.of("id", Map.of("idExterno", 1, "tipo", "ESTATICA")),
+                Map.of("id", Map.of("idExterno", 1, "tipo", "DINAMICA"))
         );
 
         requestBody.put("fuentes", fuentes);
