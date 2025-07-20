@@ -33,7 +33,7 @@ public class Coleccion{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String identificadorHandle;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "algoritmo_id")
     private AlgoritmoConsenso algoritmoConsenso = new AlgoritmoConsensoIrrestricto();
 
