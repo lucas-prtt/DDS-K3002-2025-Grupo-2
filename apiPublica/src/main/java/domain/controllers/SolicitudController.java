@@ -4,12 +4,14 @@ import domain.config.ConfigService;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/apiAdministrativa")
+@RequestMapping("/apiPublica")
 public class SolicitudController {
-
     private final String urlBaseAgregador;
     private final SolicitudesHttp solicitudesHttp;
 
@@ -18,11 +20,8 @@ public class SolicitudController {
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
-    @PatchMapping("/solicitudes/{id}/estado")
-    public ResponseEntity<Object> actualizarEstadoSolicitud(
-            @PathVariable Long id,
-            @RequestBody String nuevoEstado) {
-        solicitudesHttp.patch(urlBaseAgregador + "/solicitudes/" + id + "/estado", nuevoEstado);
-        return ResponseEntity.ok().build();
+    @PostMapping("/solicitudes")
+    public ResponseEntity<Object> crearSolicitud(@RequestBody Object body) {
+        return solicitudesHttp.post(urlBaseAgregador + "/solicitudes", body, Object.class);
     }
 }
