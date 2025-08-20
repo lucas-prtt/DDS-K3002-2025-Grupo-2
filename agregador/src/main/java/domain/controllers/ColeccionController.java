@@ -68,6 +68,7 @@ public class ColeccionController {
         return coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
+    // Operaciones UPDATE sobre Colecciones
     @PatchMapping("/colecciones/{id}/algoritmo")
     public ResponseEntity<Void> modificarAlgoritmo(@PathVariable("id") String idColeccion,
                                                    @RequestBody String nuevoAlgoritmo) {
@@ -76,7 +77,7 @@ public class ColeccionController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/colecciones/{id}/fuentes")
+    @PatchMapping("/colecciones/{id}/fuentes/agregar")
     public ResponseEntity<Void> agregarFuente(@PathVariable("id") String idColeccion,
                                               @RequestBody Fuente fuente) {
         fuenteService.guardarFuente(fuente);
@@ -87,7 +88,7 @@ public class ColeccionController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/colecciones/{id}/fuentes")
+    @PatchMapping("/colecciones/{id}/fuentes/quitar")
     public ResponseEntity<Void> quitarFuente(@PathVariable("id") String idColeccion,
                                              @RequestBody FuenteId fuenteId) {
         Coleccion coleccion = coleccionService.obtenerColeccion(idColeccion);
@@ -96,6 +97,7 @@ public class ColeccionController {
         return ResponseEntity.ok().build();
     }
 
+    // Operaciones DELETE sobre Colecciones
     @DeleteMapping("/colecciones/{id}")
     public ResponseEntity<Void> eliminarColeccion(@PathVariable("id") String idColeccion) {
         // logica de eliminar una coleccion del repositorio
