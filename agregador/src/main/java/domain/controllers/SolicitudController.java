@@ -20,7 +20,7 @@ public class SolicitudController {
         this.hechoService = hechoService;
     }
 
-    @PostMapping("/solicitudes/")
+    @PostMapping("/solicitudes")
     public ResponseEntity<SolicitudEliminacion> crearSolicitud(@RequestBody SolicitudDTO solicitudDto) {
         SolicitudEliminacion solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
         System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHecho().getId());
