@@ -31,8 +31,9 @@ public class ArchivoController {
     }
 
     @PostMapping("/archivo/por-url")
-    public ResponseEntity<String> subirArchivoPorUrl(@RequestParam("url") String url) {
+    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String url) {
         try {
+            url = url.replaceAll("^\"|\"$", "");
             archivoService.subirArchivoDesdeUrl(url);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivo desde URL: " + e.getMessage());
