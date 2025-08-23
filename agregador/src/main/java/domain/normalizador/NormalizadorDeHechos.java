@@ -1,16 +1,19 @@
 package domain.normalizador;
 
+import domain.hechos.Categoria;
+import domain.hechos.Etiqueta;
+import domain.hechos.Ubicacion;
 import domain.normalizadorDeTerminos.NingunTerminoCumpleUmbralException;
 import domain.normalizadorDeTerminos.NormalizadorDeTerminos;
 import domain.hechos.Hecho;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+@Component
 public class NormalizadorDeHechos {
-    @Setter
-    @Getter
     public NormalizadorDeTerminos normalizadorDeCategorias;
     public NormalizadorDeTerminos normalizadorDeEtiquetas;
 
@@ -20,21 +23,17 @@ public class NormalizadorDeHechos {
     }
 
     public Hecho normalizar(Hecho hecho) {
-        //TODO: facilitar normalizar el hecho entero
-        // Sujeto a cambios en cuanto a la entrada
-        // Si se admite otros tipos de (por ejemplo) ubicación, sera necesario
-        // un hechoDTO que admita ubicación String o algo similar
+        hecho.setCategoria(new Categoria(normalizadorDeCategorias.normalizarTermino(hecho.getCategoria().getNombre())));
+        hecho.setEtiquetas(new ArrayList<Etiqueta>(hecho.getEtiquetas().stream().map(Etiqueta::getNombre).map(n->new Etiqueta(normalizadorDeEtiquetas.normalizarTermino(n))).toList()));
         return hecho;
     }
 
     public String normalizarCategoria(String categoria) {
         return aplicarNormalizador(categoria, normalizadorDeCategorias);
     }
-
-    public String normalizarEtiqueta(String etiqueta) {
-        return aplicarNormalizador(etiqueta, normalizadorDeEtiquetas);
+    public Ubicacion normalizarUbicacion(Ubicacion ubicacion) {
+        return new Ubicacion(); // TODO
     }
-
 
     public void agregarEtiqueta(String etiqueta) {
         normalizadorDeEtiquetas.agregarTermino(etiqueta);
