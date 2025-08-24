@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Dictionary;
 import java.util.Scanner;
 
+import domain.DTOs.HechoPostBuilder;
+import domain.DTOs.HechoPostDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 
@@ -15,7 +17,7 @@ public class SubMenuPostHecho {
 
     public static void abrirMenu() {
         Scanner scanner = new Scanner(System.in);
-        HechoBuilder builder = new HechoBuilder();
+        HechoPostBuilder builder = new HechoPostBuilder();
 
         System.out.println("=== Crear Hecho ===");
 
@@ -68,31 +70,17 @@ public class SubMenuPostHecho {
         boolean anonimato = !anonInput.isEmpty() && Boolean.parseBoolean(anonInput);
         builder.setAnonimato(anonimato);
 
-        System.out.print("Nombre autor (default: 'Barbara'): ");
-        String nombre = scanner.nextLine();
-        if (nombre.isEmpty()) nombre = "Barbara";
-
-        System.out.print("Apellido autor (default: 'Liskov'): ");
-        String apellido = scanner.nextLine();
-        if (apellido.isEmpty()) apellido = "Liskov";
-
-        System.out.print("Fecha nacimiento (yyyy-MM-dd) (default: 1939-11-07): ");
-        String fechaNacInput = scanner.nextLine();
-        LocalDate fechaNac = fechaNacInput.isEmpty()
-                ? LocalDate.parse("1939-11-07")
-                : LocalDate.parse(fechaNacInput);
-
-        System.out.print("ID contribuyente (default: 'Id ejemplo'): ");
+        System.out.print("ID contribuyente (default: '1'): ");
         String idContribuyente = scanner.nextLine();
-        if (idContribuyente.isEmpty()) idContribuyente = "Id ejemplo";
+        if (idContribuyente.isEmpty()) idContribuyente = "1";
 
         System.out.print("¿Es administrador? (true/false) (default: true): ");
         String adminInput = scanner.nextLine();
         boolean esAdmin = adminInput.isEmpty() || Boolean.parseBoolean(adminInput);
 
-        builder.setAutor(nombre, apellido, fechaNac, idContribuyente, esAdmin);
+        builder.setAutor(Integer.valueOf(idContribuyente));
 
-        HechoDTO hecho = builder.build();
+        HechoPostDTO hecho = builder.build();
 
         System.out.println("\n=== Hecho creado ===");
         System.out.println("Título: " + hecho.getTitulo());
@@ -104,9 +92,7 @@ public class SubMenuPostHecho {
         System.out.println("Texto: " + hecho.getContenidoTexto());
         System.out.println("Multimedia: " + hecho.getContenidoMultimedia().size() + " archivo(s)");
         System.out.println("Anónimo: " + hecho.isAnonimato());
-        System.out.println("Autor: " + hecho.getAutor().getNombre() + " " + hecho.getAutor().getApellido());
-        System.out.println("Contribuyente ID: " + hecho.getAutor().getContribuyente().getContribuyenteId());
-        System.out.println("Es administrador: " + hecho.getAutor().getContribuyente().isEsAdministrador());
+        System.out.println("Contribuyente ID: " + hecho.getContribuyenteId());
         try{
         ApiClient.postHecho(hecho, ConnectionManager.getInstance().getServidorLocal("Dinamica"));
         }catch (Exception e){
