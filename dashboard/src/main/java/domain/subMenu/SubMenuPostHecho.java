@@ -5,6 +5,7 @@ import domain.DTOs.HechoDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Dictionary;
 import java.util.Scanner;
 
 import domain.apiClient.ApiClient;
@@ -106,7 +107,10 @@ public class SubMenuPostHecho {
         System.out.println("Autor: " + hecho.getAutor().getNombre() + " " + hecho.getAutor().getApellido());
         System.out.println("Contribuyente ID: " + hecho.getAutor().getContribuyente().getContribuyenteId());
         System.out.println("Es administrador: " + hecho.getAutor().getContribuyente().isEsAdministrador());
-        scanner.close();
+        try{
         ApiClient.postHecho(hecho, ConnectionManager.getInstance().getServidorLocal("Dinamica"));
+        }catch (Exception e){
+            throw new RuntimeException("No se pudo enviar el post del hecho" + e.getMessage());
+        }
     }
 }

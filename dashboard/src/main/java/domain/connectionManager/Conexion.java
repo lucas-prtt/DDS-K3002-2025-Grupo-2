@@ -3,6 +3,7 @@ package domain.connectionManager;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Objects;
 
@@ -30,9 +31,6 @@ public class Conexion {
                 '}';
     }
 
-    public WebClient getWebClient() {
-        return WebClient.create(getUri());
-    }
     public Boolean ipEquals(String ipComparada){
         return Objects.equals(ip, ipComparada);
     }
