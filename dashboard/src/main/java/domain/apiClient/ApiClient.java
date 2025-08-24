@@ -4,6 +4,7 @@ package domain.apiClient;
 import domain.DTOs.ColeccionDTO;
 import domain.DTOs.FuenteDinamicaDTO;
 import domain.DTOs.HechoDTO;
+import domain.DTOs.HechoPostDTO;
 import domain.connectionManager.Conexion;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,9 +19,9 @@ public class ApiClient {
         restTemplate.postForLocation(url, coleccion);
     }
 
-    public static void postHecho(HechoDTO hechoDTO, Conexion conexion){
+    public static void postHecho(HechoPostDTO hechoPostDTO, Conexion conexion){
         String url = conexion.getUri() + "/fuentesDinamicas/hechos";
-        restTemplate.postForLocation(url, hechoDTO);
+        restTemplate.postForLocation(url, hechoPostDTO);
     }
 
     public static Integer postFuenteDinamica(Conexion conexion){
