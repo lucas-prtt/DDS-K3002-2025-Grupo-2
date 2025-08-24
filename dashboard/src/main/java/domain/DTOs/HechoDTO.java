@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,7 +19,7 @@ public class HechoDTO {
     private LocalDateTime fechaAcontecimiento;
     private String origen;
     private String contenidoTexto;
-    private List<ContenidoMultimediaDTO> contenidoMultimedia;
+    private List<ContenidoMultimediaDTO> contenidoMultimedia = new ArrayList<>();
     private boolean anonimato;
     private AutorDTO autor;
 
