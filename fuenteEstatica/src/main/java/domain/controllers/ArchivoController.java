@@ -1,14 +1,9 @@
 package domain.controllers;
 
-import domain.hechos.Hecho;
 import domain.services.ArchivoService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
-import java.util.*;
 
 @RestController
 @RequestMapping("/fuentesEstaticas")
@@ -20,42 +15,39 @@ public class ArchivoController {
         this.archivoService = archivoService;
     }
 
-    @PostMapping("/archivo")
-    public ResponseEntity<String> subirArchivo(@RequestParam("file") MultipartFile file) {
+    @PostMapping("/{id}/archivo")
+    public ResponseEntity<String> subirArchivo(@RequestParam("file") MultipartFile file,
+                                               @PathVariable("id") Long id) {
         try {
-            archivoService.subirArchivoPendiente(file);
+            archivoService.subirArchivoPendiente(id, file);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivo: " + e.getMessage());
         }
         return ResponseEntity.ok("Archivo subido correctamente a pendientes");
     }
 
-    @PostMapping("/archivo/por-url")
-    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String url) {
+    @PostMapping("/{id}/archivo/por-url")
+    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String url,
+                                                     @PathVariable("id") Long id) {
         try {
             url = url.replaceAll("^\"|\"$", "");
-            archivoService.subirArchivoDesdeUrl(url);
+            archivoService.subirArchivoDesdeUrl(id, url);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivo desde URL: " + e.getMessage());
         }
         return ResponseEntity.ok("Archivo subido correctamente desde URL a pendientes");
     }
 
-    @PostMapping("/archivos")
-    public ResponseEntity<String> subirArchivos(@RequestParam("files") MultipartFile[] files) {
+    @PostMapping("/{id}/archivos")
+    public ResponseEntity<String> subirArchivos(@RequestParam("files") MultipartFile[] files,
+                                                @PathVariable("id") Long id) {
         try {
             for (MultipartFile file : files) {
-                archivoService.subirArchivoPendiente(file);
+                archivoService.subirArchivoPendiente(id, file);
             }
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivos: " + e.getMessage());
         }
         return ResponseEntity.ok("Archivos subidos correctamente a pendientes");
-    }
-
-    @GetMapping("/hechos")
-    public List<Hecho> obtenerHechos(@RequestParam(value = "fechaMayorA", required = false)
-                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA) {
-        return archivoService.leerHechosPendientesConFechaMayorA(fechaMayorA);
     }
 }
