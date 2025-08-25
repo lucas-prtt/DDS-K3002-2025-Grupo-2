@@ -16,10 +16,10 @@ public class ContribuyenteController {
     }
 
     @PostMapping("/contribuyentes")
-    public ResponseEntity<Void> crearContribuyente(@RequestBody Contribuyente contribuyente) {
+    public ResponseEntity<Integer> crearContribuyente(@RequestBody Contribuyente contribuyente) {
         Contribuyente contribuyenteGuardado = contribuyenteService.guardarContribuyente(contribuyente);
         System.out.println("Se ha creado el contribuyente: " + contribuyenteGuardado.getId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(Math.toIntExact(contribuyenteGuardado.getId()));
     }
 
     @PatchMapping("/contribuyentes/{id}")

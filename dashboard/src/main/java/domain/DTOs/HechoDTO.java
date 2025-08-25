@@ -21,7 +21,7 @@ public class HechoDTO {
     private String contenidoTexto;
     private List<ContenidoMultimediaDTO> contenidoMultimedia = new ArrayList<>();
     private boolean anonimato;
-    private AutorDTO autor;
+    private IdentidadDTO autor;
 
     @Override
     public String toString() {
