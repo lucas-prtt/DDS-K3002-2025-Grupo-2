@@ -1,17 +1,16 @@
-package domain.DTOs;
+package domain.dashboardDTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CriterioDePertenenciaDTO {
+public class FuenteIdDTO {
     private String tipo;
-    private LocalDateTime fechaInicial;
-    private LocalDateTime fechaFinal;
+    private int idExterno;
+
 }

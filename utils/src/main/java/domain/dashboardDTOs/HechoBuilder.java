@@ -1,4 +1,4 @@
-package domain.DTOs;
+package domain.dashboardDTOs;
 
 
 import java.time.LocalDate;

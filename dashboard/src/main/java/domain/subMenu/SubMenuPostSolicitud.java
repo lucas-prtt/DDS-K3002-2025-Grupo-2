@@ -1,13 +1,10 @@
 package domain.subMenu;
 
-import domain.DTOs.ContribuyenteSolicitudDTO;
-import domain.DTOs.IdentidadPatchDTO;
-import domain.DTOs.SolicitudDTO;
+import domain.dashboardDTOs.ContribuyenteSolicitudDTO;
+import domain.dashboardDTOs.SolicitudDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 
-import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class SubMenuPostSolicitud {

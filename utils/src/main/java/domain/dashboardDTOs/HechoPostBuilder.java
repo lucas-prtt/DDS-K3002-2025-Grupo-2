@@ -1,7 +1,6 @@
-package domain.DTOs;
+package domain.dashboardDTOs;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class HechoPostBuilder {

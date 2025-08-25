@@ -1,15 +1,10 @@
 package domain.subMenu;
 
-import domain.DTOs.HechoBuilder;
-import domain.DTOs.HechoDTO;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Dictionary;
 import java.util.Scanner;
 
-import domain.DTOs.HechoPostBuilder;
-import domain.DTOs.HechoPostDTO;
+import domain.dashboardDTOs.HechoPostBuilder;
+import domain.dashboardDTOs.HechoPostDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 
