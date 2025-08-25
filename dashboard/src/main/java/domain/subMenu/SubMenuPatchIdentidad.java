@@ -23,7 +23,7 @@ public class SubMenuPatchIdentidad {
         Scanner scanner = new Scanner(System.in);
         IdentidadPatchDTO identidadPatchDTO;
         try {
-            id = scanner.nextInt();
+            id = Integer.valueOf(scanner.nextLine());
         } catch (Exception e){
             id = lastContribuyenteId;
         }
@@ -36,11 +36,11 @@ public class SubMenuPatchIdentidad {
         String apellido = scanner.nextLine();
         apellido = (apellido == null || Objects.equals(apellido, "")) ? "Liskov" : apellido;
         System.out.println("Ingrese la fecha de nacimiento de la identidad");
-        System.out.println("Default: 1939-11-7");
+        System.out.println("Default: 1939-11-07");
         try {
             nacimiento = LocalDate.parse(scanner.nextLine());
         }catch (Exception e){
-            nacimiento = LocalDate.parse("1939-11-7");
+            nacimiento = LocalDate.parse("1939-11-07");
         }
         identidadPatchDTO = new IdentidadPatchDTO(nombre, apellido, nacimiento);
         ApiClient.patchIdentidad(identidadPatchDTO, id, ConnectionManager.getInstance().getServidorLocal("Dinamica"));
