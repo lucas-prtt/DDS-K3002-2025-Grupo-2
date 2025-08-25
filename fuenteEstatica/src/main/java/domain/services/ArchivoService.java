@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,11 +25,11 @@ public class ArchivoService {
     }
 
     // Subir archivo a pendientes
-    public void subirArchivoPendiente(MultipartFile file) throws Exception {
-        fileServerService.cargarArchivo(CARPETA_PENDIENTES, file);
+    public void subirArchivoPendiente(Long fuenteId, MultipartFile file) throws Exception {
+        fileServerService.cargarArchivo("fuente" + fuenteId + "/" + CARPETA_PENDIENTES, file);
     }
 
-    public void subirArchivoDesdeUrl(String urlString) throws Exception {
+    public void subirArchivoDesdeUrl(Long fuenteId, String urlString) throws Exception {
         urlString = urlString.trim().replaceAll("^\"|\"$", "");
 
         URL url = new URL(urlString);
@@ -49,7 +48,7 @@ public class ArchivoService {
 
             // Subir a S3 usando FileServerService
             fileServerService.cargarArchivoDesdeInputStream(
-                    CARPETA_PENDIENTES,
+                    "fuente" + fuenteId + "/" + CARPETA_PENDIENTES,
                     new ByteArrayInputStream(data),
                     fileName,
                     "application/octet-stream"
@@ -62,19 +61,21 @@ public class ArchivoService {
     }
 
     // Leer todos los archivos pendientes y generar hechos
-    public List<Hecho> leerHechosPendientesConFechaMayorA(LocalDateTime fecha) {
+    public List<Hecho> leerHechosPendientesConFechaMayorA(Long fuenteId, LocalDateTime fecha) {
         List<Hecho> hechos = new ArrayList<>();
+        String carpetaPendientes = "fuente" + fuenteId + "/" + CARPETA_PENDIENTES;
+        String carpetaProcesados = "fuente" + fuenteId + "/" + CARPETA_PROCESADOS;
         try {
-            List<String> archivos = fileServerService.listarArchivos(CARPETA_PENDIENTES);
+            List<String> archivos = fileServerService.listarArchivos(carpetaPendientes);
 
             for (String archivo : archivos) {
-                try (InputStream is = fileServerService.obtenerArchivo(CARPETA_PENDIENTES, archivo)) {
+                try (InputStream is = fileServerService.obtenerArchivo(carpetaPendientes, archivo)) {
                     String extension = obtenerExtension(archivo);
                     lectorParaExtension(extension)
                             .ifPresent(lector -> hechos.addAll(lector.leerHechos(is)));
                 }
                 // Mover archivo a procesados
-                fileServerService.moverArchivo(CARPETA_PENDIENTES, archivo, CARPETA_PROCESADOS, archivo);
+                fileServerService.moverArchivo(carpetaPendientes, archivo, carpetaProcesados, archivo);
             }
         } catch (Exception e) {
             throw new RuntimeException("Error leyendo archivos pendientes: " + e.getMessage());
