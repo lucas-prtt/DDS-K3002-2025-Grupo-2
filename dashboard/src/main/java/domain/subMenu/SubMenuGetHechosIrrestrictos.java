@@ -1,6 +1,6 @@
 package domain.subMenu;
 
-import domain.DTOs.HechoDTO;
+import domain.dashboardDTOs.HechoDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class SolicitudDTO {
-    private Contribuyente solicitante;
+    private Integer solicitanteId;
     private String hechoId;
     private String motivo;
 }

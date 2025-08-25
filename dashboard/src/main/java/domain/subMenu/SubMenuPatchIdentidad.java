@@ -1,13 +1,11 @@
 package domain.subMenu;
 
-import domain.DTOs.IdentidadPatchDTO;
-import domain.DTOs.PostContribuyenteDTO;
+import domain.dashboardDTOs.IdentidadPatchDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.Scanner;
 

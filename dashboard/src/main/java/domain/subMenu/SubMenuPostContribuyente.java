@@ -1,7 +1,6 @@
 package domain.subMenu;
 
-import domain.DTOs.HechoPostBuilder;
-import domain.DTOs.PostContribuyenteDTO;
+import domain.dashboardDTOs.PostContribuyenteDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 

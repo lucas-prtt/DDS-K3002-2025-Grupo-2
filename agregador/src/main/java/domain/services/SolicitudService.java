@@ -5,7 +5,6 @@ import java.util.List;
 
 import domain.dto.SolicitudDTO;
 import domain.hechos.Hecho;
-import domain.mappers.SolicitudMapper;
 import domain.repositorios.RepositorioDeSolicitudes;
 import domain.solicitudes.*;
 import domain.usuarios.Contribuyente;
@@ -54,9 +53,8 @@ public class SolicitudService {
 
     public SolicitudEliminacion guardarSolicitudDto(SolicitudDTO solicitudDto) {
         Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
-
-        SolicitudEliminacion solicitud = new SolicitudMapper().map(solicitudDto, hecho);
-
+        Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(Long.valueOf(solicitudDto.getSolicitanteId()));
+        SolicitudEliminacion solicitud = new SolicitudEliminacion(contribuyente, hecho, solicitudDto.getMotivo());
         return guardarSolicitud(solicitud);
     }
 

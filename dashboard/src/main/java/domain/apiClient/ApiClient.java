@@ -1,7 +1,6 @@
 package domain.apiClient;
 
 
-import domain.DTOs.*;
 import domain.connectionManager.Conexion;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
