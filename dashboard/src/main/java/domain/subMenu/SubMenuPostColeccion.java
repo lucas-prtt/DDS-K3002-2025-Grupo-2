@@ -1,7 +1,7 @@
 package domain.subMenu;
 
-import domain.DTOs.ColeccionBuilder;
-import domain.DTOs.ColeccionDTO;
+import domain.dashboardDTOs.ColeccionBuilder;
+import domain.dashboardDTOs.ColeccionDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 

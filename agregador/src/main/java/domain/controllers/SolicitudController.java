@@ -26,6 +26,10 @@ public class SolicitudController {
         System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHecho().getId());
         return ResponseEntity.ok(solicitud);
     }
+
+
+
+
     @Transactional
     @PatchMapping ("/solicitudes/{id}/estado")
     public ResponseEntity<Void> actualizarEstadoSolicitud(

@@ -1,8 +1,6 @@
-package domain.DTOs;
+package domain.dashboardDTOs;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 public class ColeccionBuilder {
     ColeccionDTO coleccionDTO = new ColeccionDTO();

@@ -1,8 +1,6 @@
-package domain.DTOs;
+package domain.dashboardDTOs;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package domain.DTOs;
+package domain.dashboardDTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HechoDTO {
+public class HechoPostDTO {
     private String titulo;
     private String descripcion;
     private CategoriaDTO categoria;
@@ -21,7 +21,7 @@ public class HechoDTO {
     private String contenidoTexto;
     private List<ContenidoMultimediaDTO> contenidoMultimedia = new ArrayList<>();
     private boolean anonimato;
-    private IdentidadDTO autor;
+    private Integer contribuyenteId;
 
     @Override
     public String toString() {
@@ -34,9 +34,7 @@ public class HechoDTO {
                 " \n Texto: " + contenidoTexto +
                 " \n Multimedia: " + (contenidoMultimedia != null ? contenidoMultimedia.size() + " archivo(s)" : "0 archivo(s)") +
                 " \n Anónimo: " + anonimato +
-                " \n Autor: " + (autor != null ? autor.getNombre() + " " + autor.getApellido() : "null") +
-                " \n Contribuyente ID: " + (autor != null && autor.getContribuyente() != null ? autor.getContribuyente().getContribuyenteId() : "null") +
-                " \n Es administrador: " + (autor != null && autor.getContribuyente() != null ? autor.getContribuyente().isEsAdministrador() : "null");
+                " \n Contribuyente ID: " + contribuyenteId;
     }
 
 }

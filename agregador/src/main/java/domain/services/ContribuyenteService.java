@@ -2,6 +2,7 @@ package domain.services;
 
 import domain.repositorios.RepositorioDeContribuyentes;
 import domain.usuarios.Contribuyente;
+import domain.usuarios.IdentidadContribuyente;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,5 +28,11 @@ public class ContribuyenteService {
         Hibernate.initialize(c.getUltimaIdentidad());
         Hibernate.initialize(c.getSolicitudesEliminacion());
         return c;
+    }
+    @Transactional
+    public Contribuyente agregarIdentidadAContribuyente(Long id, IdentidadContribuyente identidad) {
+        Contribuyente contribuyente = obtenerContribuyentePorId(id);
+        contribuyente.agregarIdentidad(identidad);
+        return repositorioDeContribuyentes.save(contribuyente);
     }
 }
