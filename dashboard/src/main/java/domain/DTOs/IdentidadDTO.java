@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class AutorDTO {
+public class IdentidadDTO {
     private String nombre;
     private String apellido;
     private LocalDate fechaNacimiento;

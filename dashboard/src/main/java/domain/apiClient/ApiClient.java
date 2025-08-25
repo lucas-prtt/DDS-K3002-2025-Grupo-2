@@ -1,13 +1,11 @@
 package domain.apiClient;
 
 
-import domain.DTOs.ColeccionDTO;
-import domain.DTOs.FuenteDinamicaDTO;
-import domain.DTOs.HechoDTO;
-import domain.DTOs.HechoPostDTO;
+import domain.DTOs.*;
 import domain.connectionManager.Conexion;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.cert.CertPath;
 import java.util.Arrays;
 import java.util.List;
 public class ApiClient {
@@ -50,4 +48,14 @@ public class ApiClient {
         ColeccionDTO[] coleccionesArray = restTemplate.getForObject(url, ColeccionDTO[].class);
         return Arrays.asList(coleccionesArray);
     }
+
+    public static Integer postContribuyente(PostContribuyenteDTO contribuyenteDTO, Conexion conexion){
+        String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes";
+        return restTemplate.postForObject(url, contribuyenteDTO, Integer.class);
+    }
+    public static void patchIdentidad(IdentidadPostDTO identidadPostDTO, Integer id, Conexion conexion){
+        String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes/"+id;
+        restTemplate.patchForObject(url, identidadPostDTO, void.class);
+    }
+
 }
