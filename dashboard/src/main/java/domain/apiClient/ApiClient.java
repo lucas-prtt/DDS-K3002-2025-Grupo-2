@@ -2,7 +2,10 @@ package domain.apiClient;
 
 import domain.dashboardDTOs.*;
 import domain.connectionManager.Conexion;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -13,7 +16,7 @@ public class ApiClient {
 
     private static final RestTemplate restTemplate;
     static {
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(HttpClients.createDefault());
         restTemplate = new RestTemplate(factory);
     }
     public static void postColeccion(ColeccionDTO coleccion, Conexion conexion){
