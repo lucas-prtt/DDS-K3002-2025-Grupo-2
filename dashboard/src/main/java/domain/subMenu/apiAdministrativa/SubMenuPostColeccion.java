@@ -42,15 +42,15 @@ public class SubMenuPostColeccion {
 
         ColeccionDTO coleccion = builder.buildColeccion();
 
-        System.out.println("\nColección creada:");
-        System.out.println("Título: " + coleccion.getTitulo());
-        System.out.println("Descripción: " + coleccion.getDescripcion());
-        System.out.println("Fuentes: " );
-        coleccion.getFuentes().forEach(f -> System.out.print(" " +f.getId().getIdExterno() + " " + f.getId().getTipo()));
-        System.out.println("Algoritmo: " + coleccion.getAlgoritmoConsenso().getTipo());
-        System.out.println("Criterios: " + coleccion.getCriteriosDePertenencia().size());
         try {
             ApiClient.postColeccion(coleccion, ConnectionManager.getInstance().getServidorLocal("Admin"));
+            System.out.println("\nColección creada:");
+            System.out.println("Título: " + coleccion.getTitulo());
+            System.out.println("Descripción: " + coleccion.getDescripcion());
+            System.out.println("Fuentes: " );
+            coleccion.getFuentes().forEach(f -> System.out.print(" " +f.getId().getIdExterno() + " " + f.getId().getTipo()));
+            System.out.println("Algoritmo: " + coleccion.getAlgoritmoConsenso().getTipo());
+            System.out.println("Criterios: " + coleccion.getCriteriosDePertenencia().size());
         }
         catch (Exception e){
             System.out.println(e);
