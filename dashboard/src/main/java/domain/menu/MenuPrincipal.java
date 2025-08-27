@@ -4,8 +4,7 @@ public class MenuPrincipal extends Menu{
 
     @Override
     void mostrarTextoOpciones() {
-        System.out.println("Que menu desea abrir?");
-        System.out.println("0. Salir");
+        System.out.println("Que menu desea abrir?                                        (Presione 0 para salir)");
         System.out.println("1. Menu API publica");
         System.out.println("2. Menu API administrativa");
         System.out.println("3. Menu fuente dinámica");
