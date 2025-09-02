@@ -47,6 +47,7 @@ public class SolicitudEliminacion {
     @ManyToOne
     @JsonBackReference
     private Hecho hecho;
+    @Column(length = 2000) // Le asigno VARCHAR(2000)
     private String motivo;
 
     @JsonCreator

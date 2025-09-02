@@ -2,10 +2,10 @@ package aplicacion.domain.fuentesDemo;
 
 import aplicacion.domain.FuenteProxy;
 import aplicacion.domain.hechos.Hecho;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,12 +15,14 @@ import java.util.Map;
 
 // FUENTE DEMO
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 public class FuenteDemo extends FuenteProxy {
     private LocalDateTime ultimaConsulta;
-    @Embedded
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Conexion biblioteca;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Hecho> hechos;
     private String url;
 

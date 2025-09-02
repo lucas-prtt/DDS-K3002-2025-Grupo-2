@@ -1,17 +1,32 @@
 package aplicacion.domain.fuentesDemo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
 //CONEXION
-@Embeddable
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "tipo")
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo")
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "tipo"
+)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ConexionPrueba.class, name = "prueba")
 }) // Esto es para testear nomas
-public interface Conexion {
-    Map<String,Object> siguienteHecho(String url, LocalDateTime fechaUltimaConsulta);
+public abstract class Conexion {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    public abstract Map<String,Object> siguienteHecho(String url, LocalDateTime fechaUltimaConsulta);
 }
