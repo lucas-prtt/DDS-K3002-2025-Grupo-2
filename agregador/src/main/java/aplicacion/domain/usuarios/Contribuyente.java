@@ -3,6 +3,7 @@ package aplicacion.domain.usuarios;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,15 +17,16 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 public class Contribuyente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Setter
     private Boolean esAdministrador;
     @OneToMany(mappedBy = "contribuyente", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<IdentidadContribuyente> identidades;
-    @OneToMany(mappedBy = "solicitante", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "solicitante", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<SolicitudEliminacion> solicitudesEliminacion;
 
     @JsonCreator
@@ -47,7 +49,7 @@ public class Contribuyente {
     }
 
     public void agregarSolicitudEliminacion(SolicitudEliminacion solicitud) {
-        this.solicitudesEliminacion.add(solicitud);
+        solicitudesEliminacion.add(solicitud);
     }
 
     public String getNombreCompleto() {

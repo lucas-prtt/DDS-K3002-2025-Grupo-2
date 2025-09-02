@@ -4,6 +4,7 @@ import aplicacion.domain.hechos.multimedias.Multimedia;
 import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import aplicacion.domain.usuarios.IdentidadContribuyente;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -21,6 +22,7 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Solo se incluyen los minimos para diferenciar a dos hechos. Fechas de cargas, solicitudes de eliminacion y otras cosas no
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL) // Para que no aparezcan los atributos nulos en el JSON
 public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -81,8 +83,8 @@ public class Hecho {
         this.contenidoMultimedia = contenidoMultimedia;
         this.etiquetas = new ArrayList<>();
         this.visible = true;
-        this.anonimato = anonimato;
-        this.autor = anonimato ? null : autor;
+        this.anonimato = anonimato != null ? anonimato : true;
+        this.autor = Boolean.TRUE.equals(anonimato) ? null : autor;
     }
 
     public void ocultar() {
