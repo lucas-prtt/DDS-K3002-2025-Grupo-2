@@ -31,8 +31,8 @@ public class Hecho {
     @Enumerated(EnumType.STRING)
     private Origen origen;
     private String contenidoTexto;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
-    @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    // le dice a Hibernate que la FK va en Multimedia
     private List<Multimedia> contenidoMultimedia;
     private Boolean anonimato;
     @ManyToOne(cascade = CascadeType.ALL) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
