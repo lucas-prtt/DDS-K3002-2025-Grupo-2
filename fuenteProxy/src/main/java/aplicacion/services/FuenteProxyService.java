@@ -11,6 +11,7 @@ import aplicacion.repositorios.RepositorioDeFuentesProxy;
 import aplicacion.services.excepciones.FuenteNoEncontradaException;
 import org.springframework.stereotype.Service;
 import aplicacion.domain.hechos.Hecho;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class FuenteProxyService {
         List<FuenteProxy> fuentesProxy = repositorioDeFuentesProxy.findAll();
         for (FuenteProxy fuente : fuentesProxy) {
             fuente.pedirHechos();
+            repositorioDeFuentesProxy.save(fuente);
         }
     }
 
@@ -46,6 +48,7 @@ public class FuenteProxyService {
        return listaDeHechosADevolver.stream().map(hechoOutputMapper::map).toList();
     }
 
+    @Transactional
     public List<HechoOutputDto> importarHechosDeFuente(Long id) throws FuenteNoEncontradaException {
         FuenteProxy fuente = repositorioDeFuentesProxy.findById(id).orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + id + "no encontrada"));
         return fuente.importarHechos().stream().map(hechoOutputMapper::map).toList();

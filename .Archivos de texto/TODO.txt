@@ -2,6 +2,7 @@
 Agregador:
 - Toda la logica de armado de url que esta en FuenteService moverla a la clase Fuente.
 - Reestructuración de dtos input y output, con mappers.
+- Intentar quitar la clase FuenteXColeccion ya que se genera automaticamente.
 
 --- Testear:
 Todo lo que hicimos para ver si funciona, sobre todo el medidor de trafico

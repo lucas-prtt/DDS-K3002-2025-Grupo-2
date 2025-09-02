@@ -47,9 +47,9 @@ public class SolicitudService {
     @Transactional
     public SolicitudEliminacion guardarSolicitud(SolicitudEliminacion solicitud) {
         Hecho hecho = hechoService.obtenerHechoPorId(solicitud.getHecho().getId());
-        Contribuyente solicitante = contribuyenteService.obtenerContribuyentePorId(solicitud.getSolicitante().getId());
-        solicitud.setSolicitante(solicitante);
-        solicitante.agregarSolicitudEliminacion(solicitud);
+        //Contribuyente solicitante = contribuyenteService.obtenerContribuyentePorId(solicitud.getSolicitante().getId());
+        //solicitud.setSolicitante(solicitante);
+        //solicitante.agregarSolicitudEliminacion(solicitud);
         SolicitudEliminacion solicitudGuardada = repositorioDeSolicitudes.save(solicitud);
         hecho.agregarASolicitudes(solicitud);
         hechoService.guardarHecho(hecho);
@@ -60,8 +60,9 @@ public class SolicitudService {
     public SolicitudEliminacion guardarSolicitudDto(SolicitudDTO solicitudDto) throws MotivoSolicitudException {
         this.validarMotivoSolicitud(solicitudDto.getMotivo());
         Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
-        Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(Long.valueOf(solicitudDto.getSolicitanteId()));
+        Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(solicitudDto.getSolicitanteId());
         SolicitudEliminacion solicitud = new SolicitudEliminacion(contribuyente, hecho, solicitudDto.getMotivo());
+        contribuyente.agregarSolicitudEliminacion(solicitud);
         return guardarSolicitud(solicitud);
     }
 

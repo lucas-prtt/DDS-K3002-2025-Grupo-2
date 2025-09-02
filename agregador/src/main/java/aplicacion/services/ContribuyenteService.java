@@ -22,12 +22,20 @@ public class ContribuyenteService {
         }
     }
     @Transactional
-    public Contribuyente obtenerContribuyentePorId(Long id){
-        Contribuyente c = repositorioDeContribuyentes.getById(Long.valueOf(id));
-        Hibernate.initialize(c.getId());
-        Hibernate.initialize(c.getUltimaIdentidad());
-        Hibernate.initialize(c.getSolicitudesEliminacion());
-        return c;
+    public Contribuyente obtenerContribuyentePorId(Long id) {
+        return repositorioDeContribuyentes.findById(id)
+                .map(contribuyente -> {
+                    Hibernate.initialize(contribuyente.getId());
+                    Hibernate.initialize(contribuyente.getUltimaIdentidad());
+                    Hibernate.initialize(contribuyente.getSolicitudesEliminacion());
+                    return contribuyente;
+                })
+                .orElseGet(() -> { // TODO: Cambiar esto
+                    // Si no existe, lo creamos
+                    Contribuyente nuevo = new Contribuyente(false);
+                    nuevo.setId(id);
+                    return repositorioDeContribuyentes.save(nuevo);
+                });
     }
     @Transactional
     public Contribuyente agregarIdentidadAContribuyente(Long id, IdentidadContribuyente identidad) {

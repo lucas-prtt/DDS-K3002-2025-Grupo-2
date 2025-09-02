@@ -2,10 +2,7 @@ package aplicacion.domain.criterios;
 
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.hechos.Ubicacion;
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,18 +14,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CriterioDeDistancia extends CriterioDePertenencia {
-    @ManyToOne
-    private Ubicacion ubicacionbase;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Ubicacion ubicacionBase;
     private Double distanciaMinima;
 
-    public CriterioDeDistancia(Ubicacion ubicacionbase, Double distanciaMinima) {
-        this.ubicacionbase = ubicacionbase;
+    public CriterioDeDistancia(Ubicacion ubicacionBase, Double distanciaMinima) {
+        this.ubicacionBase = ubicacionBase;
         this.distanciaMinima = distanciaMinima;
     }
 
     @Override
     public Boolean cumpleCriterio(Hecho hecho){
         Ubicacion ubicacionHecho = hecho.getUbicacion();
-        return ubicacionbase.distanciaA(ubicacionHecho) >= distanciaMinima;
+        return ubicacionBase.distanciaA(ubicacionHecho) >= distanciaMinima;
     }
 }
