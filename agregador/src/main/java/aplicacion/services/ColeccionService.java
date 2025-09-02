@@ -6,6 +6,10 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.dto.input.ColeccionInputDTO;
+import aplicacion.dto.mappers.ColeccionInputMapper;
+import aplicacion.dto.mappers.ColeccionOutputMapper;
+import aplicacion.dto.output.ColeccionOutputDTO;
 import aplicacion.repositorios.RepositorioDeColecciones;
 import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
@@ -25,6 +29,8 @@ public class ColeccionService {
     private final HechoService hechoService;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
+    private final ColeccionInputMapper coleccionInputMapper;
+    private final ColeccionOutputMapper coleccionOutputMapper;
 
     public ColeccionService(RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente) {
         this.repositorioDeColecciones = repositorioDeColecciones;
@@ -32,10 +38,13 @@ public class ColeccionService {
         this.hechoService = hechoService;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
+        this.coleccionInputMapper = new ColeccionInputMapper();
+        this.coleccionOutputMapper = new ColeccionOutputMapper();
     }
 
-    public void guardarColeccion(Coleccion coleccion) {
-        repositorioDeColecciones.save(coleccion);
+    public ColeccionOutputDTO guardarColeccion(ColeccionInputDTO coleccion) {
+        Coleccion coleccionLocal = repositorioDeColecciones.save(coleccionInputMapper.map(coleccion));
+        return coleccionOutputMapper.map(coleccionLocal);
     }
 
     public List<Coleccion> obtenerColecciones() {
