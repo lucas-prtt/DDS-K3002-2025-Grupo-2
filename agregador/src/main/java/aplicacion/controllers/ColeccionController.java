@@ -4,6 +4,8 @@ import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.dto.input.ColeccionInputDTO;
+import aplicacion.dto.output.ColeccionOutputDTO;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.FuenteService;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +28,12 @@ public class ColeccionController {
     // Operaciones CREATE sobre Colecciones
 
     @PostMapping("/colecciones")
-    public ResponseEntity<Coleccion> crearColeccion(@RequestBody Coleccion coleccion) {
+    public ResponseEntity<ColeccionOutputDTO> crearColeccion(@RequestBody ColeccionInputDTO coleccion) {
         fuenteService.guardarFuentes(coleccion.getFuentes());
-        coleccionService.guardarColeccion(coleccion);
+        ColeccionOutputDTO coleccionOutput = coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
-        System.out.println("Colección creada: " + coleccion.getId());
-        return ResponseEntity.ok(coleccion);
+        System.out.println("Colección creada: " + coleccionOutput.getId());
+        return ResponseEntity.ok(coleccionOutput);
     }
 
     // Operaciones READ sobre Colecciones
