@@ -13,7 +13,7 @@ public class NormalizadorDeTerminos {
     LevenshteinDetailedDistance levenshtein;
     public NormalizadorDeTerminos(Integer umbral){
         this.umbral = umbral;
-        LevenshteinDetailedDistance levenshtein = new LevenshteinDetailedDistance(umbral);
+        levenshtein = new LevenshteinDetailedDistance(umbral);
     }
 
     // Dado un String, devuelve el mismo si esta admitido, su sinónimo si este toma precedencia, o alguno cercano segun distancia de Levenshtein
