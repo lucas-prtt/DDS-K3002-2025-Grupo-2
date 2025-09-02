@@ -22,10 +22,10 @@ public class Hecho {
     private String titulo;
     private String descripcion;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Categoria categoria;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Ubicacion ubicacion;
 
     private LocalDateTime fechaAcontecimiento;
@@ -37,10 +37,10 @@ public class Hecho {
 
     private String contenidoTexto;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private List<Multimedia> contenidoMultimedia;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private List<Etiqueta> etiquetas;
 
 

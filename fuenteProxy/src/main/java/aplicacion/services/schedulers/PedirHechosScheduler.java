@@ -12,7 +12,7 @@ public class PedirHechosScheduler {
         this.fuenteProxyService = fuenteProxyService;
     }
 
-    @Scheduled(cron = "0 0 * * * *") // En Fuente Demo pide los hechos y se los guarda, y en Fuente Metamapa no hace nada
+    @Scheduled(initialDelay = 10000, fixedRate = 3600000) // En Fuente Demo pide los hechos y se los guarda, y en Fuente Metamapa no hace nada
     public void pedirHechos() {
         fuenteProxyService.pedirHechos();
         // delegar logica a fuenteProxyService

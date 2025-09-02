@@ -2,14 +2,21 @@ package aplicacion.domain.fuentesDemo;
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.multimedias.Multimedia;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
-public class ConexionPrueba implements Conexion {
+@Entity
+@Getter
+@Setter
+@DiscriminatorValue(value = "prueba")
+public class ConexionPrueba extends Conexion {
     private int contador = 0;
 
     @Override
