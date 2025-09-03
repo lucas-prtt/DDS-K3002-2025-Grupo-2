@@ -340,7 +340,7 @@ Esperar la carga de hechos
 GET http://localhost:8084/agregador/hechos -> Verificar que estén los hechos de ambas colecciones, menos uno de fuente dinámica que se depuró y ver que una de las categorías se haya normalizado
 
 Postear una solicitud
-http://localhost:8084/agregador/solicitudes
+POST http://localhost:8084/agregador/solicitudes
 Request body:
 {
 "solicitanteId": 1,
