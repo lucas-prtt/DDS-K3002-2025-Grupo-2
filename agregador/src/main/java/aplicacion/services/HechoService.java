@@ -26,12 +26,14 @@ public class HechoService {
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
     private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
+    private final HechoOutputMapper hechoOutputMapper;
 
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoOutputMapper hechoOutputMapper) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
+        this.hechoOutputMapper = hechoOutputMapper;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
@@ -42,7 +44,7 @@ public class HechoService {
         return repositorioDeHechos.findAll(); // TODO: Cambiar esto por traer los hechos de HechoXColeccion joineado con Hecho y que solo traiga los distinct
     }
     public List<HechoOutputDTO> obtenerHechosAsDTO() {
-        return obtenerHechos().stream().map(HechoOutputMapper::map).toList();
+        return obtenerHechos().stream().map(hecho -> hechoOutputMapper.map(hecho)).toList();
     }
 
     public void guardarHechoPorFuente(HechoXFuente hechoPorFuente) {

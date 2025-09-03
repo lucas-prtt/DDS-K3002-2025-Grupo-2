@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HechoInputMapper {
-    public static Hecho map(HechoInputDTO hechoInputDTO){
+    public Hecho map(HechoInputDTO hechoInputDTO){
         return new Hecho(
                 hechoInputDTO.getTitulo(),
                 hechoInputDTO.getDescripcion(),
