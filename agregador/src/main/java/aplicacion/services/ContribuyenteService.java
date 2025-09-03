@@ -18,14 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ContribuyenteService {
     private final RepositorioDeContribuyentes repositorioDeContribuyentes;
-    private final IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper = new IdentidadContribuyenteInputMapper();
-    private final ContribuyenteInputMapper contribuyenteInputMapper = new ContribuyenteInputMapper();
-    private final ContribuyenteOutputMapper contribuyenteOutputMapper = new ContribuyenteOutputMapper();
-    private final IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper = new IdentidadContribuyenteOutputMapper();
+    private final IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper;
+    private final ContribuyenteInputMapper contribuyenteInputMapper;
+    private final ContribuyenteOutputMapper contribuyenteOutputMapper;
+    private final IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper;
 
 
-    public ContribuyenteService(RepositorioDeContribuyentes repositorioDeContribuyentes) {
+    public ContribuyenteService(RepositorioDeContribuyentes repositorioDeContribuyentes, ContribuyenteOutputMapper contribuyenteOutputMapper,ContribuyenteInputMapper contribuyenteInputMapper,IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper,IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper) {
         this.repositorioDeContribuyentes = repositorioDeContribuyentes;
+        this.identidadContribuyenteInputMapper = identidadContribuyenteInputMapper;
+        this.identidadContribuyenteOutputMapper = identidadContribuyenteOutputMapper;
+        this.contribuyenteOutputMapper = contribuyenteOutputMapper;
+        this.contribuyenteInputMapper = contribuyenteInputMapper;
     }/*
 
     @Transactional
