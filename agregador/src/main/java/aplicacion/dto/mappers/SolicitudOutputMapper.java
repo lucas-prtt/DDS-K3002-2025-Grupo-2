@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SolicitudOutputMapper {
-    public static SolicitudOutputDTO map(SolicitudEliminacion solicitudEliminacion) {
+    public SolicitudOutputDTO map(SolicitudEliminacion solicitudEliminacion) {
         return new SolicitudOutputDTO(
                 solicitudEliminacion.getHecho().getId(),
                 solicitudEliminacion.getMotivo(),

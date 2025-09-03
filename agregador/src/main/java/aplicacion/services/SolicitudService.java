@@ -15,7 +15,7 @@ import aplicacion.domain.solicitudes.*;
 import aplicacion.domain.usuarios.Contribuyente;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import aplicacion.dto.mappers.SolicitudOutputMapper;
+
 
 @Service
 public class SolicitudService {
@@ -23,11 +23,13 @@ public class SolicitudService {
     private final RepositorioDeSolicitudes repositorioDeSolicitudes;
     private final HechoService hechoService;
     private final ContribuyenteService contribuyenteService;
+    private final SolicitudOutputMapper solicitudOutputMapper;
 
-    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService, ContribuyenteService contribuyenteService) {
+    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService, ContribuyenteService contribuyenteService, SolicitudOutputMapper solicitudOutputMapper) {
         this.repositorioDeSolicitudes = repositorioDeSolicitudes;
         this.hechoService = hechoService;
         this.contribuyenteService = contribuyenteService;
+        this.solicitudOutputMapper = solicitudOutputMapper;
     }
 
     public List<SolicitudEliminacion> solicitudesRelacionadas(Long id) {
@@ -47,12 +49,12 @@ public class SolicitudService {
 
     public SolicitudOutputDTO obtenerSolicitudDTO(Long id) {
         return repositorioDeSolicitudes.findById(id)
-                .map(SolicitudOutputMapper::map)
+                .map(solicitudOutputMapper::map)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
     }
 
     public List<SolicitudOutputDTO> obtenerSolicitudesDTO() {
-        return obtenerSolicitudes().stream().map(SolicitudOutputMapper::map).toList();
+        return obtenerSolicitudes().stream().map(solicitudOutputMapper::map).toList();
     }
     public List<SolicitudEliminacion> obtenerSolicitudes() {
         return repositorioDeSolicitudes.findAll();
@@ -81,7 +83,7 @@ public class SolicitudService {
         Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(solicitudDto.getSolicitanteId());
         SolicitudEliminacion solicitud = new SolicitudEliminacion(contribuyente, hecho, solicitudDto.getMotivo());
         contribuyente.agregarSolicitudEliminacion(solicitud);
-        return SolicitudOutputMapper.map(guardarSolicitud(solicitud));
+        return solicitudOutputMapper.map(guardarSolicitud(solicitud));
     }
 
     private void validarMotivoSolicitud(String motivo) throws MotivoSolicitudException {
