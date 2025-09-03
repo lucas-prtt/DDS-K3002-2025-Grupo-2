@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 // Es una clase constructora de hechos
-@Embeddable
 public class HechoBuilder {
     public Hecho construirHecho(Map<String, Object> datos) {
         if(datos.isEmpty()){return null;}
