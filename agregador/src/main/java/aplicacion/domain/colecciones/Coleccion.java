@@ -31,8 +31,6 @@ public class Coleccion{
     private List<CriterioDePertenencia> criteriosDePertenencia;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<Fuente> fuentes;
-    @Transient
-    private AlgoritmoConsenso algoritmoConsenso = new AlgoritmoConsensoIrrestricto();
     @Enumerated(EnumType.STRING)
     private TipoAlgoritmoConsenso tipoAlgoritmoConsenso = TipoAlgoritmoConsenso.IRRESTRICTO;
 
@@ -41,13 +39,11 @@ public class Coleccion{
             String descripcion,
             List<CriterioDePertenencia> criteriosDePertenencia,
             List<Fuente> fuentes,
-            AlgoritmoConsenso algoritmo,
             TipoAlgoritmoConsenso tipoAlgoritmo) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.criteriosDePertenencia = criteriosDePertenencia;
         this.fuentes = fuentes;
-        this.algoritmoConsenso = algoritmo;
         this.tipoAlgoritmoConsenso = tipoAlgoritmo;
     }
 

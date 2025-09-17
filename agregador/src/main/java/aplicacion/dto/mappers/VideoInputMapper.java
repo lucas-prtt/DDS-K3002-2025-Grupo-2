@@ -1,17 +1,17 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.hechos.multimedias.Video;
-import aplicacion.dto.input.MultimediaInputDto;
+import aplicacion.dto.input.VideoInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class VideoInputMapper {
-    public Video map(MultimediaInputDto multimediaInputDto) {
+public class VideoInputMapper implements Mapper<VideoInputDto, Video>{
+    public Video map(VideoInputDto videoInputDto) {
         return new Video(
-                multimediaInputDto.getFormato(),
-                multimediaInputDto.getTamanio(),
-                multimediaInputDto.getResolucion(),
-                multimediaInputDto.getDuracion()
+                videoInputDto.getFormato(),
+                videoInputDto.getTamanio(),
+                videoInputDto.getResolucion(),
+                videoInputDto.getDuracion()
         );
     }
 }

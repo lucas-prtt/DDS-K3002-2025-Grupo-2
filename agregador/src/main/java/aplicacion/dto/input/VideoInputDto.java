@@ -1,4 +1,9 @@
 package aplicacion.dto.input;
 
-public class VideoInputDto {
+import lombok.Getter;
+
+@Getter
+public class VideoInputDto extends MultimediaInputDto {
+    private String resolucion;
+    private Integer duracion;
 }

@@ -1,16 +1,23 @@
 package aplicacion.dto.input;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,      // usamos el nombre para diferenciar subclases
+        include = JsonTypeInfo.As.PROPERTY, // el tipo estará como propiedad en el JSON
+        property = "tipo"                // nombre del campo que indica el tipo concreto
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = AudioInputDto.class, name = "audio"),
+        @JsonSubTypes.Type(value = ImagenInputDto.class, name = "imagen"),
+        @JsonSubTypes.Type(value = VideoInputDto.class, name = "video")
+})
 public class MultimediaInputDto {
-    private String tipo;
     private String formato;
     private Integer tamanio;
-    private String resolucion;
-    private Integer duracion;
 }

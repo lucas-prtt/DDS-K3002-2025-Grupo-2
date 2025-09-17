@@ -5,7 +5,7 @@ import aplicacion.dto.input.FuenteInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FuenteDinamicaInputMapper {
+public class FuenteDinamicaInputMapper implements Mapper<FuenteInputDto, FuenteDinamica>{
     public FuenteDinamica map(FuenteInputDto fuenteInputDto) {
         return new FuenteDinamica(
                 fuenteInputDto.getId(),

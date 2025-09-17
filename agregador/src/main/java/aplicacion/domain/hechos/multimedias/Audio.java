@@ -8,7 +8,6 @@ import lombok.Setter;
 
 //AUDIO
 @Entity
-@DiscriminatorValue("audio")
 @NoArgsConstructor
 @Getter
 @Setter

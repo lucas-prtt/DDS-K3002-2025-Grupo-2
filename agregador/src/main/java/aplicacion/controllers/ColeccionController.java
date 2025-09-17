@@ -1,24 +1,21 @@
 package aplicacion.controllers;
 
+import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.colecciones.fuentes.TipoFuente;
-import aplicacion.dto.input.AlgoritmoInputDto;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.output.ColeccionOutputDto;
-import aplicacion.dto.output.FuenteOutputDto;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.FuenteService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import aplicacion.dto.output.HechoOutputDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/agregador")
 public class ColeccionController {
@@ -79,7 +76,7 @@ public class ColeccionController {
     // Operaciones UPDATE sobre Colecciones
     @PatchMapping("/colecciones/{id}/algoritmo")
     public ResponseEntity<ColeccionOutputDto> modificarAlgoritmo(@PathVariable("id") String idColeccion,
-                                                   @RequestBody AlgoritmoInputDto nuevoAlgoritmo) {
+                                                   @RequestBody TipoAlgoritmoConsenso nuevoAlgoritmo) {
         ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
         System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
         return ResponseEntity.ok(coleccion);
@@ -119,5 +116,4 @@ public class ColeccionController {
         System.out.println("Coleccion: " + idColeccion + " eliminada");
         return ResponseEntity.ok().build();
     }
-
 }

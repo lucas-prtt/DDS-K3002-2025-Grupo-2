@@ -2,8 +2,6 @@ package aplicacion.domain.solicitudes;
 
 import jakarta.persistence.Entity;
 
-;
-
 @Entity
 public class EstadoSolicitudRechazada extends EstadoSolicitud {
     @Override

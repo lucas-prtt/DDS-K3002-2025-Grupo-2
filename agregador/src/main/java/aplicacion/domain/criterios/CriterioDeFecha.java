@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 // CRITERIO DE FECHA
 @Entity
-@DiscriminatorValue("fecha")
 @NoArgsConstructor
 @Getter
 @Setter

@@ -9,7 +9,6 @@ import lombok.Setter;
 
 // CRITERIO DE DISTANCIA
 @Entity
-@DiscriminatorValue("distancia")
 @NoArgsConstructor
 @Getter
 @Setter
