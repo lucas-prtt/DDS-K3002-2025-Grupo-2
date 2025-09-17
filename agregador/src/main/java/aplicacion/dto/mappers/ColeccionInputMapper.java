@@ -5,22 +5,21 @@ import aplicacion.dto.input.ColeccionInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ColeccionInputMapper {
+public class ColeccionInputMapper implements Mapper<ColeccionInputDto, Coleccion> {
     private final FuenteInputMapper fuenteInputMapper;
-    private final AlgoritmoInputMapper algoritmoInputMapper;
+    private final CriterioDePertenenciaInputMapper criterioDePertenenciaInputMapper;
 
-    public ColeccionInputMapper(FuenteInputMapper fuenteInputMapper, AlgoritmoInputMapper algoritmoInputMapper) {
+    public ColeccionInputMapper(FuenteInputMapper fuenteInputMapper, CriterioDePertenenciaInputMapper criterioDePertenenciaInputMapper) {
         this.fuenteInputMapper = fuenteInputMapper;
-        this.algoritmoInputMapper = algoritmoInputMapper;
+        this.criterioDePertenenciaInputMapper = criterioDePertenenciaInputMapper;
     }
 
     public Coleccion map(ColeccionInputDto coleccionInputDTO) {
         return new Coleccion(
                 coleccionInputDTO.getTitulo(),
                 coleccionInputDTO.getDescripcion(),
-                coleccionInputDTO.getCriteriosDePertenencia(),
+                coleccionInputDTO.getCriteriosDePertenencia().stream().map(criterioDePertenenciaInputMapper::map).toList(),
                 coleccionInputDTO.getFuentes().stream().map(fuenteInputMapper::map).toList(),
-                algoritmoInputMapper.map(coleccionInputDTO.getAlgoritmoConsenso()),
                 coleccionInputDTO.getTipoAlgoritmoConsenso()
         );
     }

@@ -1,16 +1,18 @@
 package aplicacion.dto.output;
-import aplicacion.domain.solicitudes.EstadoSolicitud;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
 @AllArgsConstructor
 public class SolicitudOutputDto {
     private String hechoId;
     private String motivo;
     private Long id;
-    private EstadoSolicitud estado;
+    private EstadoSolicitudOutputDto estado;
     private LocalDateTime fechaSubida;
 }

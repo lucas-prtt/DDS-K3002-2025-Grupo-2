@@ -5,7 +5,7 @@ import aplicacion.dto.input.FuenteInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FuenteInputMapper {
+public class FuenteInputMapper implements Mapper<FuenteInputDto, Fuente>{
     public Fuente map(FuenteInputDto fuenteInputDTO){
         String tipoFuente = fuenteInputDTO.getId().getTipo().toString().toLowerCase();
         switch (tipoFuente) {

@@ -1,11 +1,6 @@
 package aplicacion.dto.output;
 
-
-import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Origen;
-import aplicacion.domain.hechos.Ubicacion;
-import aplicacion.domain.hechos.multimedias.Multimedia;
-import aplicacion.domain.usuarios.Contribuyente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,14 +13,14 @@ public class HechoOutputDto {
     private String id;
     private String titulo;
     private String descripcion;
-    private Categoria categoria;
-    private Ubicacion ubicacion;
+    private CategoriaOutputDto categoria;
+    private UbicacionOutputDto ubicacion;
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
     private LocalDateTime fechaUltimaModificacion;
     private Origen origen;
     private String contenidoTexto;
-    private List<Multimedia> contenidoMultimedia;
+    private List<MultimediaOutputDto> contenidoMultimedia;
     private Boolean anonimato;
-    private Contribuyente autor;
+    private ContribuyenteOutputDto autor;
 }

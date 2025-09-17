@@ -3,7 +3,9 @@ package aplicacion.dto.output;
 import aplicacion.domain.colecciones.fuentes.TipoFuente;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
 @Data
 @NoArgsConstructor
 public class FuenteOutputDto {
