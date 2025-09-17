@@ -1,4 +1,8 @@
 package aplicacion.dto.input;
 
-public class AudioInputDto {
+import lombok.Getter;
+
+@Getter
+public class AudioInputDto extends MultimediaInputDto {
+    private Integer duracion;
 }

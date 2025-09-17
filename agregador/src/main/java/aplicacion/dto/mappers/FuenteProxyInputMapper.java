@@ -5,7 +5,7 @@ import aplicacion.dto.input.FuenteInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FuenteProxyInputMapper {
+public class FuenteProxyInputMapper implements Mapper<FuenteInputDto, FuenteProxy>{
     public FuenteProxy map(FuenteInputDto fuenteInputDto) {
         return new FuenteProxy(
                 fuenteInputDto.getId(),

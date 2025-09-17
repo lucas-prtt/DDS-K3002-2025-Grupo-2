@@ -1,16 +1,16 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.hechos.multimedias.Audio;
-import aplicacion.dto.input.MultimediaInputDto;
+import aplicacion.dto.input.AudioInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AudioInputMapper {
-    public Audio map(MultimediaInputDto multimediaInputDto) {
+public class AudioInputMapper implements Mapper<AudioInputDto, Audio>{
+    public Audio map(AudioInputDto audioInputDto) {
         return new Audio(
-                multimediaInputDto.getFormato(),
-                multimediaInputDto.getTamanio(),
-                multimediaInputDto.getDuracion()
+                audioInputDto.getFormato(),
+                audioInputDto.getTamanio(),
+                audioInputDto.getDuracion()
         );
     }
 }

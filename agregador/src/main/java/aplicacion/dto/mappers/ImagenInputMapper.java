@@ -1,16 +1,16 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.hechos.multimedias.Imagen;
-import aplicacion.dto.input.MultimediaInputDto;
+import aplicacion.dto.input.ImagenInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ImagenInputMapper {
-    public Imagen map(MultimediaInputDto multimediaInputDto) {
+public class ImagenInputMapper implements Mapper<ImagenInputDto, Imagen>{
+    public Imagen map(ImagenInputDto imagenInputDto) {
         return new Imagen(
-                multimediaInputDto.getFormato(),
-                multimediaInputDto.getTamanio(),
-                multimediaInputDto.getResolucion()
+                imagenInputDto.getFormato(),
+                imagenInputDto.getTamanio(),
+                imagenInputDto.getResolucion()
         );
     }
 }

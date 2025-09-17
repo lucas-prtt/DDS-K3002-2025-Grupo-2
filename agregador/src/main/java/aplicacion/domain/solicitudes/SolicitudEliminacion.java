@@ -2,10 +2,6 @@ package aplicacion.domain.solicitudes;
 
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.usuarios.Contribuyente;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +30,6 @@ public class SolicitudEliminacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
     private Long id;
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JsonIgnore
     private Contribuyente solicitante;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "estado_id")

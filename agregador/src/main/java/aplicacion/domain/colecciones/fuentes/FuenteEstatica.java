@@ -1,7 +1,6 @@
 package aplicacion.domain.colecciones.fuentes;
 
 import aplicacion.dto.input.HechoInputDto;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("estatica")
 @NoArgsConstructor
 @Getter
 @Setter

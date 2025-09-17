@@ -21,7 +21,6 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "tipo_fuente")
 @NoArgsConstructor
 @EqualsAndHashCode
 @Getter

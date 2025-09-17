@@ -5,7 +5,6 @@ import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.dto.input.AlgoritmoInputDto;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.mappers.*;
@@ -34,9 +33,8 @@ public class ColeccionService {
     private final HechoOutputMapper hechoOutputMapper;
     private final FuenteService fuenteService;
     private final FuenteInputMapper fuenteInputMapper;
-    private final AlgoritmoInputMapper algoritmoInputMapper;
 
-    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper, AlgoritmoInputMapper algoritmoInputMapper) {
+    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper) {
         this.repositorioDeColecciones = repositorioDeColecciones;
         this.hechoService = hechoService;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
@@ -46,7 +44,6 @@ public class ColeccionService {
         this.hechoOutputMapper = hechoOutputMapper;
         this.fuenteService = fuenteService;
         this.fuenteInputMapper = fuenteInputMapper;
-        this.algoritmoInputMapper = algoritmoInputMapper;
     }
 
     public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
@@ -126,10 +123,10 @@ public class ColeccionService {
         System.out.println("Colección eliminada: " + idColeccion);
     }
 
-    public ColeccionOutputDto modificarAlgoritmoDeColeccion(String idColeccion, AlgoritmoInputDto nuevoAlgoritmo) {
+    public ColeccionOutputDto modificarAlgoritmoDeColeccion(String idColeccion, TipoAlgoritmoConsenso nuevoAlgoritmo) {
         Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
-        coleccion.setAlgoritmoConsenso(algoritmoInputMapper.map(nuevoAlgoritmo));
+        coleccion.setTipoAlgoritmoConsenso(nuevoAlgoritmo);
         Coleccion coleccionPersistida = repositorioDeColecciones.save(coleccion); // Updatea en la base de datos la colección con el nuevo algoritmo
         return coleccionOutputMapper.map(coleccionPersistida);
     }

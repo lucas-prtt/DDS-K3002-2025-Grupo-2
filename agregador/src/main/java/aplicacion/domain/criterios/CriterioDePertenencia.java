@@ -1,25 +1,15 @@
 package aplicacion.domain.criterios;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 // CRITERIO DE PERTENENCIA
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
-@DiscriminatorColumn(name = "tipo_criterio")
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,      // usamos el nombre para diferenciar subclases
-        include = JsonTypeInfo.As.PROPERTY, // el tipo estará como propiedad en el JSON
-        property = "tipo"                // nombre del campo que indica el tipo concreto
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = CriterioDeDistancia.class, name = "distancia"),
-        @JsonSubTypes.Type(value = CriterioDeFecha.class, name = "fecha")
-})
+@Getter
 public abstract class CriterioDePertenencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
