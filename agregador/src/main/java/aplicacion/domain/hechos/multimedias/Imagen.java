@@ -9,7 +9,6 @@ import lombok.Setter;
 
 // IMAGEN
 @Entity
-@DiscriminatorValue("imagen")
 @NoArgsConstructor
 @Getter
 @Setter

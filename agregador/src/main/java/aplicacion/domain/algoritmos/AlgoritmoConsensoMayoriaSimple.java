@@ -4,8 +4,7 @@ import aplicacion.domain.hechos.Hecho;
 
 import java.util.*;
 
-public class AlgoritmoConsensoMayoriaSimple extends AlgoritmoConsenso {
-    @Override
+public class AlgoritmoConsensoMayoriaSimple implements AlgoritmoConsenso {
     public List<Hecho> curarHechos(Map<Hecho, Long> cantidadPorHecho, Long totalFuentes) {
         int umbral = (int) Math.ceil(totalFuentes / 2.0);
         return cantidadPorHecho.entrySet().stream()

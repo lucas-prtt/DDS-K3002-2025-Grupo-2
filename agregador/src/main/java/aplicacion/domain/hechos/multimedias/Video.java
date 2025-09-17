@@ -9,7 +9,6 @@ import lombok.Setter;
 
 // VIDEO
 @Entity
-@DiscriminatorValue("video")
 @NoArgsConstructor
 @Getter
 @Setter

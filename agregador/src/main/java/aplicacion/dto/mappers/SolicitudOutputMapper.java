@@ -5,13 +5,19 @@ import aplicacion.dto.output.SolicitudOutputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SolicitudOutputMapper {
+public class SolicitudOutputMapper implements Mapper<SolicitudEliminacion, SolicitudOutputDto>{
+    private final EstadoSolicitudOutputMapper estadoSolicitudOutputMapper;
+
+    public SolicitudOutputMapper(EstadoSolicitudOutputMapper estadoSolicitudOutputMapper) {
+        this.estadoSolicitudOutputMapper = estadoSolicitudOutputMapper;
+    }
+
     public SolicitudOutputDto map(SolicitudEliminacion solicitudEliminacion) {
         return new SolicitudOutputDto(
                 solicitudEliminacion.getHecho().getId(),
                 solicitudEliminacion.getMotivo(),
                 solicitudEliminacion.getId(),
-                solicitudEliminacion.getEstado(),
+                estadoSolicitudOutputMapper.map(solicitudEliminacion.getEstado()),
                 solicitudEliminacion.getFechaSubida()
         );
     }

@@ -1,4 +1,8 @@
 package aplicacion.dto.input;
 
-public class ImagenInputDto {
+import lombok.Getter;
+
+@Getter
+public class ImagenInputDto extends MultimediaInputDto {
+    private String resolucion;
 }

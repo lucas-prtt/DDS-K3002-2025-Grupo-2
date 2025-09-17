@@ -1,9 +1,9 @@
 package aplicacion.dto.output;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Setter;
 
-@Getter
+@Setter
 @AllArgsConstructor
 public class ContribuyenteOutputDto {
     private Long id;
