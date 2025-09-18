@@ -10,10 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EstadisticasAplicacion {
   public static void main(String[] args) {
 
-
-
     SpringApplication.run(EstadisticasAplicacion.class, args);
   }
-
-
 }

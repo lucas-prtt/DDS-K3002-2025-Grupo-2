@@ -20,14 +20,13 @@ public class IdentificadorDeUbicacion {
         }
     }
 
-    public static IdentificadorDeUbicacion getInstance(){
+    public static IdentificadorDeUbicacion getInstance() {
         if(instance == null)
             instance = new IdentificadorDeUbicacion();
         return instance;
     }
 
-    public String identificar(Integer latitud, Integer longitud){
+    public String identificar(Integer latitud, Integer longitud) {
         return boundaries.getIds(latitud, longitud).getFirst();
     }
-
 }
