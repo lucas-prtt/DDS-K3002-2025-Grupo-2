@@ -74,6 +74,7 @@ public class IdentificadorDeUbicacion {
                 idx++;
                 continue;
             }
+
             geomJts = reader.read(ggeom);
             // La transforma a geometria de JTS, para poder usar contains()
             String provincia = (String) feature.getProperties().get("NAME_1");
