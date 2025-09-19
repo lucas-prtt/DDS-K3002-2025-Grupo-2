@@ -45,7 +45,7 @@ public class IdentificadorDeUbicacionTest {
         long finAnalisis = System.nanoTime();
 
         double tiempoAnalisisMs = (finAnalisis - inicioAnalisis) / 1_000_000.0;
-        System.out.printf("Tiempo en analizar 100,000 ubicaciones: %.3f ms\n", tiempoAnalisisMs);
+        System.out.printf("Tiempo en analizar 1000 ubicaciones: %.3f ms\n", tiempoAnalisisMs);
 
         assertNotNull(identificador);
         assertTrue("La creación de la instancia debería ser rápida", tiempoCreacionMs < 2000);
