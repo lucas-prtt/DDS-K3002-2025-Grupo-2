@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class SolicitudInputDto {
     private Long solicitanteId;
-    private String hechoId;
+    private Long hechoId;
     private String motivo;
 }

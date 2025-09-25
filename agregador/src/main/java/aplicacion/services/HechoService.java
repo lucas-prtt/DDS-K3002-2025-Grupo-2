@@ -55,7 +55,7 @@ public class HechoService {
             repositorioDeHechosXColeccion.save(hechoPorColeccion);
         }
     }
-    public Hecho obtenerHechoPorId(String idHecho)  throws HechoNoEncontradoException{
+    public Hecho obtenerHechoPorId(Long idHecho)  throws HechoNoEncontradoException{
         try{
             return repositorioDeHechos.findByHechoId(idHecho);
         }

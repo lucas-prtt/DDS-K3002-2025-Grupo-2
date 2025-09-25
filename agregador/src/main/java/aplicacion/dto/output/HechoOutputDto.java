@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class HechoOutputDto {
-    private String id;
+    private Long id;
     private String titulo;
     private String descripcion;
     private CategoriaOutputDto categoria;

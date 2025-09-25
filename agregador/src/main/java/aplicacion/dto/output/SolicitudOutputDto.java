@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class SolicitudOutputDto {
-    private String hechoId;
+    private Long hechoId;
     private String motivo;
     private Long id;
     private EstadoSolicitudOutputDto estado;
