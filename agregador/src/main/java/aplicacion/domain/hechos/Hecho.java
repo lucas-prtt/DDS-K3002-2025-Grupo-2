@@ -21,8 +21,8 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Hecho {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @EqualsAndHashCode.Include
     @Column(length = 200)
     private String titulo;

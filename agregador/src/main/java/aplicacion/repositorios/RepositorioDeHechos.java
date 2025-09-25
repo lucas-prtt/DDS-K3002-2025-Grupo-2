@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
+public interface RepositorioDeHechos extends JpaRepository<Hecho, Long> {
     @Query("""
         SELECT h
         FROM Hecho h
@@ -35,7 +35,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
         FROM Hecho h
         WHERE h.id = :idHecho
     """)
-    Hecho findByHechoId(@Param("idHecho") String idHecho);
+    Hecho findByHechoId(@Param("idHecho") Long idHecho);
 
     @Query("""
         SELECT h
