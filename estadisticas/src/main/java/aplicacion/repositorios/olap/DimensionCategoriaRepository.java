@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Repository
@@ -16,5 +17,5 @@ public interface DimensionCategoriaRepository extends JpaRepository<DimensionCat
                     WHERE dc.nombre IN (:categorias)""",
             nativeQuery = true
     )
-    List<DimensionCategoria> findByNombreCategoria(List<String> categorias);
+    List<DimensionCategoria> findByNombreCategoria(Set<String> categorias);
 }

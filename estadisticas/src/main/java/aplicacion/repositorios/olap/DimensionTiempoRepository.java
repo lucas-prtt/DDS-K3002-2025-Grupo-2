@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface DimensionTiempoRepository extends JpaRepository<DimensionTiempo, Long> {
@@ -16,5 +17,5 @@ public interface DimensionTiempoRepository extends JpaRepository<DimensionTiempo
                         WHERE CONCAT_WS('|', dt.anio, dt.mes, dt.dia, dt.hora) IN (:codigos)""",
             nativeQuery = true
     )
-    List<DimensionTiempo> findByTiempo(List<String> codigos);
+    List<DimensionTiempo> findByTiempo(Set<String> codigos);
 }

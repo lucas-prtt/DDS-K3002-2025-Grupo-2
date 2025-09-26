@@ -8,6 +8,7 @@ import java.util.Objects;
 @Embeddable
 public class FactColeccionId implements Serializable {
     private Long coleccionId;
+    private String coleccionIdAgregador;
     private Long ubicacionId;
     private Long tiempoId;
     private Long categoriaId;
@@ -15,8 +16,9 @@ public class FactColeccionId implements Serializable {
     // Constructores, equals y hashCode son OBLIGATORIOS
     public FactColeccionId() {}
 
-    public FactColeccionId(Long coleccionId, Long ubicacionId, Long tiempoId, Long categoriaId) {
+    public FactColeccionId(Long coleccionId, Long ubicacionId, Long tiempoId, Long categoriaId, String coleccionIdAgregador) {
         this.coleccionId = coleccionId;
+        this.coleccionIdAgregador = coleccionIdAgregador;
         this.ubicacionId = ubicacionId;
         this.tiempoId = tiempoId;
         this.categoriaId = categoriaId;
