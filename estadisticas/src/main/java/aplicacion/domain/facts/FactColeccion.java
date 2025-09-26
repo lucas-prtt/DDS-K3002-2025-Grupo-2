@@ -6,14 +6,18 @@ import aplicacion.domain.dimensiones.DimensionTiempo;
 import aplicacion.domain.dimensiones.DimensionUbicacion;
 import aplicacion.domain.id.FactColeccionId;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.HashCodeExclude;
 
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
 public class FactColeccion {
     @EmbeddedId
+    @HashCodeExclude
     private FactColeccionId id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("coleccionId")
