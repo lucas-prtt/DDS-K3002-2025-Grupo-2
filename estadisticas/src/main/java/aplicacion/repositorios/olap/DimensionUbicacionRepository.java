@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface DimensionUbicacionRepository extends JpaRepository<DimensionUbicacion, Long> {
@@ -16,5 +17,5 @@ public interface DimensionUbicacionRepository extends JpaRepository<DimensionUbi
                 WHERE CONCAT_WS('|', dt.pais, dt.provincia) IN (:codigos)""",
             nativeQuery = true
     )
-    List<DimensionUbicacion> findByUbicaciones(List<String> codigos);
+    List<DimensionUbicacion> findByUbicaciones(Set<String> codigos);
 }
