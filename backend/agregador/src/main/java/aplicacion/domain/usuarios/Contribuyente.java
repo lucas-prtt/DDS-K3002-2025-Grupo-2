@@ -20,7 +20,7 @@ public class Contribuyente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Boolean esAdministrador;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Embedded
     private IdentidadContribuyente identidad;
     @OneToMany(mappedBy = "solicitante", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<SolicitudEliminacion> solicitudesEliminacion;

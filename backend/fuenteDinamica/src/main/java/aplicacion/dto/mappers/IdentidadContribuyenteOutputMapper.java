@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class IdentidadContribuyenteOutputMapper implements Mapper<IdentidadContribuyente, IdentidadContribuyenteOutputDto>{
     public IdentidadContribuyenteOutputDto map(IdentidadContribuyente identidadContribuyente) {
         return identidadContribuyente == null ? null : new IdentidadContribuyenteOutputDto(
-                identidadContribuyente.getId(),
                 identidadContribuyente.getNombre(),
                 identidadContribuyente.getApellido(),
                 identidadContribuyente.getFechaNacimiento()
