@@ -25,7 +25,7 @@ Aceptar uno de los hechos (con sugerencia) y rechazar el otro
 Pedir los hechos y validar que solo se devuelva aquel que fue aceptado
 
 Ejemplo:
-POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true, "identidad": { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" }, mail: "mail@gmail.com" }
+POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true, "identidad": { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" }, "mail": "mail@gmail.com" }
 POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "titulo": "Titulo ejemplo",
                                              "descripcion": "Descripcion ejemplo",
@@ -147,9 +147,9 @@ Dejar los archivos ya previamente cargados en la nube y solo levantar la app
 
 Agregador para fuente metamapa:
 Levantar otro agregador en la misma compu con:
-java -jar .\agregador\target\agregador-0.1.0.jar -D --server.port=8094
+java -jar .\backend\agregador\target\agregador-0.0.1-SNAPSHOT.jar -D --server.port=8074
 
-POST http://localhost:8094/agregador/colecciones
+POST http://localhost:8074/agregador/colecciones
 Body:
 {
   "titulo": "Coleccion 1",
@@ -174,7 +174,7 @@ Body:
 
 Fuente dinámica para agregador:
 Ejemplo:
-POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true, "identidad": { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" }, mail: "mail@gmail.com" }
+POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true, "identidad": { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" }, "mail": "mail@gmail.com" }
 POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "titulo": "Titulo ejemplo",
                                              "descripcion": "Descripcion ejemplo",
@@ -266,7 +266,7 @@ POST http://localhost:8083/fuentesProxy -> body:
 Fuente metamapa:
 POST http://localhost:8083/fuentesProxy -> body:
 {
-  "url": "http://localhost:8094/agregador/hechos"
+  "url": "http://localhost:8074/agregador/hechos"
 }
 -> ver el uuid que genera
 

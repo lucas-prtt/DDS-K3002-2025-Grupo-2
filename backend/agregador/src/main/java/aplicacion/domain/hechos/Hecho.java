@@ -59,8 +59,8 @@ public class Hecho {
     private List<Etiqueta> etiquetas;
     private Boolean visible;
     private Boolean anonimato;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
-    private Contribuyente autor; // TODO: Revisar como se persiste el autor
+    @ManyToOne
+    private Contribuyente autor;
 
     public Hecho(String titulo,
                  String descripcion,
