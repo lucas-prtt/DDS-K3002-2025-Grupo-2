@@ -11,11 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface RepositorioDeContribuyentes extends JpaRepository<Contribuyente, Long> {
-    @Query(
-            "SELECT i FROM IdentidadContribuyente i WHERE i.id = :id"
-    ) // TODO: Revisar esto
-    Optional<IdentidadContribuyente> findIdentidadById(@Param("id") Long id);
-
     boolean existsByMail(String mail);
 
     Optional<Contribuyente> findByMail(String mail);

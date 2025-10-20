@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 public class IdentidadContribuyenteOutputDto {
-    private Long id;
     private String nombre;
     private String apellido;
     @JsonFormat(pattern = "yyyy-MM-dd")
