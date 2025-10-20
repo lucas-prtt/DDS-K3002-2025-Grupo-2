@@ -13,14 +13,13 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 public class Contribuyente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Setter
     private Boolean esAdministrador;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Setter
+    @Embedded
     private IdentidadContribuyente identidad;
     @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER)
     private List<Hecho> hechosContribuidos;

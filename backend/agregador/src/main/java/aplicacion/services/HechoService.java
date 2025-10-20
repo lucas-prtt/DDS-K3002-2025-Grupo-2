@@ -4,6 +4,7 @@ import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
@@ -41,6 +42,9 @@ public class HechoService {
     }
 
     public void guardarHechos(List<Hecho> hechos) {
+        for (Hecho hecho : hechos) {
+            guardarOActualizarContribuyenteDeHecho(hecho);
+        }
         repositorioDeHechos.saveAll(hechos);
     }
 
@@ -114,7 +118,15 @@ public class HechoService {
     }
 
     public void guardarHecho(Hecho hecho) {
+        guardarOActualizarContribuyenteDeHecho(hecho);
         repositorioDeHechos.save(hecho);
+    }
+
+    private void guardarOActualizarContribuyenteDeHecho(Hecho hecho) {
+        if (hecho.getAutor() != null) {
+            Contribuyente contribuyente = contribuyenteService.guardarOActualizar(hecho.getAutor());
+            hecho.setAutor(contribuyente);
+        }
     }
 
     public HechoOutputDto agregarHecho(HechoInputDto hechoInputDTO) {

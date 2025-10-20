@@ -15,6 +15,8 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class ContribuyenteService {
     private final RepositorioDeContribuyentes repositorioDeContribuyentes;
@@ -39,6 +41,19 @@ public class ContribuyenteService {
             return contribuyenteOutputMapper.map(contribuyenteGuardado);
         } else {
             throw new MailYaExisteException("El mail " + contribuyente.getMail() + " ya existe en la base de datos.");
+        }
+    }
+
+    @Transactional
+    public Contribuyente guardarOActualizar(Contribuyente contribuyente) {
+        Optional<Contribuyente> contribuyenteExistente = repositorioDeContribuyentes.findByMail(contribuyente.getMail());
+
+        if (contribuyenteExistente.isPresent()) {
+            Contribuyente contribuyenteGuardado = contribuyenteExistente.get();
+            contribuyenteGuardado.setIdentidad(contribuyente.getIdentidad()); // Si el contribuyente ya existe por mail, le updateamos la identidad
+            return repositorioDeContribuyentes.save(contribuyenteGuardado);
+        } else {
+            return repositorioDeContribuyentes.save(contribuyente); // Si no existe, lo creamos
         }
     }
 
