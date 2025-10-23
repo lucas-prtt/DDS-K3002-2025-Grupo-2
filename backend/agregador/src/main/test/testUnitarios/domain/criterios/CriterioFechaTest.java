@@ -1,0 +1,30 @@
+package testUnitarios.domain.criterios;
+
+import aplicacion.domain.criterios.CriterioDeFecha;
+import aplicacion.domain.hechos.Hecho;
+import jakarta.validation.constraints.AssertTrue;
+import org.junit.jupiter.api.Test;
+import testUtils.HechoFactory;
+
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class CriterioFechaTest {
+    @Test
+    public void testCriterioFecha(){
+        CriterioDeFecha criterioDeFecha = new CriterioDeFecha(LocalDateTime.now().minusYears(5), LocalDateTime.now().plusYears(5));
+        Hecho hecho = HechoFactory.crearHechoAleatorio();
+        hecho.setFechaAcontecimiento(LocalDateTime.now());
+        assertTrue(() -> criterioDeFecha.cumpleCriterio(hecho));
+        hecho.setFechaAcontecimiento(LocalDateTime.now().plusYears(6));
+        assertFalse(criterioDeFecha.cumpleCriterio(hecho));
+        hecho.setFechaAcontecimiento(LocalDateTime.now().plusYears(4));
+        assertTrue(criterioDeFecha.cumpleCriterio(hecho));
+        hecho.setFechaAcontecimiento(LocalDateTime.now().minusYears(6));
+        assertFalse(criterioDeFecha.cumpleCriterio(hecho));
+        hecho.setFechaAcontecimiento(LocalDateTime.now().minusYears(3));
+        assertTrue(criterioDeFecha.cumpleCriterio(hecho));
+    }
+}
