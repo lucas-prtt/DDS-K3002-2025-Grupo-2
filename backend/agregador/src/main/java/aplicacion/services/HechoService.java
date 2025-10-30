@@ -221,12 +221,12 @@ public class HechoService {
         return hechosDuplicados;
     }
     @Transactional
-    public HechoOutputDto agregarEtiqueta(String hechoId, String etiquetaName) throws HechoNoEncontradoException {
+    public Etiqueta agregarEtiqueta(String hechoId, String etiquetaName) throws HechoNoEncontradoException {
         Etiqueta etiqueta;
         Optional<Hecho> hecho = repositorioDeHechos.findById(hechoId);
         if(hecho.isEmpty())
             throw new HechoNoEncontradoException("Hecho " + hechoId + " no encontrado");
-        etiquetaName = normalizadorDeHechos.normalizarEtiqueta(etiquetaName);
+        //etiquetaName = normalizadorDeHechos.normalizarEtiqueta(etiquetaName);
         String finalEtiquetaName = etiquetaName;
         if(hecho.get().getEtiquetas().stream().anyMatch(etiqueta1 -> Objects.equals(etiqueta1.getNombre(), finalEtiquetaName))){
             throw new CategoriaYaPresenteException(hecho.get(), etiquetaName);
@@ -238,7 +238,7 @@ public class HechoService {
         }
         hecho.get().getEtiquetas().add(etiqueta);
         repositorioDeHechos.save(hecho.get());
-        return hechoOutputMapper.map(hecho.get());
+        return etiqueta;
     }
 
     public HechoOutputDto eliminarEtiqueta(String hechoId, String etiquetaName) throws HechoNoEncontradoException, EtiquetaNoEncontradaException {
