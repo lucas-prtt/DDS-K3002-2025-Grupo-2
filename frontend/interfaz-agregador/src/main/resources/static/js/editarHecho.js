@@ -54,7 +54,7 @@ function agregarEtiqueta() {
             span.textContent = data.nombre;
 
             const btnEliminar = document.createElement("button");
-            btnEliminar.textContent = "Eliminar";
+            btnEliminar.textContent = "X";
             btnEliminar.style.marginLeft = "8px";
             btnEliminar.className = "btn-eliminar";
             btnEliminar.dataset.nombre = data.nombre;
