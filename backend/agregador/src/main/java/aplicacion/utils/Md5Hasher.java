@@ -25,4 +25,7 @@ public class Md5Hasher {
         }
         return sb.toString();
     }
+    public byte[] hashBinario(String cadena){
+        return hasher.digest(cadena.getBytes(StandardCharsets.UTF_8));
+    }
 }

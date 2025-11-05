@@ -24,19 +24,18 @@ public class DepuradorDeHechos {
     }
 
     public void depurar(Map<Fuente, List<Hecho>> hechosPorFuente) {
+        ProgressBar progressBar = new ProgressBar(hechosPorFuente.size()+1, "  fuentes");
+        long inicio = System.nanoTime();
+        long totalDeHechos = 0;
         for (Map.Entry<Fuente, List<Hecho>> entry: hechosPorFuente.entrySet()) {
             Fuente fuente = entry.getKey();
-            System.out.println("Depurando hechos de la fuente: " + fuente.getId() + " con " + entry.getValue().size() + " hechos.");
             List<Hecho> hechos = new ArrayList<>(entry.getValue());
+            totalDeHechos+=hechos.size();
+            progressBar.avanzar( " fuente: " + fuente.getId() );
 
-
-            ProgressBar progressBar = new ProgressBar(8, " " + hechos.size() + " hechos");
             long inicioFuente = System.nanoTime();
-            progressBar.avanzar();
             List<Hecho> hechosDuplicadosDeBD = hechoService.hallarHechosDuplicadosDeBD(hechos);
-            progressBar.avanzar();
             List<Hecho> hechosDuplicadosDeLista = hechoService.hallarHechosDuplicadosDeLista(hechos);
-            progressBar.avanzar();
 
 
 
@@ -44,33 +43,24 @@ public class DepuradorDeHechos {
             hechoService.quitarHechosDeSublista(hechos, hechosDuplicadosDeBD);
             hechoService.quitarHechosDeSublista(hechos, hechosDuplicadosDeLista);
             hechos.addAll(hechosDuplicadosDeLista); // Los agrega 1 vez para que estén.
-            progressBar.avanzar();
 
             // No guarda los repetidos
             hechoService.guardarHechos(hechos);
-            progressBar.avanzar();
 
             // Usa los que se van a crear
             fuente.agregarHechos(hechos);
-            progressBar.avanzar();
 
             // Usa los de la BD
             fuente.agregarHechos(hechosDuplicadosDeBD);
-            progressBar.avanzar();
 
 
             fuenteService.guardarFuente(fuente);
-            progressBar.avanzar();
 
-            long finFuente = System.nanoTime();
-            // Cálculo de tiempos
-            long tiempoTotal = finFuente - inicioFuente;
+            }
+        long fin = System.nanoTime();
+        long totalTiempo = fin - inicio;
+        System.out.printf("\nFin depuración de hechos \n Tiempo: %.2fs \n %.2f hechos/s \n\n", totalTiempo /1_000_000_000.0 , totalDeHechos / (totalTiempo/1_000_000_000.0));
 
-            try {
-            System.out.println("Fin depuración de la fuente: " + fuente.getId() + ". Tiempo: " + tiempoTotal /1_000_000 + " ms.  " + + (hechos.size() / (tiempoTotal/1_000_000_000.0)) + " hechos/segundo." );
-            }catch (Exception ignored){
-                System.out.println("Fin depuracion");
-            }
-            }
+
     }
 }

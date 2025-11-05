@@ -22,9 +22,14 @@ import aplicacion.utils.Md5Hasher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -38,7 +43,8 @@ public class HechoService {
     private final HechoInputMapper hechoInputMapper;
     private final ContribuyenteService contribuyenteService;
     private final EtiquetaService etiquetaService;
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper, ContribuyenteService contribuyenteService, EtiquetaService etiquetaService) {
+    private final JdbcTemplate jdbcTemplate;
+    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper, ContribuyenteService contribuyenteService, EtiquetaService etiquetaService, JdbcTemplate jdbcTemplate) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.hechoOutputMapper = hechoOutputMapper;
@@ -46,6 +52,7 @@ public class HechoService {
         this.hechoInputMapper = hechoInputMapper;
         this.contribuyenteService = contribuyenteService;
         this.etiquetaService = etiquetaService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
@@ -187,10 +194,31 @@ public class HechoService {
         listaOriginal.removeIf(hechoA -> hechosAQuitar.stream().anyMatch(hechoB -> hechoA == hechoB));
     }
 
-    public List<Hecho> hallarHechosDuplicadosDeBD(List<Hecho> hechosAEvaluar){
-        Md5Hasher hasher = Md5Hasher.getInstance();
-        List<String> codigosUnicos = hechosAEvaluar.stream().map(Hecho::getClaveUnica).map(hasher::hash).toList();
-        return repositorioDeHechos.findByCodigoHasheadoIn(codigosUnicos);
+    public List<Hecho> hallarHechosDuplicadosDeBD(List<Hecho> hechosAEvaluar) {
+        List<byte[]> hashes = hechosAEvaluar.stream().map(Hecho::getMd5Hash).toList();
+        if (hashes.isEmpty()) return Collections.emptyList();
+
+        // Crea una tabla temporal con una sola columna de Hashes y los inserta en la columna
+        jdbcTemplate.execute("CREATE TEMPORARY TABLE tmp_hashes (hash BINARY(16) PRIMARY KEY)");
+        String sqlInsert = "INSERT INTO tmp_hashes(hash) VALUES (?)";
+        jdbcTemplate.batchUpdate(sqlInsert, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setBytes(1, hashes.get(i));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return hashes.size();
+            }
+        });
+        // Agarra los hechos repetidos
+        String sqlQuery = "SELECT h.* FROM hecho h JOIN tmp_hashes t ON h.md5hash = t.hash";
+        List<Hecho> resultados = jdbcTemplate.query(sqlQuery, new BeanPropertyRowMapper<>(Hecho.class));
+        // Borra los hashes que ya no importan
+        jdbcTemplate.execute("DROP TEMPORARY TABLE tmp_hashes");
+
+        return resultados;
     }
 
     public Map<Hecho, Long> contarHechosPorFuente(Coleccion coleccion) {

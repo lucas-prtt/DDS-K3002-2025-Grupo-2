@@ -2,6 +2,7 @@ package aplicacion.domain.hechos;
 
 import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import aplicacion.domain.usuarios.Contribuyente;
+import aplicacion.utils.Md5Hasher;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,11 @@ import java.util.Objects;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Solo se incluyen los minimos para diferenciar a dos hechos. Fechas de cargas, solicitudes de eliminacion y otras cosas no
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(
+        indexes = {
+                @Index(name = "indice_hecho_md5hash", columnList = "md5hash")
+        }
+)
 public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -60,6 +66,8 @@ public class Hecho {
     private Boolean anonimato;
     @ManyToOne
     private Contribuyente autor;
+    @Column(columnDefinition = "BINARY(16)")
+    private byte[] md5Hash;
 
     public Hecho(String titulo,
                  String descripcion,
@@ -86,6 +94,7 @@ public class Hecho {
         this.visible = true;
         this.anonimato = anonimato != null ? anonimato : true;
         this.autor = Boolean.TRUE.equals(anonimato) ? null : autor;
+        this.md5Hash = Md5Hasher.getInstance().hashBinario(getClaveUnica());
     }
 
     public void ocultar() {
@@ -131,7 +140,6 @@ public class Hecho {
         return String.join("|",
                 titulo,
                 descripcion,
-                categoria.getId().toString(),
                 ubicacion.getLatitud().toString(),
                 ubicacion.getLongitud().toString(),
                 fechaAcontecimiento.toString(),

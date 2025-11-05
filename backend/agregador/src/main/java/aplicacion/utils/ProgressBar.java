@@ -34,6 +34,14 @@ public class ProgressBar {
         progresoActual += cantidad;
         imprimir();
     }
+    public void avanzar(String mensaje) {
+        avanzar(1, mensaje);
+    }
+
+    public void avanzar(int cantidad, String mensaje) {
+        progresoActual += cantidad;
+        imprimir(mensaje);
+    }
 
     private void imprimir() {
         int porcentaje = (int) ((double) progresoActual / total * 100);
@@ -42,6 +50,18 @@ public class ProgressBar {
 
         String barra = "[" + "#".repeat(llenos) + "-".repeat(vacios) + "] " +
                 porcentaje + "% (" + progresoActual + "/" + total + (title != null? ") - " + title : ")");
+        System.out.print("\r" + barra);
+        if (progresoActual >= total) {
+            System.out.print("\n");
+        }
+    }
+    private void imprimir(String mensaje) {
+        int porcentaje = (int) ((double) progresoActual / total * 100);
+        int llenos = (porcentaje * largoBarra) / 100;
+        int vacios = largoBarra - llenos;
+
+        String barra = "[" + "#".repeat(llenos) + "-".repeat(vacios) + "] " +
+                porcentaje + "% (" + progresoActual + "/" + total + (title != null? ") - " + title : ")" + mensaje);
         System.out.print("\r" + barra);
         if (progresoActual >= total) {
             System.out.print("\n");
