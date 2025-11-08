@@ -58,7 +58,7 @@ public class HechoController {
 
     @GetMapping("/hechos/index")
     public ResponseEntity<Object> obtenerRecomendaciones(@RequestParam(name="search", required = true) String texto, @RequestParam(value = "limit", required = false, defaultValue = "5") Integer limite) {
-        StringBuilder url = new StringBuilder(urlBaseAgregador + "/hechos");
+        StringBuilder url = new StringBuilder(urlBaseAgregador + "/hechos/index");
         UrlHelper.appendQueryParam(url, "search", texto);
         UrlHelper.appendQueryParam(url, "limit", limite);
         return solicitudesHttp.get(url.toString(), Object.class);
