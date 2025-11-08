@@ -97,7 +97,7 @@ public class ColeccionController {
 
     @GetMapping("/colecciones/index")
     public ResponseEntity<Object> obtenerRecomendaciones(@RequestParam(name = "search", required = true) String texto, @RequestParam(name="limit", required = false, defaultValue = "5") Integer limite) {
-        StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones");
+        StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/index");
         UrlHelper.appendQueryParam(url, "search", texto);
         UrlHelper.appendQueryParam(url, "limit", limite);
         return solicitudesHttp.get(url.toString(), Object.class);
