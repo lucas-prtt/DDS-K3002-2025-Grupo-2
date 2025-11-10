@@ -1,6 +1,8 @@
 package aplicacion.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import java.io.IOException;
 @Service
 public class ConfigService {
     private final AgregadorConfig config;
+    private DiscoveryClient discoveryClient;
 
     public ConfigService() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -19,7 +22,9 @@ public class ConfigService {
     }
 
     public String getUrl() {
-        return "http://" + config.getIpAgregador() + ":" + config.getPuertoAgregador() + "/agregador";
+        ServiceInstance instance = discoveryClient.getInstances("agregador").getFirst();
+
+        return instance.getUri() + "/agregador";
     }
     public Boolean isPrometheusHabilitado(){return config.isPrometheusHabilitado();}
 }
