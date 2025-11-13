@@ -60,26 +60,8 @@ public class CargarHechosScheduler {
         services.addAll(proxyInstances);
         services.addAll(estaticaInstances);
         services.addAll(dinamicaInstances);
-        // A cada instancia le pedimos las fuentes
-        // URI = http://ipServicio:puertoServicio/(tipoDeFuente)
-        List<String> proxyURIs = proxyInstances.stream().map(ServiceInstance::getUri).map(s->s.toString() + "/fuentesProxy").toList();
-        /*List<String> estaticaURIS = estaticaInstances.stream().map(ServiceInstance::getUri).map(s->s.toString() + "/fuentesEstaticas").toList();
-        List<String> dinamicaURIS = dinamicaInstances.stream().map(ServiceInstance::getUri).map(s->s.toString() + "/fuentesDinamicas").toList();
-        List<String> allUris = new ArrayList<>();
-        allUris.addAll(proxyURIs);
-        allUris.addAll(estaticaURIS);
-        allUris.addAll(dinamicaURIS);
 
-        // Asociamos temporalmente las fuentes a las instancias halladas
-        Map<Fuente, String> URIxFuente = new HashMap<>();
-        System.out.println("Instancias: " + allUris.size());
-        if(allUris.isEmpty()){
-            return;
-        }
-        System.out.println(allUris.getFirst().toString());*/
-        //Map<Fuente, String> URIxFuente = new HashMap<>();
 
-        Map<Fuente, ServiceInstance> fuenteProxyInstanceMap = new HashMap<>();
         RestTemplate restTemplate = new RestTemplate();
         for(ServiceInstance instance : services) {
             String serviceName = switch (instance.getServiceId()) {
@@ -96,17 +78,17 @@ public class CargarHechosScheduler {
             fuentesIds.forEach(fuenteId->{
                         Fuente fuente;
                         try{
-                            fuente = fuenteService.obtenerFuentePorId(fuenteId);
+                            fuenteService.obtenerFuentePorId(fuenteId);
                         } catch (FuenteNoEncontradaException e) {
                             if(uri.endsWith("Proxy")){
-                                fuente = new FuenteProxy(fuenteId, instance.getServiceId());
+                                fuente = new FuenteProxy(fuenteId);
 
                             }
                             else if (uri.endsWith("Estaticas")){
-                                fuente = new FuenteEstatica(fuenteId, instance.getServiceId());
+                                fuente = new FuenteEstatica(fuenteId);
                             }
                             else if (uri.endsWith("Dinamicas")){
-                                fuente = new FuenteDinamica(fuenteId, instance.getServiceId());
+                                fuente = new FuenteDinamica(fuenteId);
                             }
                             else{
                                 throw new RuntimeException("Anduvo mal lo de reconcocer la fuente");
@@ -115,14 +97,11 @@ public class CargarHechosScheduler {
                             fuenteService.guardarFuente(fuente);
 
                         }
-                        fuenteProxyInstanceMap.put(fuente, instance);
 
-                //URIxFuente.put(fuente, uri + "/" + fuenteId);
                     }
             );
 
         }
-        fuenteProxyInstanceMap.entrySet().removeIf(e -> !(e.getKey() instanceof FuenteProxy));
 
         // Buscamos las fuentes que estamos usando en colecciones
 
@@ -138,16 +117,11 @@ public class CargarHechosScheduler {
             fuenteSet.addAll(fuenteService.obtenerTodasLasFuentes());
         }
 
-        //Map<Fuente, String> fuentesRelevantesMap = new HashMap<>();
-
-        /*for(Fuente fuenteRelevante : fuenteSet){
-            fuentesRelevantesMap.put(fuenteRelevante, URIxFuente.get(fuenteRelevante));
-        }*/
         System.out.println("Se pediran hechos de " + fuenteSet.size() + " fuentes");
 
 
         // Pedimos los hechos a cada fuente
-        Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuenteSet, fuenteProxyInstanceMap);
+        Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuenteSet);
         System.out.println("luego de pedir hechos");
 
 
