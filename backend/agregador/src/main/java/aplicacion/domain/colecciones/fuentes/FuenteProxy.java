@@ -8,6 +8,8 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 
+import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -29,8 +31,19 @@ public class FuenteProxy extends Fuente {
 
 
     @Override
-    protected String obtenerURL(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient, ServiceInstance instance) {
-        return instance.getUri().toString() + hechosPathParam();
+    protected String obtenerURL(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
+        return discoveryClient.getInstances(getNombreServicio()).stream()
+                .filter(i -> {
+                    String fuentes = i.getMetadata().get("fuentesDisponibles");
+                    return fuentes != null && Arrays.asList(fuentes.split(",")).contains(getId());
+                })
+                .findFirst()
+                .map(ServiceInstance::getUri)
+                .map(URI::toString)
+                .orElseThrow(() -> new IllegalStateException(
+                        "No se encontró ninguna instancia del servicio '"
+                                + getNombreServicio() + "' que contenga la fuenteID '" + getId() + "'"
+                ));
     }
 
     @Override

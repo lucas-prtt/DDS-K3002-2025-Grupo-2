@@ -32,12 +32,12 @@ public class FuenteEstatica extends Fuente {
     }
 
     @Override
-    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient, ServiceInstance instance) {
+    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
         if (this.fueConsultada) {
             return new ArrayList<>();
         }
         this.fueConsultada = true;
-        return super.getHechosUltimaPeticion(discoveryClient, loadBalancerClient, instance);
+        return super.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
     }
 
     @Override

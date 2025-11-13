@@ -61,9 +61,8 @@ public abstract class Fuente {
         this.alias = "Fuente sin título";
     }
 
-    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient, ServiceInstance instance) {
+    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
 
-        System.out.print("hola en getHechosUltimaPeticion");
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -72,7 +71,7 @@ public abstract class Fuente {
         LocalDateTime fechaAnterior = this.getUltimaPeticion();
         List<HechoInputDto> hechos = new ArrayList<>();
 
-        String url = obtenerURL(discoveryClient, loadBalancerClient, instance);
+        String url = obtenerURL(discoveryClient, loadBalancerClient);
 
 
         if (fechaAnterior != null) {
@@ -109,10 +108,8 @@ public abstract class Fuente {
         this.hechos.clear();
     }
 
-    protected String obtenerURL(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient, ServiceInstance _instance) {
-        if (_instance != null) {
-            return _instance.getUri().toString() + hechosPathParam();
-        }
+    protected String obtenerURL(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
+
         return loadBalancerClient.choose(nombreServicio).getUri().toString() + hechosPathParam();
 
     }
