@@ -26,8 +26,8 @@ public class AgregadorController {
 
     // POST /agregadores  con body: agregadorID=123  (o query param)
     @PostMapping
-    public String crearAgregador(@RequestParam String agregadorID) {
+    public String crearAgregador() {
         // Lógica real de creación
-        return "Agregador creado con ID: " + agregadorID;
+        return agregadorService.crearAgregador();
     }
 }
