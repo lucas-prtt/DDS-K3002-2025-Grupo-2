@@ -55,7 +55,7 @@
                         <b style="word-wrap: break-word;">${h.titulo}</b>
                         <br><br>
                         <a href="/hechos/${h.id}"
-                           style="display: inline-block; padding: 6px 12px; background-color: #4f46e5; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em;">
+                           style="display: inline-block; padding: 6px 12px; background-color: red; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em;">
                            Ver hecho
                         </a>
                     </div>
@@ -105,7 +105,7 @@
 <!-- Fragmento hechosRecientes -->
 <div th:fragment="hechosRecientes(hechos)">
     <div id="hechos-recientes-panel" class="bg-white rounded-lg shadow-lg"
-         style="width: 100%; max-width: 380px;">
+         style="width: 100%; max-width: 300px;">
         <div class="flex justify-between items-center p-4 pb-3">
             <h3 class="text-xl font-bold">Hechos Recientes</h3>
             <button id="toggle-hechos-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200">
@@ -175,7 +175,7 @@
 
 <div th:fragment="filtros">
     <div id="filtros-panel" class="bg-white rounded-lg shadow-lg"
-         style="width: 100%; max-width: 380px;">
+         style="width: 100%; max-width: 300px;">
 
         <div class="flex justify-between items-center p-4 pb-3">
             <h3 class="text-lg font-bold">Filtros</h3>
