@@ -4,15 +4,18 @@ let multimediaCount = 0;
 // Función para toggle del modal
 function toggleModalHecho() {
     const modal = document.getElementById('modalCrearHecho');
+    const overlay = document.getElementById('modalOverlay');
 
     if (modal.style.display === 'none' || modal.style.display === '') {
-        // Abrir modal
+        // Abrir modal y overlay
         modal.style.display = 'flex'; // Cambiado a flex para centrar
+        overlay.style.display = 'block';
         // Evitar scroll en el body
         document.body.style.overflow = 'hidden';
     } else {
-        // Cerrar modal
+        // Cerrar modal y overlay
         modal.style.display = 'none';
+        overlay.style.display = 'none';
         // Restaurar scroll en el body
         document.body.style.overflow = '';
 
