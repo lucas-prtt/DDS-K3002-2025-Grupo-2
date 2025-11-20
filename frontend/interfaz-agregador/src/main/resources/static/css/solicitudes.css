@@ -22,7 +22,7 @@
 }
 
 /* Tarjeta de solicitud - FONDO NEGRO */
-.solicitud-card {
+.hechoPendiente-card {
     background-color: #1f2937;
     border-radius: 12px;
     padding: 1.5rem;
@@ -33,7 +33,7 @@
     gap: 1rem;
 }
 
-.solicitud-card:hover {
+.hechoPendiente-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
@@ -190,15 +190,15 @@
 }
 
 .no-solicitudes .icon-large {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1rem;
-    color: #000000;
-    stroke: #000000;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+    color: #6b7280;
+    stroke: #6b7280;
 }
 
 .no-solicitudes p {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     margin: 0;
     color: #000000;
 }

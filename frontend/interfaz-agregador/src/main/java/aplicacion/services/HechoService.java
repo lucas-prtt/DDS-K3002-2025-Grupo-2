@@ -3,7 +3,6 @@ package aplicacion.services;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
-import aplicacion.dto.output.SolicitudOutputDto;
 import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +15,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -131,7 +129,7 @@ public class HechoService {
 
 
 
-    public List<HechoOutputDto> obtenerSolicitudesPendientes() {
+    public List<HechoOutputDto> obtenerHechosPendientes() {
         try {
             List<HechoOutputDto> lista = fuentesDinamicasWebClient.get()
                     .uri("/hechos?pendiente=true")
@@ -139,7 +137,7 @@ public class HechoService {
                     .retrieve()
                     .onStatus(status -> status.is4xxClientError(), resp ->
                             resp.bodyToMono(String.class).flatMap(msg -> {
-                                System.err.println("Error 4xx en solicitudes pendientes: " + msg);
+                                System.err.println("Error 4xx en hechosPendientes pendientes: " + msg);
                                 return Mono.error(new RuntimeException(msg));
                             })
                     )
@@ -150,12 +148,12 @@ public class HechoService {
             if (lista == null) {
                 return Collections.emptyList();
             }
-            System.out.println("Servicio: Cargadas " + lista.size() + " solicitudes pendientes.");
+            System.out.println("Servicio: Cargadas " + lista.size() + " hechosPendientes pendientes.");
             return lista;
         } catch (WebClientResponseException e) {
-            System.err.println("ERROR WebClient al obtener solicitudes pendientes: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
+            System.err.println("ERROR WebClient al obtener hechosPendientes pendientes: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
         } catch (Exception e) {
-            System.err.println("ERROR al obtener solicitudes pendientes: " + e.getMessage());
+            System.err.println("ERROR al obtener hechosPendientes pendientes: " + e.getMessage());
         }
 
         return Collections.emptyList();
