@@ -2,23 +2,22 @@ body {
     color: #ffffff;
 }
 
-/* Contenedor principal - (Aseguramos que el texto principal sea blanco) */
-.solicitudes-container {
+/* Contenedor principal */
+.hechosPendientes-container {
     max-width: 1400px;
     margin: 2rem auto;
     padding: 0 2rem;
-    color: inherit; /* Hereda el blanco del body */
 }
 
 .page-title {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #ffffff; /* El título debe ser blanco */
+    color: black;
     margin-bottom: 2rem;
     text-align: center;
 }
-/* Grilla de solicitudes - (Tomado de solicitudes.css) */
-.solicitudes-grid {
+/* Grilla de hechosPendientes - (Tomado de hechosPendientes.css) */
+.hechosPendientes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
@@ -26,7 +25,7 @@ body {
 }
 
 /* Tarjeta de solicitud - FONDO OSCURO */
-.solicitud-card {
+.hechoPendiente-card {
     background-color: #1f2937;
     border-radius: 12px;
     padding: 1.5rem;
@@ -37,7 +36,7 @@ body {
     gap: 1rem;
 }
 
-.solicitud-card:hover {
+.hechoPendiente-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
@@ -131,7 +130,7 @@ body {
     background-color: #dc2626;
 }
 
-/* --- ESTILOS DEL MODAL (ESTA ES LA CLAVE) --- */
+/* --- ESTILOS DEL MODAL --- */
 
 .modal {
     position: fixed;
@@ -230,25 +229,28 @@ body {
     border-color: #2563eb;
 }
 
-/* --- Estilos para la sección "No hay solicitudes" --- */
-.no-solicitudes {
-    text-align: center;
+/* --- Estilos para la sección "No hay hechosPendientes" --- */
+.no-hechosPendientes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 4rem 2rem;
-    background-color: #1f2937;
-    border-radius: 12px;
-    max-width: 600px;
-    margin: 3rem auto;
-    color: #d1d5db;
+    text-align: center;
+    color: #000000;
+    background: transparent;
 }
 
-.no-solicitudes .icon-large {
-    width: 60px;
-    height: 60px;
-    color: #4b5563;
-    margin-bottom: 1rem;
+.no-hechosPendientes .icon-large {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+    color: #6b7280;
+    stroke: #6b7280;
 }
 
-.no-solicitudes p {
-    font-size: 1.25rem;
+.no-hechosPendientes p {
+    font-size: 1.125rem;
     font-weight: 500;
+    color: #000000;
 }

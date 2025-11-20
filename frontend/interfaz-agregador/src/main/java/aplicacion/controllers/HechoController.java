@@ -64,17 +64,17 @@ public class HechoController {
 
     }
 
-    @GetMapping("/solicitudes-pendientes")
+    @GetMapping("/hechos-pendientes")
     @PreAuthorize("hasRole('ADMIN')")
-    public String showSolicitudesPendientes(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
+    public String showHechosPendientes(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
         model.addAttribute("principal", oidcUser);
 
 
-        model.addAttribute("solicitudes", java.util.Collections.emptyList());
-        List<HechoOutputDto> solicitudes = hechoService.obtenerSolicitudesPendientes();
+        model.addAttribute("hechosPendientes", java.util.Collections.emptyList());
+        List<HechoOutputDto> hechosPendientes = hechoService.obtenerHechosPendientes();
 
 
-        model.addAttribute("solicitudes",solicitudes);
-        return "solicitudes-pendientes";
+        model.addAttribute("hechosPendientes",hechosPendientes);
+        return "hechos-pendientes";
     }
 }
