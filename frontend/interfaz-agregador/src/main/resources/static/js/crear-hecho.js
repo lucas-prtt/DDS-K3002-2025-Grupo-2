@@ -7,11 +7,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const multimediaCountObject = {multimediaCount : 0};
 
     if(allElementsFound([modal, openBtn, closeBtn, confirmBtn, usarCoordenadasCheck], "crear hecho")) {
-        listenModalToggle(modal, openBtn, closeBtn, () => limpiarFormularioModalHecho(multimediaCountObject))
-        listenUbicacionInputsCrearHecho(usarCoordenadasCheck)
-        listenAgregarMultimediaCrearHecho(multimediaCountObject)
-
-        confirmBtn.addEventListener("click", () => publicarHecho(closeBtn, usarCoordenadasCheck.checked))
+        listenOpenModal(modal, openBtn, () => {
+            document.getElementById("dropdown-menu").classList.add("hidden")
+            openBtn.parentElement.classList.remove("hidden")
+        })
+        listenCloseModal(modal, closeBtn, () => limpiarModalHecho(multimediaCountObject))
     }
 });
 

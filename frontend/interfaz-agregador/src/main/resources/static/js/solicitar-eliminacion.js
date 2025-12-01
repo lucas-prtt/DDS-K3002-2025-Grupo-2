@@ -1,19 +1,18 @@
 document.addEventListener("DOMContentLoaded", function() {
     const modal = document.getElementById("modal-solicitud-eliminacion");
-    const solicitarBtn = document.getElementById("solicitar-eliminacion");
-    const cancelarBtn = document.getElementById("salir-solicitar-eliminacion");
+    const openBtn = document.getElementById("solicitar-eliminacion");
+    const closeBtn = document.getElementById("salir-solicitar-eliminacion");
     const enviarBtn = document.getElementById("enviar-solicitud-eliminacion");
 
-    if(allElementsFound([modal, solicitarBtn, cancelarBtn, enviarBtn], "solicitar eliminación de un hecho")) {
-        listenModalToggle(modal, solicitarBtn, cancelarBtn, () => {
-            document.getElementById('motivo-solicitud-eliminacion').value = ''
-        });
+    if(allElementsFound([modal, openBtn, closeBtn, enviarBtn], "solicitar eliminación de un hecho")) {
+        listenOpenModal(modal, openBtn)
+        listenCloseModal(modal, closeBtn, () => document.getElementById('motivo-solicitud-eliminacion').value = '')
 
-        enviarBtn.addEventListener("click", () => enviarSolicitudEliminacion(cancelarBtn));
+        enviarBtn.addEventListener("click", () => enviarSolicitudEliminacion(closeBtn));
     }
 });
 
-function enviarSolicitudEliminacion(cancelarBtn) {
+function enviarSolicitudEliminacion(closeBtn) {
     const motivo = document.getElementById('motivo-solicitud-eliminacion').value;
 
     if (!motivo.trim()) {
@@ -37,7 +36,7 @@ function enviarSolicitudEliminacion(cancelarBtn) {
         .then(response => {
             if (response.ok) {
                 alert('Solicitud enviada exitosamente');
-                cancelarBtn.click()
+                closeBtn.click()
             } else {
                 return response.text().then(text => {
                     alert('Error al enviar la solicitud: ' + text);

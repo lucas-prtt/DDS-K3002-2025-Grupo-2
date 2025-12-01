@@ -45,10 +45,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     listenIrACrearHecho(closeBtn)
                 }
-                listenModalToggle(modal, openBtn, closeBtn)
+                listenOpenModal(modal, openBtn, () => document.getElementById("dropdown-menu").classList.add("hidden"))
+                listenCloseModal(modal, closeBtn)
             })
             .catch(error => {
                 console.error('Error al obtener los hechos:', error);
+                alert('Error al cargar los hechos');
             })
     }
 });

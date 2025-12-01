@@ -126,26 +126,6 @@
     padding: 1.25rem;
 }
 
-.modal-solicitud-title {
-    color: #1f2937;
-    font-weight: 600;
-    font-size: 1.125rem;
-}
-
-.modal-solicitud-body {
-    padding: 1.5rem;
-}
-
-.modal-solicitud-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    border-top: 2px solid #e5e7eb;
-    padding: 1rem 1.5rem;
-    background-color: #f9fafb;
-    border-radius: 0 0 0.75rem 0.75rem;
-}
-
 .custom-modal-solicitud {
     margin-top: 0.5rem;
     width: 100%;

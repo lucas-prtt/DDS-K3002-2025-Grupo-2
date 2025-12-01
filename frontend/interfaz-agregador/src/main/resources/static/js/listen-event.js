@@ -15,38 +15,26 @@ function listenPanelToggle(toggleBtn, content, separator, chevron) {
     });
 }
 
-function listenModalToggle(modal, openBtn, closeBtn = null, closingAction = null) {
-    if (closeBtn) {
-        openBtn.addEventListener('click', () => {
-            const menuBtn = document.getElementById("menu-button");
-            document.body.classList.add("overflow-hidden");
-            menuBtn.click()
-            modal.classList.remove("hidden");
-        });
+function listenCloseModal(modal, closeBtn, closeAction = null) {
+    closeBtn.addEventListener('click', () => {
+        document.body.classList.remove("overflow-hidden");
+        modal.classList.add("hidden");
 
-        closeBtn.addEventListener('click', () => {
-            document.body.classList.remove("overflow-hidden");
-            modal.classList.add("hidden");
-            if (closingAction) {
-                closingAction();
-            }
-        });
-    }
-    else {
-        // Dropdown
-        openBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            modal.classList.toggle("hidden");
-        });
+        if (closeAction) {
+            closeAction();
+        }
+    });
+}
 
-        modal.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
+function listenOpenModal(modal, openBtn, openAction = null) {
+    openBtn.addEventListener('click', () => {
+        if(openAction) {
+            openAction()
+        }
 
-        document.addEventListener('click', () => {
-            modal.classList.add("hidden");
-        });
-    }
+        document.body.classList.add("overflow-hidden");
+        modal.classList.remove("hidden");
+    });
 }
 
 function listenLimpiarFiltrosMapa(inputsContainer) {
@@ -153,7 +141,7 @@ function listenEliminarFuenteEditarColeccion() {
     });
 }
 
-function listenAgregarFuenteEditarColeccion() {
+function listenAgregrFuenteEditarColeccion() {
     const agregarBtn = document.getElementById('btnAgregarFuente');
 
     agregarBtn.addEventListener('click', () => {
@@ -207,63 +195,29 @@ function listenAgregarFuenteEditarColeccion() {
     });
 }
 
-function listenAgregarFuenteCrearColeccion(addBtn, object, containerElement) {
-    addBtn.addEventListener("click", function () {
-        object.contadorFuentes++;
+function listenAgregarFuenteModalColeccion(agregarBtn) {
+    const contadorFuentesObject = {cantidadFuentes: 0}
 
-        const fuenteDiv = document.createElement('div');
-        fuenteDiv.className = 'fuente-item border border-gray-300 rounded-md p-3 bg-gray-50 mb-2';
-        fuenteDiv.id = `fuente-${object.contadorFuentes}`;
-
-        fuenteDiv.innerHTML = `
-        <div class="flex justify-between items-center mb-2">
-            <span class="text-sm font-medium text-gray-700">Fuente ${object.contadorFuentes}</span>
-            <button id="eliminar-fuente-${object.contadorFuentes}" type="button" data-id="${object.contadorFuentes}" class="btn-eliminar">
-                Eliminar
-            </button>
-        </div>
-
-        <div class="space-y-2">
-            <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Tipo</label>
-                <select id="fuente-tipo-${object.contadorFuentes}"
-                        class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
-                        data-id="${object.contadorFuentes}">
-                    <option value="">Seleccione el tipo de fuente</option>
-                    <option value="estatica">Estática</option>
-                    <option value="dinamica">Dinámica</option>
-                    <option value="proxy">Proxy</option>
-                </select>
-            </div>
-
-            <div id="nombre-container-${object.contadorFuentes}" class="hidden">
-                <label class="block text-xs font-medium text-gray-600 mb-1">
-                    Nombre
-                    <span class="max-char-span">
-						(Máx.255 caracteres)
-					</span>
-                </label>
-                <input type="text" id="fuente-nombre-${object.contadorFuentes}" maxlength="255"
-                       class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
-                       placeholder="Ingrese el nombre">
-            </div>
-        </div>
-        `;
-        containerElement.appendChild(fuenteDiv);
-
-        const removeBtn = document.getElementById(`eliminar-fuente-${object.contadorFuentes}`);
-        const elemento = document.getElementById(`fuente-${object.contadorFuentes}`);
-
-        removeBtn.addEventListener("click", function() {elemento.remove()});
+    agregarBtn.addEventListener("click", function () {
+        contadorFuentesObject.cantidadFuentes++
+        agregarFuenteAColeccion(contadorFuentesObject.cantidadFuentes)
     });
 }
 
-function listenCamposCriterioCrearColeccion(tipoCriterio) {
-    const camposDistancia = document.getElementById("campos-distancia");
-    const camposFecha = document.getElementById("campos-fecha");
+/*function listenAgregarCriterioModalColeccion(agregarBtn) {
+    const contadorCriteriosObject = {cantidadCriterios: 0}
 
-    tipoCriterio.addEventListener("change", function() {
-        const criterio = tipoCriterio.value;
+    agregarBtn.addEventListener("click", function () {
+        agregarCriterioAColeccion(contadorCriteriosObject)
+    });
+}*/
+
+function listenCamposCriterioModalColeccion() {
+    const camposDistancia = document.getElementById("campos-distancia-coleccion");
+    const camposFecha = document.getElementById("campos-fecha-coleccion");
+
+    document.getElementById('criterio-tipo-coleccion').addEventListener("change", function(e) {
+        const criterio = e.target.value;
 
         camposDistancia.classList.add("hidden");
         camposFecha.classList.add("hidden");
@@ -278,13 +232,14 @@ function listenCamposCriterioCrearColeccion(tipoCriterio) {
     });
 }
 
-function listenCamposFuenteCrearColeccion() {
+function listenCamposFuenteModalColeccion() {
     document.addEventListener("change", e => {
         if (e.target.matches("select[id^='fuente-tipo']")) {
             const id = e.target.dataset.id;
             const tipo = document.getElementById(`fuente-tipo-${id}`).value;
             const nombreContainer = document.getElementById(`nombre-container-${id}`);
-            nombreContainer.classList.toggle("hidden", !(tipo === "ESTATICA" || tipo === "PROXY"));
+
+            nombreContainer.classList.toggle("hidden", !(tipo === "estatica" || tipo === "proxy"));
         }
     });
 }
@@ -313,7 +268,7 @@ function listenAgregarMultimediaCrearHecho(object) {
         multimediaDiv.id = `multimedia-${object.multimediaCount}`;
 
         multimediaDiv.innerHTML = `
-                <input type="text" class="form-control" maxlength="500"
+                <input type="text" class="form-input" maxlength="500"
                        id="url-${object.multimediaCount}"
                        placeholder="https://ejemplo.com/imagen.jpg" required>
                 <button id="eliminar-multimedia-${object.multimediaCount}" type="button" class="text-red-500 hover:text-red-700 p-1 rounded-full bg-red-100 hover:bg-red-200">
@@ -374,20 +329,4 @@ function listenUbicacionInputsCrearHecho(usarCoordenadasCheck) {
             longitud.required = false;
         }
     });
-}
-
-function listenIrACrearHecho() {
-    const openModalCrearHechoBtn = document.getElementById("open-modal-hecho")
-    openModalCrearHechoBtn.addEventListener("click", () => moveBetweenModals("salir-mis-hechos", "menu-crear-hecho"))
-}
-
-function listenEditarHechoButtons(hechos) {
-    hechos.forEach(hecho => {
-        const editBtn = document.getElementById(`btn-editar-hecho-${hecho.id}`)
-
-        editBtn.addEventListener("click", function() {
-
-            moveBetweenModals("salir-mis-hechos", "menu-crear-hecho");
-        })
-    })
 }
