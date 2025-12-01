@@ -26,11 +26,11 @@ public class ConfigService {
         return "http://" + config.getIpAgregador() + ":" + config.getPuertoAgregador() + "/agregador";
     }
 
-    public String getUrlEstadisticas() {
-        return "http://" + config.getIpEstadisticas() + ":" + config.getPuertoEstadisticas() + "/estadisticas";
-    }
-
     public String getUrlFuentesEstaticas() {
         return "http://" + config.getIpFuenteEstatica() + ":" + config.getPuertoFuenteEstatica() + "/fuentesEstaticas";
+    }
+
+    public String getUrlFuentesProxy() {
+        return "http://" + config.getIpFuenteProxy() + ":" + config.getPuertoFuenteProxy() + "/fuentesProxy";
     }
 }
