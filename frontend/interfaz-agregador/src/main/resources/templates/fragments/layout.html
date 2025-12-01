@@ -43,6 +43,8 @@
         <th:block th:replace="~{fragments/header :: headerScripts}" />
         <script src="/js/listen-event.js" defer></script>
         <script src="/js/spinner.js" defer></script>
+        <script src="/js/modal.js" defer></script>
+        <script src="/js/get-payload.js" defer></script>
         <script>
             function getHeaders() {
                 const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');

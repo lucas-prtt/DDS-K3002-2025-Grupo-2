@@ -25,12 +25,24 @@
 .create-modal-header {
     color: white;
     flex-shrink: 0;
-    display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
     border-bottom: 1px solid #e5e7eb;
     background-color: #3498db;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.edit-modal-header {
+    color: white;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: #e37d02;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
 }
@@ -58,7 +70,7 @@
 
 .modal-page-body {
     background: white;
-    padding: 1.5rem;
+    padding: 0.5rem 1.5rem 1.5rem;
     overflow-y: auto;
     flex: 1;
 }

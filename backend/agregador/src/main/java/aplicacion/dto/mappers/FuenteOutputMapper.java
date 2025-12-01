@@ -14,9 +14,9 @@ public class FuenteOutputMapper implements Mapper<Fuente, FuenteOutputDto>{
         retVal.setId(fuente.getId());
         retVal.setAlias(fuente.getAlias());
         String tipo = switch (fuente) {
-            case FuenteEstatica fuenteEstatica -> "Estatica";
-            case FuenteDinamica fuenteDinamica -> "Dinamica";
-            case FuenteProxy fuenteProxy -> "Proxy";
+            case FuenteEstatica fuenteEstatica -> "estatica";
+            case FuenteDinamica fuenteDinamica -> "dinamica";
+            case FuenteProxy fuenteProxy -> "proxy";
             default -> "Desconocida";
         };
         retVal.setTipo(tipo);

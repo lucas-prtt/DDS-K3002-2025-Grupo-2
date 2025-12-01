@@ -1,38 +1,44 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const coleccionCards = document.getElementsByClassName("coleccion-card");
+    const coleccionesCards = Array.from(document.getElementsByClassName("coleccion-card"));
 
-    if(allElementsFound([coleccionCards], "eliminar colección")) {
-        for (let i = 0; i < coleccionCards.length; i++) {
-            const coleccionId = coleccionCards[i].dataset.id;
-            console.log(`ID Coleccion ${i+1}: ${coleccionId}`)
+    if(allElementsFound([coleccionesCards], "eliminar colección")) {
+        coleccionesCards.forEach((coleccionCard, index) => {
+            const coleccionId = coleccionCard.dataset.id;
+            console.log(`ID Colección ${index + 1}: ${coleccionId}`)
 
             const borrarBtn = document.getElementById(`eliminar-coleccion-${coleccionId}`)
-            borrarBtn.addEventListener("click", () => eliminarColeccion(coleccionId));
-        }
+            borrarBtn.addEventListener("click", async function(){await eliminarColeccion(coleccionId)});
+        })
     }
 });
 
-function eliminarColeccion(id) {
-    if (!id && id !== 0) {
-        alert('ID de colección inválido.');
-        return;
-    }
-    if (!confirm('¿Está seguro que desea eliminar esta colección? Esta acción no se puede deshacer.')) return;
+async function eliminarColeccion(id) {
+    const spinnerEliminarColeccion = document.getElementById(`spinner-eliminar-coleccion-${id}`)
+    const eliminarBtn = document.getElementById(`eliminar-coleccion-${id}`)
 
-    fetch('http://localhost:8086/apiAdministrativa/colecciones/' + id, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken }
-    })
-        .then(response => {
-            if (response.ok) {
-                alert('Colección eliminada correctamente.');
-                window.location.reload();
-            } else {
-                return response.text().then(text => { throw new Error('Error ' + response.status + (text ? ' - ' + text : '')); });
-            }
+    if (!confirm('¿Está seguro que desea eliminar esta colección?\nEsta acción no se puede deshacer.')) return;
+
+    try {
+        eliminarBtn.classList.add("hidden")
+        spinnerEliminarColeccion.classList.remove("hidden")
+
+        const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken }
         })
-        .catch(err => {
-            console.error(err);
-            alert('Error al eliminar la colección. Verifique la consola.\nDetalle: ' + err.message);
-        });
+
+        if (!response.ok) {
+            const errorText = await response.text()
+            throw new Error(errorText ? `Error al eliminar la colección:\n${errorText}` : "Error al eliminar la colección")
+        }
+
+        alert('Colección eliminada correctamente.');
+        window.location.reload();
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    } finally {
+        eliminarBtn.classList.remove("hidden")
+        spinnerEliminarColeccion.classList.add("hidden")
+    }
 }

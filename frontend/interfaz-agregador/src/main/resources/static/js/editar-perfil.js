@@ -1,14 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById("modal-editar-perfil")
-    const openModalBtn = document.getElementById("menu-editar-perfil")
-    const cancelarBtn = document.getElementById("salir-editar-perfil")
+    const openBtn = document.getElementById("menu-editar-perfil")
+    const closeBtn = document.getElementById("salir-editar-perfil")
     const guardarBtn = document.getElementById("editar-perfil")
 
-    obtenerDatosPerfil()
+    if(allElementsFound([modal, openBtn, closeBtn, guardarBtn], "editar perfil")) {
+        listenOpenModal(modal, openBtn, () => {
+            document.getElementById("dropdown-menu").classList.add("hidden")
+            obtenerDatosPerfil()
+        })
+        listenCloseModal(modal, closeBtn)
 
-    if(allElementsFound([modal, openModalBtn, cancelarBtn, guardarBtn], "editar perfil")) {
-        obtenerDatosPerfil()
-        listenModalToggle(modal, openModalBtn, cancelarBtn, obtenerDatosPerfil)
         guardarBtn.addEventListener("click", guardarPerfil)
     }
 
