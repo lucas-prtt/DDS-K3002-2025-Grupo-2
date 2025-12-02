@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
+import domain.peticiones.ResponseWrapper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,8 @@ public class SolicitudController {
     }
 
     @PostMapping("/solicitudes")
-    public ResponseEntity<Object> crearSolicitud(@RequestBody String body) {
-        return solicitudesHttp.post(urlBaseAgregador + "/solicitudes", body, Object.class);
+    public ResponseEntity<?> crearSolicitud(@RequestBody String body) {
+        ResponseEntity<String> response = solicitudesHttp.post(urlBaseAgregador + "/solicitudes", body, String.class);
+        return ResponseWrapper.wrapResponse(response);
     }
 }
