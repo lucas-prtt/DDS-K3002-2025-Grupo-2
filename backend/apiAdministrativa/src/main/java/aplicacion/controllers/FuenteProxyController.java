@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
+import domain.peticiones.ResponseWrapper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class FuenteProxyController {
     }
 
     @PostMapping("/fuentesProxy")
-    public ResponseEntity<Object> guardarFuente(@RequestBody String body){
-        return solicitudesHttp.post(urlBaseProxy + "/fuentesProxy", body, Object.class);
+    public ResponseEntity<?> guardarFuente(@RequestBody String body){
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseProxy + "/fuentesProxy", body, String.class));
     }
 }

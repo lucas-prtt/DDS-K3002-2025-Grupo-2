@@ -4,6 +4,7 @@ import aplicacion.config.ConfigService;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import domain.helpers.UrlHelper;
+import domain.peticiones.ResponseWrapper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class HechoController {
     private final String urlBaseAgregador;
     private final String urlBaseDinamicas;
     private final SolicitudesHttp solicitudesHttp;
-    private final Cache<String, ResponseEntity<Object>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
+    private final Cache<String, ResponseEntity<?>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
 
     public HechoController(ConfigService configService) {
         this.urlBaseAgregador = configService.getUrlAgregador();
@@ -32,7 +33,7 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public ResponseEntity<Object> obtenerHechos(
+    public ResponseEntity<?> obtenerHechos(
             @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
             @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -116,25 +117,25 @@ public class HechoController {
 
         // Hacer la petición POST al endpoint GraphQL
         String graphqlUrl = urlBaseAgregador + "/graphql";
-        return solicitudesHttp.post(graphqlUrl, graphqlRequest, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(graphqlUrl, graphqlRequest, String.class));
     }
 
     @GetMapping("/hechos/{id}")
-    public ResponseEntity<Object> obtenerHechoPorId(@PathVariable(name = "id") String id) {
+    public ResponseEntity<?> obtenerHechoPorId(@PathVariable(name = "id") String id) {
         String url = urlBaseAgregador + "/hechos/" + id;
-        return solicitudesHttp.get(url, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url, String.class));
     }
 
     @GetMapping("/hechos/index")
-    public ResponseEntity<Object> obtenerRecomendaciones(@RequestParam(name="search", required = true) String texto,
+    public ResponseEntity<?> obtenerRecomendaciones(@RequestParam(name="search", required = true) String texto,
                                                          @RequestParam(value = "limit", required = false, defaultValue = "5") Integer limite) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/hechos/index");
         UrlHelper.appendQueryParam(url, "search", texto);
         UrlHelper.appendQueryParam(url, "limit", limite);
         String key = texto + "|" + limite;
-        ResponseEntity<Object> rta = cache.getIfPresent(key);
+        ResponseEntity<?> rta = cache.getIfPresent(key);
         if(rta == null){
-            ResponseEntity<Object> respuesta = solicitudesHttp.get(url.toString(), Object.class);
+            ResponseEntity<?> respuesta = ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), String.class));
             cache.put(key, respuesta);
             return respuesta;
         }
@@ -142,15 +143,15 @@ public class HechoController {
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<Object> agregarHecho(@RequestBody String body) { // Para postear hechos como contribuyente
+    public ResponseEntity<?> agregarHecho(@RequestBody String body) { // Para postear hechos como contribuyente
         String url = urlBaseDinamicas + "/hechos";
-        return solicitudesHttp.post(url, body, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(url, body, String.class));
     }
 
     @PatchMapping("/hechos/{id}")
-    public ResponseEntity<Object> editarHecho(@PathVariable(name = "id") String id, @RequestBody String body) { // Para editar hechos como contribuyente
+    public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id, @RequestBody String body) { // Para editar hechos como contribuyente
         String url = urlBaseDinamicas + "/hechos/" + id;
-        return solicitudesHttp.patch(url, body, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.patch(url, body, String.class));
     }
 
     /*
