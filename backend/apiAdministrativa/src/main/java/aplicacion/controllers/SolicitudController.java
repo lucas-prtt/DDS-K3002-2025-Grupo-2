@@ -2,6 +2,7 @@ package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
 import domain.helpers.UrlHelper;
+import domain.peticiones.ResponseWrapper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +20,24 @@ public class SolicitudController {
     }
 
     @PatchMapping("/solicitudes/{id}/estado")
-    public ResponseEntity<Object> actualizarEstadoSolicitud(
+    public ResponseEntity<?> actualizarEstadoSolicitud(
             @PathVariable(name = "id") Long id,
             @RequestBody String revisionSolicitud) {
-        return solicitudesHttp.patch(urlBaseAgregador + "/solicitudes/" + id + "/estado", revisionSolicitud, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.patch(urlBaseAgregador + "/solicitudes/" + id + "/estado", revisionSolicitud, String.class));
     }
 
     @GetMapping("/solicitudes")
-    public ResponseEntity<Object> obtenerSolicitudes(@RequestParam(name = "page", defaultValue = "0") Integer page,
+    public ResponseEntity<?> obtenerSolicitudes(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                     @RequestParam(name = "size", defaultValue = "3") Integer size) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/solicitudes");
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "size", size);
 
-        return solicitudesHttp.get(url.toString(), Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), String.class));
     }
 
     @GetMapping("/solicitudes/{id}")
-    public ResponseEntity<Object> obtenerSolicitud(@PathVariable(name = "id") Long id) {
-        return solicitudesHttp.get(urlBaseAgregador + "/solicitudes/" + id, Object.class);
+    public ResponseEntity<?> obtenerSolicitud(@PathVariable(name = "id") Long id) {
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(urlBaseAgregador + "/solicitudes/" + id, String.class));
     }
 }

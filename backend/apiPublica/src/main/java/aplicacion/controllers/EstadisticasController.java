@@ -2,6 +2,7 @@ package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
 import domain.helpers.UrlHelper;
+import domain.peticiones.ResponseWrapper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +21,7 @@ public class EstadisticasController {
     }
 
     @GetMapping("/provinciasConMasHechosDeColeccion")
-    public ResponseEntity<Object> provinciasDeColeccion(@RequestParam(name = "idColeccion", required = false) String idColeccion,
+    public ResponseEntity<?> provinciasDeColeccion(@RequestParam(name = "idColeccion", required = false) String idColeccion,
                                                    @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                    @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                    @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
@@ -32,11 +33,11 @@ public class EstadisticasController {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return solicitudesHttp.get(url.toString(), headers, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), headers, String.class));
     }
 
     @GetMapping("/categoriasConMasHechos")
-    public ResponseEntity<Object> categoriaConMasHechosReportados(@RequestParam(name = "page", defaultValue = "0") Integer page,
+    public ResponseEntity<?> categoriaConMasHechosReportados(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                             @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                             @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/categoriasConMasHechos");
@@ -46,11 +47,11 @@ public class EstadisticasController {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return solicitudesHttp.get(url.toString(), headers, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), headers, String.class));
     }
 
     @GetMapping("/provinciasConMasHechosDeCategoria")
-    public ResponseEntity<Object> provinciaConMasHechosDeCategoria(@RequestParam(name = "nombreCategoria", required = false) String nombreCategoria,
+    public ResponseEntity<?> provinciaConMasHechosDeCategoria(@RequestParam(name = "nombreCategoria", required = false) String nombreCategoria,
                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                               @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
@@ -62,11 +63,11 @@ public class EstadisticasController {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return solicitudesHttp.get(url.toString(), headers, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), headers, String.class));
     }
 
     @GetMapping("/horaConMasHechosDeCategoria")
-    public ResponseEntity<Object> horaConMasHechosDeCategoria(@RequestParam(name = "nombreCategoria", required = false) String nombreCategoria,
+    public ResponseEntity<?> horaConMasHechosDeCategoria(@RequestParam(name = "nombreCategoria", required = false) String nombreCategoria,
                                                          @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                          @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                          @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
@@ -78,22 +79,22 @@ public class EstadisticasController {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return solicitudesHttp.get(url.toString(), headers, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), headers, String.class));
     }
 
     @GetMapping("/solicitudesDeEliminacionSpam")
-    public ResponseEntity<Object> solicitudesSpam(@RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
+    public ResponseEntity<?> solicitudesSpam(@RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/solicitudesDeEliminacionSpam");
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return solicitudesHttp.get(url.toString(), headers, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), headers, String.class));
     }
 
 
     @GetMapping("/estadisticas/categorias")
-    public ResponseEntity<Object> categoriasDisponibles(@RequestParam(name = "search", required = false) String search,
+    public ResponseEntity<?> categoriasDisponibles(@RequestParam(name = "search", required = false) String search,
                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "limit", defaultValue = "10") Integer limit) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/categoriasDisponibles");
@@ -101,12 +102,12 @@ public class EstadisticasController {
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
 
-        return solicitudesHttp.get(url.toString(), Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), String.class));
     }
 
 
     @GetMapping("/estadisticas/colecciones")
-    public ResponseEntity<Object> coleccionesDisponibles(@RequestParam(name = "search", required = false) String search,
+    public ResponseEntity<?> coleccionesDisponibles(@RequestParam(name = "search", required = false) String search,
                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "limit", defaultValue = "10") Integer limit) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/coleccionesDisponibles");
@@ -114,6 +115,6 @@ public class EstadisticasController {
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
 
-        return solicitudesHttp.get(url.toString(), Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), String.class));
     }
 }
