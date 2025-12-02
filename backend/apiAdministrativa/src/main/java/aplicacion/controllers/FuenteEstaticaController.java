@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
+import domain.peticiones.ResponseWrapper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class FuenteEstaticaController {
     }
 
     @PostMapping("/archivos/por-url")
-    public ResponseEntity<Object> subirArchivoPorUrl(@RequestBody String body) {
-        return solicitudesHttp.post(urlBaseEstaticas + "/archivos/por-url", body, Object.class);
+    public ResponseEntity<?> subirArchivoPorUrl(@RequestBody String body) {
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseEstaticas + "/archivos/por-url", body, String.class));
     }
 
     @PostMapping("/archivos")

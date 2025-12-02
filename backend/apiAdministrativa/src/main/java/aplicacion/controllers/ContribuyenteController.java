@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
+import domain.peticiones.ResponseWrapper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class ContribuyenteController {
     }
 
     @GetMapping("/contribuyentes/{id}/hechos")
-    public ResponseEntity<Object> obtenerHechosContribuyente(@PathVariable(name = "id") String id) { // Para que un admin vea sus hechos
-        return solicitudesHttp.get(urlBaseAgregador + "/contribuyentes/" + id + "/hechos", Object.class);
+    public ResponseEntity<?> obtenerHechosContribuyente(@PathVariable(name = "id") String id) { // Para que un admin vea sus hechos
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(urlBaseAgregador + "/contribuyentes/" + id + "/hechos", String.class));
     }
 }
