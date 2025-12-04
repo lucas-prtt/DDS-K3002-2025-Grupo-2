@@ -1,5 +1,6 @@
 package aplicacion.domain.lectores;
 
+import aplicacion.domain.ParserDeFechasAdaptativo;
 import com.opencsv.CSVReader;
 
 import java.io.InputStream;
@@ -67,7 +68,7 @@ public class LectorCsv implements LectorArchivo {
                     case "latitud" -> latitud = Double.parseDouble(value);
                     case "longitud" -> longitud = Double.parseDouble(value);
                     case "categoria" -> categoria = obtenerOCrearCategoria(value);
-                    case "fechadelhecho" -> fecha = LocalDate.parse(value, DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay();
+                    case "fechadelhecho" -> fecha = ParserDeFechasAdaptativo.parse(value);
                 }
             } catch (Exception e) {
                 System.out.println("Error en columna: " + key + " = " + value + " → " + e.getMessage());
