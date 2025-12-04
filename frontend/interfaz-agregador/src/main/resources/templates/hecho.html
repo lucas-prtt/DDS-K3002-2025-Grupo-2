@@ -1,11 +1,9 @@
 <th:block th:fragment="pageScripts">
     <script th:inline="javascript">
         const hechoId = /*[[${hecho.id}]]*/ '';
-        console.log("ID del hecho:", hechoId);
         const solicitanteId = /*[[${userId}]]*/ '';
-        console.log("ID de solicitud:", solicitanteId);
     </script>
-    <script th:unless="${!isAdmin}" src="/js/etiqueta.js"></script>
+    <script th:if="${isAdmin}" src="/js/etiqueta.js"></script>
     <script src="/js/solicitar-eliminacion.js"></script>
 </th:block>
 
@@ -19,78 +17,58 @@
     <main class="main-padding">
         <div class="hecho-container" th:object="${hecho}">
             <div class="hecho-components">
-                <!-- Sección Izquierda -->
                 <div class="hecho-left-section">
-                    <!-- Categoría -->
-                    <div class="categoria-badge" th:text="'Categoría: ' + *{categoria.nombre}">Categoría</div>
-
-                    <!-- Carousel de Contenido Multimedia -->
+                    <div class="categoria-badge" th:text="'Categoría: ' + *{categoria.nombre}">
+                        Categoría
+                    </div>
                     <div id="carouselHecho" class="carousel slide carousel-container" data-bs-ride="carousel"
                          th:if="*{contenidoMultimedia != null and !contenidoMultimedia.isEmpty()}">
-
                         <div class="carousel-inner">
                             <div th:each="multimedia, iterStat : *{contenidoMultimedia}"
                                  th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">
-                                <img th:src="${multimedia.url}" class="d-block w-100"
-                                     th:alt="${multimedia.tipo}"
-                                     style="max-height: 400px; object-fit: contain;">
+                                <img th:src="${multimedia.url}" th:alt="${multimedia.tipo}" class="d-block w-100 max-h-[400px] object-contain">
                             </div>
                         </div>
-
-                        <!-- Flecha anterior -->
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselHecho" data-bs-slide="prev">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                 stroke-width="1.5" stroke="currentColor" class="carousel-arrow">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="carousel-arrow">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                         </button>
-
-                        <!-- Flecha siguiente -->
                         <button class="carousel-control-next" type="button" data-bs-target="#carouselHecho" data-bs-slide="next">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                 stroke-width="1.5" stroke="currentColor" class="carousel-arrow">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="carousel-arrow">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                         </button>
                     </div>
-
-                    <!-- Placeholder si no hay multimedia -->
                     <div class="carousel-container" th:if="*{contenidoMultimedia == null or contenidoMultimedia.isEmpty()}">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 100px; height: 100px; color: #9ca3af;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-[100px] w-[100px] text-[#9ca3af]">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                         </svg>
                     </div>
-
-                    <!-- Fecha de Acontecimiento -->
                     <div class="info-item">
                         <div class="hecho-info-label">Fecha de acontecimiento</div>
                         <div class="hecho-hecho-info-value" th:text="*{#temporals.format(fechaAcontecimiento, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
                     </div>
-
-                    <!-- Autor -->
                     <div class="info-item items-center">
                         <div class="hecho-info-label">Autor</div>
-                        <div class="hecho-info-value" style="color: black" th:text="*{autor != null ? autor.identidad.nombre + autor.identidad.apellido : 'Anónimo'}">Anónimo</div>
+                        <div class="hecho-info-value text-black" th:text="*{autor != null ? autor.identidad.nombre + autor.identidad.apellido : 'Anónimo'}">
+                            Anónimo
+                        </div>
                     </div>
                 </div>
-
-                <!-- Sección Derecha -->
                 <div class="right-section  w-[800px]" >
-                    <!-- Título -->
-                    <h1 class="fw-bold mb-3 display-6" style="color: black" th:text="*{titulo}">Título</h1>
-
-                    <!-- Descripción -->
+                    <h1 class="fw-bold mb-3 display-6 text-black" style="color: black" th:text="*{titulo}">Título</h1>
                     <div class="info-item">
-                        <div class="hecho-info-label bold" >Descripción</div>
-                        <div class="hecho-info-value" th:text="*{descripcion}">Descripción</div>
+                        <div class="hecho-info-label bold">
+                            Descripción
+                        </div>
+                        <div class="hecho-info-value" th:text="*{descripcion}">
+                            Descripción
+                        </div>
                     </div>
-
-                    <!-- Dirección Completa -->
                     <div class="info-item" >
                         <div class="hecho-info-label">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; display: inline; margin-right: 4px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline mr-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                             </svg>
@@ -98,12 +76,8 @@
                         </div>
                         <div class="hecho-info-value" th:text="*{direccion != null ? direccion : 'Sin ubicación'}">Dirección completa</div>
                     </div>
-
-                    <!-- Etiquetas -->
                     <div class="info-item " th:if="*{etiquetas != null}">
                         <div class="hecho-info-label bold">Etiquetas</div>
-
-                        <!-- Vista para Admin -->
                         <div class="hecho-info-value" th:if="${isAdmin}">
                             <ul id="lista-etiquetas" class="tag-list">
                                 <li th:each="etiqueta : *{etiquetas}"
@@ -115,53 +89,56 @@
                                     </button>
                                 </li>
                             </ul>
-
                             <div class="agregar-tag gap-3">
                                 <input id="nuevaEtiqueta" type="text" maxlength="20" placeholder="Agregar nueva etiqueta" class="input-tag max-w-[250px] w-auto" aria-label="Agregar Nueva Etiqueta"/>
-                                <button id="btn-agregar-etiqueta" type="button" class="btn-tertiary">Agregar</button>
+                                <button id="btn-agregar-etiqueta" type="button" class="btn-tertiary" aria-label="Agregar Etiqueta">
+                                    Agregar
+                                </button>
                             </div>
                         </div>
-
-                        <!-- Vista para No Admin -->
                         <div class="hecho-info-value" th:if="${!isAdmin}">
                             <span th:each="etiqueta : *{etiquetas}">
-                                <span class="tag-item" th:text="${etiqueta.nombre}">NombreEtiqueta</span>
+                                <span class="tag-item" th:text="${etiqueta.nombre}">
+                                    NombreEtiqueta
+                                </span>
                             </span>
                         </div>
                     </div>
-                    <!-- Origen -->
                     <div class="info-item">
-                        <div class="hecho-info-label bold">Origen</div>
-                        <div class="hecho-info-value" th:text="*{origen}">Origen</div>
+                        <div class="hecho-info-label bold">
+                            Origen
+                        </div>
+                        <div class="hecho-info-value" th:text="*{origen}">
+                            Origen
+                        </div>
                     </div>
-
-                    <!-- Fecha de Carga -->
                     <div class="info-item">
-                        <div class="hecho-info-label bold">Fecha de carga</div>
-                        <div class="hecho-info-value" th:text="*{#temporals.format(fechaCarga, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
+                        <div class="hecho-info-label bold">
+                            Fecha de carga
+                        </div>
+                        <div class="hecho-info-value" th:text="*{#temporals.format(fechaCarga, 'dd/MM/yyyy HH:mm')}">
+                            01/01/2024 12:00
+                        </div>
                     </div>
-                    <!-- Última Modificación -->
-                    <div class="ultima-modificacion"
-                         th:if="*{fechaUltimaModificacion != fechaCarga}">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
+                    <div class="ultima-modificacion" th:if="*{fechaUltimaModificacion != fechaCarga}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-[20px] h-[20px]">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                         </svg>
-                        <span>Editado por última vez: <span style="color: black" th:text="*{#temporals.format(fechaUltimaModificacion, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</span></span>
+                        <span>
+                            Editado por última vez:
+                            <span style="color: black" th:text="*{#temporals.format(fechaUltimaModificacion, 'dd/MM/yyyy HH:mm')}">
+                                01/01/2024 12:00
+                            </span>
+                        </span>
                     </div>
-
-                    <!-- Botón Solicitar Eliminación (solo si está logueado) -->
                     <div th:if="${isLoggedIn}" style="position: relative;">
                         <button id="solicitar-eliminacion" class="btn-eliminar text-lg p-2">
                             Solicitar eliminación
                         </button>
-
-                        <!-- Modal personalizado -->
                         <th:block th:replace="~{fragments/modal :: modalSolicitudEliminacion}" />
                     </div>
                 </div>
             </div>
-
-            <!-- Contenido Texto -->
             <div class="contenido-texto" th:if="*{contenidoTexto != null and !contenidoTexto.isEmpty()}">
                 <h3 class="fw-bold mb-3">Contenido Texto</h3>
                 <p th:text="*{contenidoTexto}">Aquí va el contenido de texto del hecho...</p>

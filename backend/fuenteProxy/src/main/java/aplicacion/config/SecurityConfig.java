@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,16 +28,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST , "/colecciones").authenticated()
-                        .requestMatchers(HttpMethod.PATCH, "/colecciones/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/colecciones/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/colecciones/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/hechos").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/hechos/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE , "/hechos/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/solicitudes").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/solicitudes/**").authenticated()
-                        .requestMatchers(HttpMethod.PATCH, "/solicitudes/**").authenticated()
+                        .requestMatchers(HttpMethod.POST , "/fuentesProxy").authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
