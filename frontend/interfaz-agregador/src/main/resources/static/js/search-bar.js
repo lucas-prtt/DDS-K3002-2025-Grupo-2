@@ -67,6 +67,7 @@ function handleSearch(event) {
     const currentUrl = new URL(window.location.href);
 
     currentUrl.searchParams.set('search', searchValue);
+    currentUrl.searchParams.set('page', 0)
     window.location.href = currentUrl.toString();
 
     return false;
