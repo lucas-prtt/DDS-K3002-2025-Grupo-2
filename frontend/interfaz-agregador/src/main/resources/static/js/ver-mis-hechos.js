@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const endpoint = isAdmin ? `http://localhost:8086/apiAdministrativa/contribuyentes/${autorId}/hechos` : `http://localhost:8085/apiPublica/contribuyentes/${autorId}/hechos`;
 
     if (allElementsFound([modal, openBtn, closeBtn, autorId, listaMisHechos], "ver mis hechos")) {
+
         fetch(endpoint)
             .then(response => response.json())
             .then(hechos => {
