@@ -3,10 +3,14 @@ package aplicacion.controllers;
 import aplicacion.config.ConfigService;
 import domain.helpers.UrlHelper;
 import domain.peticiones.ResponseWrapper;
+import org.apache.hc.client5.http.HttpHostConnectException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import domain.peticiones.SolicitudesHttp;
+import org.springframework.web.client.ResourceAccessException;
 
 @RestController
 @RequestMapping("/apiPublica")
@@ -14,6 +18,7 @@ public class ContribuyenteController {
     private final String urlBaseAgregador;
     private final String urlBaseDinamicas;
     private final SolicitudesHttp solicitudesHttp;
+    private final Logger logger = LoggerFactory.getLogger(ContribuyenteController.class);
 
     public ContribuyenteController(ConfigService configService) {
         this.urlBaseAgregador = configService.getUrlAgregador();
@@ -23,7 +28,14 @@ public class ContribuyenteController {
 
     @PostMapping("/contribuyentes")
     public ResponseEntity<?> agregarContribuyente(@RequestBody String body) {
-        solicitudesHttp.post(urlBaseDinamicas + "/contribuyentes", body, String.class);
+        try {
+            solicitudesHttp.post(urlBaseDinamicas + "/contribuyentes", body, String.class);
+        }catch (ResourceAccessException e){
+            logger.warn("No fue posible conectarse con fuente dinamica durante un POST de contribuyente");
+        } catch (Exception e){
+            logger.error("Hubo un error posteando un contribuyente a fuente dinamica. ", e);
+        }
+
         return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseAgregador + "/contribuyentes", body, String.class)); // Se postea tanto en fuente dinámica como en agregador
     }
 
