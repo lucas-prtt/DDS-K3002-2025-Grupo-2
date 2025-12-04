@@ -264,6 +264,3 @@
     transform: translateY(0);
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
-
-/* (restored) No forzamos fills/strokes globalmente para no romper SVGs con partes blancas;
-   los SVG mantienen su aspecto original del markup. */

@@ -10,13 +10,17 @@ document.addEventListener("DOMContentLoaded", () => {
     let chart = null;
     let limit = 10;
 
-    function actualizarSlider() {
-        sliderValue.textContent = slider.value;
-        limit = slider.value;
+    const actualizarSlider = () => {
+            const porcentaje = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            slider.style.background = `linear-gradient(to right, #42a5f5 0%, #42a5f5 ${porcentaje}%, #ccc ${porcentaje}%, #ccc 100%)`;
     }
 
-    slider.addEventListener("input", actualizarSlider);
-
+    slider.addEventListener("input", () => {{
+        sliderValue.textContent = slider.value;
+        limit = slider.value;
+        actualizarSlider();
+    }});
+    actualizarSlider();
     btnActualizar.addEventListener("click", () => {
         cargarGrafico();
     });
