@@ -146,8 +146,11 @@ public class HechoService {
         return hechoRepository.findById(idHecho).orElseThrow(() -> new HechoNoEncontradoException("No se encontro el hecho con id: " + idHecho));
     }
 
-    public HechoOutputDto obtenerHechoDto(String idHecho) throws HechoNoEncontradoException {
+    public HechoOutputDto obtenerHechoDto(String idHecho) throws HechoNoEncontradoException, HechoNoVisibleException {
         Hecho hecho = obtenerHechoPorId(idHecho);
+        if (!hecho.esVisible()) {
+            throw new HechoNoVisibleException("El hecho con id: " + idHecho + " no está visible.");
+        }
         return hechoOutputMapper.map(hecho);
     }
 

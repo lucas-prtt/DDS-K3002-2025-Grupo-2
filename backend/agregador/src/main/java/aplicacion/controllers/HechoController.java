@@ -74,7 +74,7 @@ public class HechoController {
         try {
             HechoOutputDto hecho = hechoService.obtenerHechoDto(id);
             return ResponseEntity.ok(hecho);
-        } catch (HechoNoEncontradoException e) {
+        } catch (HechoNoEncontradoException | HechoNoVisibleException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
