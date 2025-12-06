@@ -40,20 +40,18 @@ public class FuenteService {
     private final FuenteInputMapper fuenteInputMapper;
     private final HechoInputMapper hechoInputMapper;
     private final DiscoveryClient discoveryClient;
-    private final LoadBalancerClient loadBalancerClient;
+
     //@PersistenceContext
     //private EntityManager entityManager;
 
     public FuenteService(RepositorioDeFuentes repositorioDeFuentes,
                          FuenteInputMapper fuenteInputMapper,
                          HechoInputMapper hechoInputMapper,
-                         DiscoveryClient discoveryClient,
-                         LoadBalancerClient loadBalancerClient) {
+                         DiscoveryClient discoveryClient) {
         this.repositorioDeFuentes = repositorioDeFuentes;
         this.fuenteInputMapper = fuenteInputMapper;
         this.hechoInputMapper = hechoInputMapper;
         this.discoveryClient = discoveryClient;
-        this.loadBalancerClient = loadBalancerClient;
     }
 
     public Page<Fuente> findByTipo(Integer page, Integer limit, String tipo){

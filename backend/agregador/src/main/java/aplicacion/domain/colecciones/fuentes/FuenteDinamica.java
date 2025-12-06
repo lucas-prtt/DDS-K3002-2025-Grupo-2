@@ -8,20 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FuenteDinamica extends Fuente {
     public FuenteDinamica(String id) {
-        super(id,"FUENTEDINAMICA");
-    }
-    public FuenteDinamica(String id, String serviceName) {
-        super(id, serviceName);
+        super(id);
     }
 
 
-    @Override
-    public String pathIntermedio() {
-        return "fuentesDinamicas";
-    }
-
-    @Override
-    protected String hechosPathParam() {
-        return "fuentesDinamicas/" + this.getId() + "/hechos";
-    }
 }

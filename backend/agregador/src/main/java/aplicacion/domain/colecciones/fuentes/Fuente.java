@@ -37,7 +37,6 @@ public abstract class Fuente {
     private String id;
     private String alias;
     private LocalDateTime ultimaPeticion;
-    private String nombreServicio;
 
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -48,12 +47,6 @@ public abstract class Fuente {
 
 
 
-    public Fuente(String id, String nombreServicio) {
-        this.id = id;
-        this.ultimaPeticion = null;
-        this.alias = "Fuente sin título";
-        this.nombreServicio = nombreServicio;
-    }
 
     public Fuente(String id) {
         this.id = id;
@@ -61,44 +54,7 @@ public abstract class Fuente {
         this.alias = "Fuente sin título";
     }
 
-    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
-        //todo comentar/eliminar
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-
-        LocalDateTime fechaAnterior = this.getUltimaPeticion();
-        List<HechoInputDto> hechos = new ArrayList<>();
-
-        String url = obtenerURL(discoveryClient, loadBalancerClient);
-
-
-        if (fechaAnterior != null) {
-            url += "?fechaMayorA=" + fechaAnterior;
-        }
-
-        this.setUltimaPeticion(LocalDateTime.now());
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-            ResponseEntity<String> response;
-            String json;
-            System.out.println(url);
-            response = restTemplate.getForEntity(url, String.class);
-            json = response.getBody();
-            hechos = mapper.readValue(json, new TypeReference<>() {});
-            System.out.println("Se recibieron correctamente los hechos de la fuente " + this.getId() + " " + this.getAlias());
-        } catch (Exception e) {
-            this.setUltimaPeticion(fechaAnterior); // rollback si falla
-            System.err.println("⚠️ Error al consumir la API en fuente " + this.getId() + ": " + e.getMessage());
-        }
-
-        return hechos;
-    }
-
-    public abstract String pathIntermedio();
 
     public void agregarHechos(List<Hecho> hechosAAgregar) {
         this.hechos.addAll(hechosAAgregar);
@@ -108,10 +64,4 @@ public abstract class Fuente {
         this.hechos.clear();
     }
 
-    protected String obtenerURL(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
-
-        return loadBalancerClient.choose(nombreServicio).getUri().toString() + hechosPathParam();
-
-    }
-    protected abstract String hechosPathParam();
 }
