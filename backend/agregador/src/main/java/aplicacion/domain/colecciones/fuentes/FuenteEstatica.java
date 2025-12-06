@@ -22,31 +22,10 @@ public class FuenteEstatica extends Fuente {
     private Boolean fueConsultada = false;
 
     public FuenteEstatica(String id) {
-        super(id,"FUENTEESTATICA");
+        super(id);
         this.fueConsultada = false;
     }
 
-    public FuenteEstatica(String fuenteId, String serviceId) {
-        super(fuenteId, serviceId);
-        this.fueConsultada = false;
-    }
 
-    @Override
-    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
-        if (this.fueConsultada) {
-            return new ArrayList<>();
-        }
-        this.fueConsultada = true;
-        return super.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
-    }
 
-    @Override
-    public String pathIntermedio() {
-        return "fuentesEstaticas/" + this.getId();
-    }
-
-    @Override
-    protected String hechosPathParam() {
-        return "/fuentesEstaticas/" + this.getId() + "/hechos";
-    }
 }

@@ -20,33 +20,8 @@ public class FuenteProxy extends Fuente {
         super(id);
     }
 
-    @Override
-    public String pathIntermedio() {
-        return "fuentesProxy/" + this.getId();
-    }
 
 
-
-    @Override
-    protected String obtenerURL(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
-        return discoveryClient.getInstances(getNombreServicio()).stream()
-                .filter(i -> {
-                    String fuentes = i.getMetadata().get("fuentesDisponibles");
-                    return fuentes != null && Arrays.asList(fuentes.split(",")).contains(getId());
-                })
-                .findFirst()
-                .map(ServiceInstance::getUri)
-                .map(URI::toString)
-                .orElseThrow(() -> new IllegalStateException(
-                        "No se encontró ninguna instancia del servicio '"
-                                + getNombreServicio() + "' que contenga la fuenteID '" + getId() + "'"
-                ));
-    }
-
-    @Override
-    protected String hechosPathParam() {
-        return "/fuentesProxy/" + this.getId() + "/hechos";
-    }
 
 
 }
