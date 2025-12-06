@@ -17,7 +17,7 @@ public class TokenContextCleanupFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } finally {
+        }finally {
             TokenContext.clear();
         }
     }
