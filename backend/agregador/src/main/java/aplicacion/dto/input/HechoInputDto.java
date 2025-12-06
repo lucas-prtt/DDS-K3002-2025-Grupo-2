@@ -16,6 +16,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HechoInputDto {
+    private String id; // Conservo el id que me llega de otra fuente
     private String titulo;
     private String descripcion;
     private CategoriaInputDto categoria;

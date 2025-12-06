@@ -23,6 +23,7 @@ public class HechoInputMapper implements Mapper<HechoInputDto, Hecho>{
 
     public Hecho map(HechoInputDto hechoInputDto){
         return new Hecho(
+                hechoInputDto.getId(), // Si es null, JPA autogenerará el UUID
                 hechoInputDto.getTitulo(),
                 hechoInputDto.getDescripcion(),
                 categoriaInputMapper.map(hechoInputDto.getCategoria()),
@@ -38,6 +39,7 @@ public class HechoInputMapper implements Mapper<HechoInputDto, Hecho>{
 
     public Hecho mapReporte(HechoReporteInputDto hechoReporteInputDto, Contribuyente contribuyente){
         return new Hecho(
+                null, // Los reportes siempre generan un nuevo UUID
                 hechoReporteInputDto.getTitulo(),
                 hechoReporteInputDto.getDescripcion(),
                 categoriaInputMapper.map(hechoReporteInputDto.getCategoria()),
