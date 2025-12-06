@@ -182,3 +182,17 @@
     margin-left: 5px;
     font-size: smaller;
 }
+
+.no-container-message {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #9ca3af;
+}
+
+.obligatory-container-message {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #b91c1c;
+}

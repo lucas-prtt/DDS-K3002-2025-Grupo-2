@@ -166,7 +166,10 @@
 			<form id="form-modal-coleccion" class="form-body">
 				<div>
 					<label for="titulo-coleccion" class="form-label">
-						Título<span class="form-obligatory-icon">*</span>
+						Título
+						<span class="form-obligatory-icon">
+							*
+						</span>
 						<span class="max-char-span">
 							(Máx.50 caracteres)
 						</span>
@@ -175,75 +178,24 @@
 				</div>
 				<div>
 					<label for="descripcion-coleccion" class="form-label">
-						Descripción<span class="form-obligatory-icon">*</span>
+						Descripción
+						<span class="form-obligatory-icon">
+							*
+						</span>
 						<span class="max-char-span">
 							(Máx.150 caracteres)
 						</span>
 					</label>
 					<textarea id="descripcion-coleccion" rows="3" maxlength="150" class="form-input" placeholder="Describa la colección" required></textarea>
 				</div>
-				<div>
-					<p class="form-label">
-						Criterio de Pertenencia<span class="form-obligatory-icon">*</span>
-					</p>
-					<select id="criterio-tipo-coleccion" class="form-input" aria-label="Seleccione un Criterio">
-						<option value="">Seleccione un criterio</option>
-						<option value="DISTANCIA">Distancia</option>
-						<option value="FECHA">Fecha</option>
-					</select>
-
-					<div id="campos-distancia-coleccion" class="space-y-2 mt-[0.5rem] hidden">
-						<div class="grid grid-cols-2 gap-2">
-							<div>
-								<label for="criterio-latitud" class="form-label">
-									Latitud Base<span class="form-obligatory-icon">*</span>
-								</label>
-								<input type="number" step="any" id="criterio-latitud" class="form-input" placeholder="-34.603722">
-							</div>
-							<div>
-								<label for="criterio-longitud" class="form-label">
-									Longitud Base<span class="form-obligatory-icon">*</span>
-								</label>
-								<input type="number" step="any" id="criterio-longitud" class="form-input" placeholder="-58.381592">
-							</div>
-						</div>
-						<div>
-							<label for="criterio-distancia-minima" class="form-label">
-								Distancia Mínima(km)<span class="form-obligatory-icon">*</span>
-							</label>
-							<input type="number" step="any" id="criterio-distancia-minima" class="form-input" placeholder="100">
-						</div>
-					</div>
-					<div id="campos-fecha-coleccion" class="space-y-2 mt-[0.5rem] hidden">
-						<div>
-							<label for="criterio-fecha-inicial" class="form-label">
-								Fecha Inicial<span class="form-obligatory-icon">*</span>
-							</label>
-							<input type="datetime-local" id="criterio-fecha-inicial" class="form-input hover:cursor-pointer">
-						</div>
-						<div>
-							<label for="criterio-fecha-final" class="form-label">
-								Fecha Final<span class="form-obligatory-icon">*</span>
-							</label>
-							<input type="datetime-local" id="criterio-fecha-final" class="form-input hover:cursor-pointer">
-						</div>
-					</div>
-				</div>
-				<div>
-					<p class="form-label">
-						Fuentes
-					</p>
-					<p id="sin-fuentes-coleccion" class="form-label text-s mb-2 text-[#9ca3af]">
-						No hay fuentes asociadas a esta colección
-					</p>
-					<div id="fuentes-container-coleccion" class="space-y-2"></div>
-					<button id="agregar-fuente-crear-coleccion" type="button" class="btn-primary hidden">
-						+ Agregar Fuente
-					</button>
-				</div>
+				<div th:insert="~{fragments/form :: agregarCriterio('crear-coleccion')}"></div>
+				<div th:insert="~{fragments/form :: agregarFuente('crear-coleccion')}"></div>
 				<div>
 					<label for="algoritmo-coleccion" class="form-label">
-						Algoritmo de Consenso<span class="form-obligatory-icon">*</span>
+						Algoritmo de Consenso
+						<span class="form-obligatory-icon">
+							*
+						</span>
 					</label>
 					<select id="algoritmo-coleccion" class="form-input">
 						<option value="">Seleccione un algoritmo</option>
@@ -520,50 +472,40 @@
 		<div class="modal-page-body">
 			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
 			<form id="form-editar-coleccion">
-				<!-- Algoritmo de Consenso (editable) -->
 				<div class="mb-4">
-					<label for="modal-coleccion-algoritmo" class="form-label">
+					<label for="algoritmo-editar-coleccion" class="form-label">
 						Algoritmo de Consenso
-						<span class="form-obligatory-icon">*</span>
+						<span class="form-obligatory-icon">
+							*
+						</span>
 					</label>
-					<select id="modal-coleccion-algoritmo" class="form-input" required>
+					<select id="algoritmo-editar-coleccion" class="form-input" required>
 						<option value="">Seleccione un algoritmo</option>
 						<option value="ABSOLUTO">Absoluto</option>
 						<option value="IRRESTRICTO">Irrestricto</option>
 						<option value="MAYORIA_SIMPLE">Mayoría simple</option>
 						<option value="MULTIPLES_MENCIONES">Múltiples menciones</option>
 					</select>
-					<small class="text-gray-600">Este cambio se guardará al hacer clic en "Guardar Cambios"</small>
+					<small class="text-gray-600">
+						Este cambio se guardará al hacer clic en "Guardar Cambios"
+					</small>
 				</div>
-
-				<!-- Gestión de Fuentes -->
 				<div class="mb-4">
-					<!-- Lista de fuentes actuales -->
 					<div class="mb-3">
-						<p class="form-label font-semibold">Fuentes Actuales:</p>
-						<div id="lista-fuentes-actuales-editar" class="border rounded p-3 bg-white max-h-60 overflow-y-auto">
-							<!-- Se llenará dinámicamente -->
-						</div>
+						<p class="form-label font-semibold">
+							Fuentes Actuales:
+						</p>
+						<div id="fuentes-actuales-editar-coleccion" class="border rounded p-3 bg-white max-h-60 overflow-y-auto"></div>
 					</div>
-
-					<!-- Agregar nueva fuente -->
-					<div class="mb-3">
-						<p class="form-label font-semibold">Agregar Nueva Fuente:</p>
-						<div id="fuentes-container-editar-coleccion" class="space-y-2 mb-2">
-							<!-- Se llenará dinámicamente con agregarFuenteAColeccionEditar() -->
-						</div>
-						<button type="button" id="btn-agregar-fuente-editar" class="btn-primary">
-							+ Agregar Fuente
-						</button>
-					</div>
-
-					<!-- Operaciones pendientes -->
+					<div th:insert="~{fragments/form :: agregarFuente('editar-coleccion')}" class="mb-3"></div>
 					<div id="operaciones-pendientes-container" class="hidden">
-						<h6 class="form-label font-semibold text-orange-600">Operaciones Pendientes</h6>
-						<div id="lista-operaciones-pendientes" class="border rounded p-3 bg-orange-50 max-h-40 overflow-y-auto">
-							<!-- Se llenará dinámicamente -->
-						</div>
-						<small class="text-orange-600">Estas operaciones se ejecutarán al guardar los cambios</small>
+						<h6 class="form-label font-semibold text-orange-600">
+							Operaciones Pendientes
+						</h6>
+						<div id="lista-operaciones-pendientes" class="border rounded p-3 bg-orange-50 max-h-40 overflow-y-auto"></div>
+						<small class="text-orange-600">
+							Estas operaciones se ejecutarán al guardar los cambios
+						</small>
 					</div>
 				</div>
 			</form>

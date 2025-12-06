@@ -46,10 +46,12 @@
 </div>
 
 <th:block th:fragment="cardColeccion(coleccion)">
-	<div class="flex">
+	<div>
 		<div class="coleccion-detalles">
-			<h1 class="coleccion-titulo" th:text="${coleccion.titulo}"></h1>
-			<h2 class="text-[15px]" th:text="${coleccion.descripcion}"></h2>
+			<div>
+				<h1 class="coleccion-titulo" th:text="${coleccion.titulo}"></h1>
+				<h2 class="text-[15px]" th:text="${coleccion.descripcion}"></h2>
+			</div>
 			<div class="coleccion-tipo-hechos">
 				<a th:href="@{/colecciones/{id}/hechosIrrestrictos(id=${coleccion.id})}" class="btn-secondary">
 					Hechos Irrestrictos
