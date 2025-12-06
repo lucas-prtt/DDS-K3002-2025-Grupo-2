@@ -25,7 +25,6 @@ import java.util.Objects;
 )
 public class Hecho {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @EqualsAndHashCode.Include
     @Column(length = 200)
@@ -66,7 +65,8 @@ public class Hecho {
     @ManyToOne
     private Contribuyente autor;
 
-    public Hecho(String titulo,
+    public Hecho(String id,
+                 String titulo,
                  String descripcion,
                  Categoria categoria,
                  Ubicacion ubicacion,
@@ -76,6 +76,7 @@ public class Hecho {
                  List<Multimedia> contenidoMultimedia,
                  Boolean anonimato,
                  Contribuyente autor) {
+        this.id = id != null ? id : java.util.UUID.randomUUID().toString(); // Si es null, genera UUID; si no, usa el proporcionado
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
