@@ -131,7 +131,7 @@ function listenCambiarAlgoritmoEditarColeccion() {
 }
 
 function listenEliminarFuenteEditarColeccion() {
-    document.querySelectorAll('.btn-eliminar-fuente').forEach(btn => {
+    document.querySelectorAll('.btn-eliminar-container').forEach(btn => {
         btn.addEventListener('click', async function() {
             try {
                 mostrarCargando(btn.id);
@@ -221,66 +221,53 @@ function listenAgregrFuenteEditarColeccion() {
     });
 }
 
+function listenAgregarCriterioModalColeccion(agregarBtn) {
+    let cantidadCriterios = 0
+
+    agregarBtn.addEventListener("click", function (e) {
+        cantidadCriterios++
+        agregarCriterioColeccion(cantidadCriterios, 'crear-coleccion')
+    });
+}
+
 function listenAgregarFuenteModalColeccion(agregarBtn) {
     let cantidadFuentes = 0
 
     agregarBtn.addEventListener("click", function (e) {
         cantidadFuentes++
-        agregarFuenteColeccion(cantidadFuentes)
-    });
-}
-
-/*function listenAgregarCriterioModalColeccion(agregarBtn) {
-    const contadorCriteriosObject = {cantidadCriterios: 0}
-
-    agregarBtn.addEventListener("click", function () {
-        agregarCriterioAColeccion(contadorCriteriosObject)
-    });
-}*/
-
-function listenCamposCriterioModalColeccion() {
-    const camposDistancia = document.getElementById("campos-distancia-coleccion");
-    const camposFecha = document.getElementById("campos-fecha-coleccion");
-
-    document.getElementById('criterio-tipo-coleccion').addEventListener("change", function(e) {
-        const criterio = e.target.value;
-
-        camposDistancia.classList.add("hidden");
-        camposFecha.classList.add("hidden");
-
-        if (criterio === "DISTANCIA") {
-            camposDistancia.classList.remove("hidden");
-        }
-
-        if (criterio === "FECHA") {
-            camposFecha.classList.remove("hidden");
-        }
+        agregarFuenteColeccion(cantidadFuentes, 'crear-coleccion')
     });
 }
 
 function listenCamposFuenteModalColeccion() {
     document.addEventListener("change", async e => {
         if (e.target.matches("select[id^='fuente-tipo']")) {
-            const id = e.target.dataset.id;
-            const tipo = document.getElementById(`fuente-tipo-${id}`).value;
-            const nombreContainer = document.getElementById(`nombre-container-${id}`);
+            const fullId = e.target.id; // ej: "fuente-tipo-1-crear-coleccion"
+            const match = fullId.match(/fuente-tipo-(\d+)-(.*)/);
 
-            if (tipo === "estatica" || tipo === "proxy") {
-                nombreContainer.classList.remove("hidden");
-                await cargarFuentesPorTipo(id, tipo);
-            } else if (tipo === "dinamica") {
-                // Para dinámica, ocultar el container y cargar el ID en segundo plano
-                nombreContainer.classList.add("hidden");
-                await cargarFuentesPorTipo(id, tipo);
-            } else {
-                nombreContainer.classList.add("hidden");
+            if (match) {
+                const numero = match[1];
+                const sufix = match[2];
+                const tipo = e.target.value;
+                const nombreContainer = document.getElementById(`nombre-container-${numero}-${sufix}`);
+
+                if (tipo === "estatica" || tipo === "proxy") {
+                    nombreContainer.classList.remove("hidden");
+                    await cargarFuentesPorTipo(numero, sufix, tipo);
+                } else if (tipo === "dinamica") {
+                    // Para dinámica, ocultar el container y cargar el ID en segundo plano
+                    nombreContainer.classList.add("hidden");
+                    await cargarFuentesPorTipo(numero, sufix, tipo);
+                } else {
+                    nombreContainer.classList.add("hidden");
+                }
             }
         }
     });
 }
 
-async function cargarFuentesPorTipo(id, tipo) {
-    const selectNombre = document.getElementById(`fuente-nombre-${id}`);
+async function cargarFuentesPorTipo(numero, sufix, tipo) {
+    const selectNombre = document.getElementById(`fuente-nombre-${numero}-${sufix}`);
 
     if (!selectNombre) return;
 

@@ -1,6 +1,6 @@
 .colecciones-container {
     display: grid;
-    grid-template-rows: repeat(3, 8rem);
+    grid-template-rows: repeat(3, 9.5rem);
     grid-template-columns: 55%;
     justify-content: center;
     gap: 1rem;
@@ -29,7 +29,7 @@
 .coleccion-detalles {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    align-items: space-between;
     color: black;
     gap: 0.5rem;
 }

@@ -326,10 +326,3 @@ select[id^="fuente-nombre-"] {
 .text-muted-high {
     color: #6b7280; /* gray-500 */
 }
-
-/* Asegurar contraste para el aviso de fuentes en crear colección */
-#sin-fuentes-coleccion {
-    color: #374151 !important; /* gray-700: mayor contraste sobre fondo blanco */
-    opacity: 1 !important;
-    background-color: transparent !important;
-}
