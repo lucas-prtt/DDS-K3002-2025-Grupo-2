@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     if(allElementsFound([modal, closeBtn, editarBtns], "editar colecciones")) {
         colecciones.forEach((coleccion, index) => {
-            listenOpenModal(modal, editarBtns[index], () => abrirModalEditarColeccion(coleccion));
+            listenOpenModal(modal, editarBtns[index], () => autocompletarModalEditarColeccion(coleccion));
         });
 
         listenCloseModal(modal, closeBtn, () => {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
 
         // Event listener para agregar nueva fuente
-        const btnAgregarFuente = document.getElementById('btn-agregar-fuente-editar');
+        const btnAgregarFuente = document.getElementById('agregar-fuente-editar-coleccion');
         if (btnAgregarFuente) {
             const contadorFuentesObject = { cantidadFuentes: 0 };
             btnAgregarFuente.addEventListener('click', function() {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         listenCamposFuenteModalEditarColeccion();
 
         // Event listener para cambio de algoritmo
-        const selectAlgoritmo = document.getElementById('modal-coleccion-algoritmo');
+        const selectAlgoritmo = document.getElementById('algoritmo-editar-coleccion');
         if (selectAlgoritmo) {
             selectAlgoritmo.addEventListener('change', function() {
                 window.algoritmoActual = this.value;
@@ -34,33 +34,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         // Event listener para guardar cambios
-        const btnGuardar = document.getElementById('guardar-editar-coleccion');
+        const btnGuardar = document.getElementById('editar-coleccion');
         if (btnGuardar) {
-            btnGuardar.addEventListener('click', async function(){await guardarCambiosColeccion});
+            btnGuardar.addEventListener('click', async function(){
+                await guardarCambiosColeccion();
+            });
         }
     }
 });
-
-function abrirModalEditarColeccion(coleccion) {
-    // Guardar datos originales en variables globales window
-    window.coleccionActual = coleccion;
-    window.fuentesOriginales = [...(coleccion.fuentes || [])];
-    window.fuentesActuales = [...window.fuentesOriginales];
-    window.operacionesPendientes = [];
-    window.algoritmoOriginal = coleccion.tipoAlgoritmoConsenso;
-    window.algoritmoActual = window.algoritmoOriginal;
-    window.fuentesNuevas = []; // Para las fuentes agregadas con el nuevo sistema
-
-    // Seleccionar algoritmo actual
-    document.getElementById('modal-coleccion-algoritmo').value = coleccion.tipoAlgoritmoConsenso || '';
-
-    // Limpiar container de nuevas fuentes
-    document.getElementById('fuentes-container-editar-coleccion').innerHTML = '';
-
-    // Renderizar fuentes actuales
-    renderizarFuentesActuales();
-    renderizarOperacionesPendientes();
-}
 
 function limpiarModalEditarColeccion() {
     document.getElementById('form-editar-coleccion').reset();
@@ -82,7 +63,7 @@ function agregarFuenteAColeccionEditar(numeroFuente) {
     fuenteDiv.innerHTML = `
         <div class="flex justify-between items-center mb-1">
             <span class="block text-xs font-medium text-gray-600">Nueva Fuente</span>
-            <button id="eliminar-fuente-editar-${numeroFuente}" type="button" data-id="${numeroFuente}" class="btn-eliminar-fuente py-1">
+            <button id="eliminar-fuente-editar-${numeroFuente}" type="button" data-id="${numeroFuente}" class="btn-eliminar-container py-1">
                 Eliminar
             </button>
         </div>
@@ -119,21 +100,26 @@ function agregarFuenteAColeccionEditar(numeroFuente) {
 
 function listenCamposFuenteModalEditarColeccion() {
     document.addEventListener("change", async e => {
-        if (e.target.matches("select[id^='fuente-tipo-editar']")) {
-            const id = e.target.dataset.id;
-            const tipo = e.target.value;
-            const nombreContainer = document.getElementById(`nombre-container-${id}`);
+        if (e.target.matches("select[id^='fuente-tipo-']")) {
+            const fullId = e.target.id;
+            const match = fullId.match(/fuente-tipo-(.+)/);
 
-            if (nombreContainer) {
-                if (tipo === "estatica" || tipo === "proxy") {
-                    nombreContainer.classList.remove("hidden");
-                    await cargarFuentesPorTipoEditar(id, tipo);
-                } else if (tipo === "dinamica") {
-                    // Para dinámica, ocultar el container y cargar el ID en segundo plano
-                    nombreContainer.classList.add("hidden");
-                    await cargarFuentesPorTipoEditar(id, tipo);
-                } else {
-                    nombreContainer.classList.add("hidden");
+            if (match) {
+                const id = match[1]; // ej: "editar-1" o "1-editar-coleccion"
+                const tipo = e.target.value;
+                const nombreContainer = document.getElementById(`nombre-container-${id}`);
+
+                if (nombreContainer) {
+                    if (tipo === "estatica" || tipo === "proxy") {
+                        nombreContainer.classList.remove("hidden");
+                        await cargarFuentesPorTipoEditar(id, tipo);
+                    } else if (tipo === "dinamica") {
+                        // Para dinámica, ocultar el container y cargar el ID en segundo plano
+                        nombreContainer.classList.add("hidden");
+                        await cargarFuentesPorTipoEditar(id, tipo);
+                    } else {
+                        nombreContainer.classList.add("hidden");
+                    }
                 }
             }
         }
@@ -185,7 +171,7 @@ async function cargarFuentesPorTipoEditar(id, tipo) {
 }
 
 function renderizarFuentesActuales() {
-    const container = document.getElementById('lista-fuentes-actuales-editar');
+    const container = document.getElementById('fuentes-actuales-editar-coleccion');
 
     if (!window.fuentesActuales || window.fuentesActuales.length === 0) {
         container.innerHTML = '<p class="text-gray-500 mb-0">No hay fuentes asociadas</p>';
@@ -271,8 +257,8 @@ function cancelarOperacion(index) {
 }
 
 async function guardarCambiosColeccion() {
-    const btn = document.getElementById('guardar-editar-coleccion');
-    const spinner = btn.querySelector('.spinner-border');
+    const btn = document.getElementById('editar-coleccion');
+    const spinner = btn?.querySelector('.spinner-border');
 
     try {
         btn.disabled = true;

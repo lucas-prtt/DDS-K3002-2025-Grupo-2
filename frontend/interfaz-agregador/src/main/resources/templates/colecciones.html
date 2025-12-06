@@ -2,10 +2,10 @@
     <script th:inline="javascript">
         let colecciones = /*[[${colecciones}]]*/ {};
     </script>
-    <script src="/js/ver-coleccion.js" defer></script>
+    <script th:if="${isAdmin}" src="/js/ver-coleccion.js" defer></script>
     <script th:if="${isAdmin}" src="/js/eliminar-coleccion.js" defer></script>
-    <script src="/js/search-bar.js" defer></script>
     <script th:if="${isAdmin}" src="/js/editar-coleccion.js" defer></script>
+    <script src="/js/search-bar.js" defer></script>
 </th:block>
 
 <th:block th:unless="${colecciones == null || colecciones.isEmpty()}" th:fragment="pageStyles">

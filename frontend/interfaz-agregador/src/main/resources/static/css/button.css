@@ -110,7 +110,7 @@
     background-color: #b91c1c;
 }
 
-.btn-eliminar-fuente {
+.btn-eliminar-container {
     background-color: #B91C1C;
     padding: 3px 8px;
     border: none;
@@ -119,7 +119,7 @@
     border-radius: 1rem;
 }
 
-.btn-eliminar-fuente:hover {
+.btn-eliminar-container:hover {
     background-color: #991B1B;
 }
 

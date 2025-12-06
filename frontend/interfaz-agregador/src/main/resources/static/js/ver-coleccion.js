@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if(allElementsFound([verBtns, modal, modalHeader], "editar hechos")) {
         colecciones.forEach((coleccion, index) => {
             listenOpenModal(modal, verBtns[index], () => {
-                verColeccion(coleccion)
+                autocompletarModalColeccion(coleccion)
 
-                const mensajeSinFuentes = document.getElementById("sin-fuentes-coleccion")
+                const mensajeSinFuentes = document.getElementById("sin-fuentes-modal-coleccion")
                 if(mensajeSinFuentes.classList.contains("hidden")) {
                     mensajeSinFuentes.classList.remove("hidden")
                 }
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         listenCloseModal(modal, closeBtn, () => {
             limpiarModalColeccion(modal)
 
-            const mensajeSinFuentes = document.getElementById("sin-fuentes-coleccion")
+            const mensajeSinFuentes = document.getElementById("sin-fuentes-modal-coleccion")
             if(!mensajeSinFuentes.classList.contains("hidden")) {
                 mensajeSinFuentes.classList.add("hidden")
             }
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-function verColeccion(coleccion) {
+function autocompletarModalColeccion(coleccion) {
     document.getElementById('titulo-coleccion').value = coleccion.titulo
     document.getElementById('descripcion-coleccion').value = coleccion.descripcion
     document.getElementById('algoritmo-coleccion').value = coleccion.tipoAlgoritmoConsenso;
@@ -71,18 +71,5 @@ function verColeccion(coleccion) {
         }
     })
 
-    coleccion.fuentes.forEach((fuente, index) => {
-        agregarFuenteColeccion(index)
-
-        document.getElementById(`eliminar-fuente-${index}`).classList.add("hidden")
-
-        const tipoFuente = document.getElementById(`fuente-tipo-${index}`)
-        tipoFuente.value = fuente.tipo
-
-        if(fuente.tipo !== "dinamica") {
-            const nombreFuente = document.getElementById(`fuente-nombre-${index}`)
-            nombreFuente.value = fuente.id
-            document.getElementById(`nombre-container-${index}`).classList.remove("hidden")
-        }
-    })
+    autocompletarFuentesColeccion(coleccion, 'modal-coleccion');
 }
