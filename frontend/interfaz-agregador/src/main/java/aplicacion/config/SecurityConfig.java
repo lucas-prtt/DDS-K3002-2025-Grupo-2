@@ -50,8 +50,10 @@ public class SecurityConfig {
                         ).permitAll()
                         // Cualquier otra petición requerirá autenticación
                         .anyRequest().authenticated()
+                ).sessionManagement(
+                        session -> session.invalidSessionUrl("/login?session=invalid")
                 )
-                .oauth2Login(oauth2 -> oauth2
+                .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/keycloak")
                         .userInfoEndpoint(userInfo -> userInfo
                                 .oidcUserService(customOidcUserService)
                         )
