@@ -1,5 +1,6 @@
 package aplicacion.config.eurekaConfig;
 
+import aplicacion.domain.agregadorID.AgregadorID;
 import aplicacion.repositorios.AgregadorIDRepository;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import jakarta.annotation.PostConstruct;
 import java.util.List;
+import java.util.UUID;
 
 @Configuration
 public class EurekaMetadataConfig {
@@ -27,12 +29,10 @@ public class EurekaMetadataConfig {
     @PostConstruct
     public void inicializarMetadata() {
 
-        while (agregadorIDRepository.count() == 0) {
-            try {
-                Thread.sleep(100); // Espera 100 ms antes de volver a verificar
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+        if (agregadorIDRepository.count() == 0) {
+            UUID uuid = UUID.randomUUID();
+            AgregadorID newAgregadorID = new AgregadorID(uuid.toString());
+            agregadorIDRepository.save(newAgregadorID);
         }
         agregadorID = agregadorIDRepository.findAll().get(0).getAgregadorID();
 
