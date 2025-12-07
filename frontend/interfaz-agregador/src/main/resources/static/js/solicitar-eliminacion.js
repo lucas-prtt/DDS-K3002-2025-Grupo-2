@@ -50,7 +50,6 @@ async function enviarSolicitudEliminacion(inputMotivo) {
         }
 
         alert('Solicitud de eliminación enviada exitosamente');
-        document.getElementById("salir-solicitar-eliminacion").click();
         window.location.reload();
     } catch (error) {
         console.error(error);

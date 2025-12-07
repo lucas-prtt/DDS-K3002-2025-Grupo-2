@@ -534,13 +534,13 @@
 				<div class="mb-4">
 					<div class="mb-3">
 						<h4 class="form-label font-semibold">
-							Fuentes Actuales:
+							Fuentes de la Colección:
 						</h4>
-						<div id="fuentes-actuales-editar-coleccion" class="border rounded p-3 bg-white max-h-60 overflow-y-auto"></div>
+						<ul id="fuentes-actuales-editar-coleccion" class="flex flex-col gap-2 border rounded p-3 bg-white max-h-60 overflow-y-auto"></ul>
 					</div>
-					<div th:insert="~{fragments/form :: containerFuentes('editar-coleccion')}" class="mb-3"></div>
-					<button id="agregar-fuente-ver-coleccion" type="button" class="btn-primary" aria-label="Agregar Fuente">
-						+ Agregar Fuente
+					<div id="fuente-nueva-container-editar-coleccion" class="mb-3"></div>
+					<button id="agregar-fuente-editar-coleccion" type="button" class="btn-primary" aria-label="Agregar Fuente">
+						+ Agregar Fuente a la lista
 					</button>
 					<div id="operaciones-pendientes-container" class="hidden">
 						<h4 class="form-label font-bold text-orange-600">

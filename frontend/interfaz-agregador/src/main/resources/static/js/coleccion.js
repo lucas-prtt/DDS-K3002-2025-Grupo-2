@@ -140,12 +140,7 @@ function agregarCriterioColeccion(numeroCriterio, sufix) {
     document.getElementById(`criterios-container-${sufix}`).appendChild(criterioDiv);
 }
 
-function agregarFuenteColeccion(numeroFuente, sufix) {
-    const mensajeSinFuentes = document.getElementById(`sin-fuentes-${sufix}`)
-    if(!mensajeSinFuentes.classList.contains("hidden")) {
-        mensajeSinFuentes.classList.add("hidden")
-    }
-
+function crearContainerFuenteColeccion(numeroFuente) {
     const fuenteDiv = document.createElement('div');
     fuenteDiv.className = 'fuente-item border border-gray-300 rounded-md py-2 px-3 bg-gray-50 mb-2';
     fuenteDiv.id = `fuente-${numeroFuente}`;
@@ -157,7 +152,6 @@ function agregarFuenteColeccion(numeroFuente, sufix) {
                 Eliminar
             </button>
         </div>
-
         <div class="space-y-2">
             <select id="fuente-tipo-${numeroFuente}" class="form-input" data-id="${numeroFuente}">
                 <option value="">Seleccione el tipo de fuente</option>
@@ -177,18 +171,65 @@ function agregarFuenteColeccion(numeroFuente, sufix) {
         </div>
         `;
 
-    document.getElementById(`fuentes-container-${sufix}`).appendChild(fuenteDiv);
+    return fuenteDiv;
 }
 
-function autocompletarFuentesColeccion(coleccion) {
+async function cargarFuentesPorTipo(numero, tipo) {
+    const selectNombre = document.getElementById(`fuente-nombre-${numero}`);
+
+    if (!selectNombre) return;
+
+    try {
+        selectNombre.innerHTML = '<option value="">Cargando fuentes...</option>';
+        selectNombre.disabled = true;
+
+        const response = await fetch(`http://localhost:8086/apiAdministrativa/fuentes?tipo=${tipo}&limit=100`, {
+            headers: { 'Authorization': 'Bearer ' + jwtToken }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al cargar las fuentes');
+        }
+
+        const data = await response.json();
+        const fuentes = data.content || [];
+
+        if (tipo === "dinamica") {
+            // Para dinámica, guardar el ID en un atributo data
+            if (fuentes.length > 0) {
+                selectNombre.setAttribute('data-fuente-dinamica-id', fuentes[0].id);
+            }
+        } else {
+            // Para estática y proxy, mostrar el select con opciones
+            selectNombre.innerHTML = '<option value="">Seleccione una fuente</option>';
+            fuentes.forEach(fuente => {
+                const option = document.createElement('option');
+                option.value = fuente.id;
+                option.textContent = `${fuente.alias !== 'Fuente sin titulo' ? fuente.alias : ''}`;
+                selectNombre.appendChild(option);
+            });
+        }
+
+        selectNombre.disabled = false;
+    } catch (error) {
+        console.error('Error al cargar fuentes:', error);
+        selectNombre.innerHTML = '<option value="">Error al cargar fuentes</option>';
+        selectNombre.disabled = true;
+    }
+}
+
+function autocompletarFuentesColeccion(coleccion, sufix) {
     coleccion.fuentes.forEach((fuente, index) => {
-        agregarFuenteColeccion(index, 'ver-coleccion')
+        document.getElementById(`sin-fuentes-${sufix}`).classList.add("hidden")
+        const containerFuenteCreada = crearContainerFuenteColeccion(index)
+        document.getElementById(`fuentes-container-${sufix}`).appendChild(containerFuenteCreada)
+
 
         const fuenteTipo = document.getElementById(`fuente-tipo-${index}`)
         fuenteTipo.value = fuente.tipo
         fuenteTipo.disabled = true
 
-        if(fuente.tipo !== "dinamica") {
+        if (fuente.tipo !== "dinamica") {
             const fuenteNombreSelect = document.getElementById(`fuente-nombre-${index}`)
 
             const nuevaOpcion = document.createElement("option");
@@ -207,9 +248,9 @@ function autocompletarFuentesColeccion(coleccion) {
     })
 }
 
-function autocompletarCriteriosColeccion(coleccion) {
+function autocompletarCriteriosColeccion(coleccion, sufix) {
     coleccion.criteriosDePertenencia.forEach((criterioDePertenencia, index) => {
-        agregarCriterioColeccion(index, 'ver-coleccion')
+        agregarCriterioColeccion(index, sufix)
 
         const criterioTipo = document.getElementById(`criterio-tipo-${index}`);
         criterioTipo.value = criterioDePertenencia.tipo
@@ -243,29 +284,33 @@ function autocompletarCriteriosColeccion(coleccion) {
         }
 
         document.getElementById(`eliminar-criterio-${index}`).remove()
-        document.querySelectorAll("#modal-ver-coleccion .form-obligatory-icon").forEach(icon => icon.remove())
+        document.querySelectorAll(`#modal-${sufix} .form-obligatory-icon`).forEach(icon => icon.remove())
     })
 }
 
-function autocompletarModalEditarColeccion(coleccion) {
+function cargarFuenteColeccion(fuente) {
+    const fuenteLi = document.createElement('li');
+    fuenteLi.className = 'flex justify-between items-center';
+    fuenteLi.id = `fuente-actual-${fuente.id}`;
+    fuenteLi.innerHTML = `
+        <p>
+            ${fuente.alias} (${fuente.tipo})
+        </p>
+        <button id="quitar-fuente-actual-${fuente.id}" type="button" data-id="${fuente.id}" class="btn-eliminar-container">
+            X Quitar
+        </button>
+    `;
+    document.getElementById("fuentes-actuales-editar-coleccion").appendChild(fuenteLi);
 
-    autocompletarFuentesColeccion(coleccion, 'editar-coleccion');
+    document.getElementById(`quitar-fuente-actual-${fuente.id}`).addEventListener('click', (e) => {
+        const idFuenteQuitada = e.target.dataset.id;
+        window.coleccionActual.fuentes = window.coleccionActual.fuentes.filter(fuente => fuente.id !== idFuenteQuitada);
+        fuenteLi.remove()
+    })
+}
 
-    window.coleccionActual = coleccion;
-    window.fuentesOriginales = [...(coleccion.fuentes || [])];
-    window.fuentesActuales = [...window.fuentesOriginales];
-    window.operacionesPendientes = [];
-    window.algoritmoOriginal = coleccion.tipoAlgoritmoConsenso;
-    window.algoritmoActual = window.algoritmoOriginal;
-    window.fuentesNuevas = []; // Para las fuentes agregadas con el nuevo sistema
-
-    // Seleccionar algoritmo actual
-    document.getElementById('algoritmo-editar-coleccion').value = coleccion.tipoAlgoritmoConsenso || '';
-
-    // Limpiar container de nuevas fuentes
-    document.getElementById('fuentes-container-editar-coleccion').innerHTML = '';
-
-    // Renderizar fuentes actuales
-    renderizarFuentesActuales();
-    renderizarOperacionesPendientes();
+function limpiarModalEditarColeccion() {
+    document.getElementById('fuentes-actuales-editar-coleccion').innerHTML = '';
+    document.getElementById("fuente-nueva-container-editar-coleccion").innerHTML = '';
+    document.getElementById('form-editar-coleccion').reset();
 }

@@ -1,7 +1,7 @@
 /* Contenedor principal */
 .solicitudes-container {
     max-width: 1400px;
-    margin: 2rem auto;
+    margin: 0 auto;
     padding: 0 2rem;
     background: transparent !important;
 }

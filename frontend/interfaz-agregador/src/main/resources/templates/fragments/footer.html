@@ -7,10 +7,6 @@
         </p>
 
         <div class="flex flex-wrap justify-center gap-4 mb-6">
-            <a href="/mapa" class="hover:text-gray-300 transition">Explorar Mapa</a>
-            <span class="text-gray-400">-</span>
-            <a href="/colecciones" class="hover:text-gray-300 transition">Colecciones</a>
-            <span class="text-gray-400">-</span>
             <a href="/about" class="hover:text-gray-300 transition">Acerca del Proyecto</a>
             <span class="text-gray-400">-</span>
             <a href="https://osmfoundation.org/wiki/Privacy_Policy"
@@ -19,6 +15,12 @@
                class="hover:text-gray-300 transition">Política de Privacidad</a>
             <span class="text-gray-400">-</span>
             <a href="mailto:aherzkovich@frba.utn.edu.ar" class="hover:text-gray-300 transition">Contacto</a>
+            <span class="text-gray-400">-</span>
+            <a href="http://localhost:8085/documentacion-apis" class="hover:text-gray-300 transition">Documentación API Pública</a>
+            <div th:if="${isAdmin}">
+                <span class="text-gray-400">-</span>
+                <a href="http://localhost:8086/documentacion-apis" class="hover:text-gray-300 transition">Documentación API Administrativa</a>
+            </div>
         </div>
 
         <div class="mt-6">

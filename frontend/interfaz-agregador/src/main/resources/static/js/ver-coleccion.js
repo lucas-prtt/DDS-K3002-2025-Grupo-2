@@ -5,12 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if(allElementsFound([verBtns, modal], "ver colección")) {
         colecciones.forEach((coleccion, index) => {
-            listenOpenModal(modal, verBtns[index], () => {
-                document.getElementById(`sin-criterios-ver-coleccion`).classList.remove("hidden")
-                document.getElementById(`sin-fuentes-ver-coleccion`).classList.remove("hidden")
-
-                autocompletarModalVerColeccion(coleccion)
-            })
+            listenOpenModal(modal, verBtns[index], () => autocompletarModalVerColeccion(coleccion))
         })
         listenCloseModal(modal, closeBtn, () => limpiarModalColeccion(modal, 'ver-coleccion'))
     }
@@ -21,7 +16,7 @@ function autocompletarModalVerColeccion(coleccion) {
     document.getElementById('descripcion-ver-coleccion').textContent  = coleccion.descripcion
     document.getElementById('algoritmo-ver-coleccion').textContent  = coleccion.tipoAlgoritmoConsenso;
 
-    autocompletarCriteriosColeccion(coleccion);
+    autocompletarCriteriosColeccion(coleccion, 'ver-coleccion');
 
-    autocompletarFuentesColeccion(coleccion);
+    autocompletarFuentesColeccion(coleccion, 'ver-coleccion');
 }

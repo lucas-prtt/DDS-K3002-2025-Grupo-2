@@ -366,6 +366,30 @@ public class SwaggerConfig {
         );
 
         // ============= HECHOS =============
+        paths.addPathItem("/apiAdministrativa/cargarHechos", new PathItem()
+                .post(new Operation()
+                        .tags(List.of("hecho-controller"))
+                        .summary("Cargar hechos desde fuentes")
+                        .description("Solicita al agregador que cargue y procese hechos desde todas las fuentes registradas en las colecciones activas")
+                        .responses(new ApiResponses()
+                                .addApiResponse("200", new ApiResponse()
+                                        .description("Carga de hechos iniciada exitosamente")
+                                        .content(new Content()
+                                                .addMediaType("application/json",
+                                                        new MediaType()
+                                                                .schema(new StringSchema()
+                                                                        .example("Hechos cargados exitosamente desde todas las fuentes")
+                                                                )
+                                                )
+                                        )
+                                )
+                                .addApiResponse("500", new ApiResponse()
+                                        .description("Error al cargar hechos desde las fuentes")
+                                )
+                        )
+                )
+        );
+
         paths.addPathItem("/apiAdministrativa/hechos", new PathItem()
                 .post(new Operation()
                         .tags(List.of("hecho-controller"))

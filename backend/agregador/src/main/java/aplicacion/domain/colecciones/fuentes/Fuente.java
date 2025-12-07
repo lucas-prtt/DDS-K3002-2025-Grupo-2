@@ -36,12 +36,12 @@ public abstract class Fuente{
     @JoinTable(name = "hecho_fuente", joinColumns = @JoinColumn(name = "fuente_id"), inverseJoinColumns = @JoinColumn(name = "hecho_id"))
     private List<Hecho> hechos;
 
-    public Fuente(String id, Conexion conexion) {
+    public Fuente(String id, Conexion conexion, String alias) {
         this.id = id;
         this.ultimaPeticion = null; // Arranca en null para que si es la primera petición, traer todos los hechos
         this.conexion = conexion;
         this.hechos = new ArrayList<>();
-        this.alias = "Fuente sin titulo";
+        this.alias = alias;
     }
     public Fuente(String id){
         this.id = id;

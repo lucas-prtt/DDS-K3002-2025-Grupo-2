@@ -221,7 +221,7 @@ function listenAgregrFuenteEditarColeccion() {
     });
 }
 
-function listenCriteriosModalColeccion(agregarBtn, sufix) {
+function listenCriteriosColeccion(agregarBtn, sufix) {
     let cantidadCriterios = 0
 
     agregarBtn.addEventListener("click", function () {
@@ -231,17 +231,44 @@ function listenCriteriosModalColeccion(agregarBtn, sufix) {
     });
 }
 
-function listenFuentesModalCrearColeccion(agregarBtn, sufix) {
+function listenFuentesColeccion(agregarBtn, sufix) {
     let cantidadFuentes = 0
+    const fuentesContainer = document.getElementById(`fuentes-container-${sufix}`)
 
     agregarBtn.addEventListener("click", function () {
+        if(fuentesContainer.childElementCount === 0) {
+            document.getElementById(`sin-fuentes-${sufix}`).classList.add("hidden")
+        }
         cantidadFuentes++
-        agregarFuenteColeccion(cantidadFuentes, sufix)
-        listenFuenteColeccion(cantidadFuentes, sufix)
+
+        const containerFuenteCreada = crearContainerFuenteColeccion(cantidadFuentes)
+        fuentesContainer.appendChild(containerFuenteCreada)
+
+        listenEliminarFuenteColeccion(cantidadFuentes, sufix)
+        listenCambiosTipoFuenteColeccion(cantidadFuentes)
     });
 }
 
-function listenFuenteColeccion(numeroFuente, sufix) {
+function listenCambiosTipoFuenteColeccion(numeroFuente) {
+    const nombreContainer = document.getElementById(`nombre-container-${numeroFuente}`);
+
+    document.getElementById(`fuente-tipo-${numeroFuente}`).addEventListener('change', async function(e) {
+        const tipoFuente = e.target.value
+
+        if (tipoFuente === "estatica" || tipoFuente === "proxy") {
+            nombreContainer.classList.remove("hidden");
+            await cargarFuentesPorTipo(numeroFuente, tipoFuente);
+        } else if (tipoFuente === "dinamica") {
+            // Para dinámica, ocultar el container y cargar el ID en segundo plano
+            nombreContainer.classList.add("hidden");
+            await cargarFuentesPorTipo(numeroFuente, tipoFuente);
+        } else {
+            nombreContainer.classList.add("hidden");
+        }
+    })
+}
+
+function listenEliminarFuenteColeccion(numeroFuente, sufix) {
     document.getElementById(`eliminar-fuente-${numeroFuente}`).addEventListener("click", () => {
         document.getElementById(`fuente-${numeroFuente}`).remove();
 
@@ -272,77 +299,6 @@ function listenCriterioColeccion(numeroCriterio, sufix) {
             document.getElementById(`campos-fecha-${numeroCriterio}`).classList.add("hidden");
         }
     })
-}
-
-function listenCamposFuenteModalCrearColeccion() {
-    document.addEventListener("change", async e => {
-        if (e.target.matches("select[id^='fuente-tipo']")) {
-            const fullId = e.target.id; // ej: "fuente-tipo-1-crear-coleccion"
-            const match = fullId.match(/fuente-tipo-(\d+)-(.*)/);
-
-            if (match) {
-                const numero = match[1];
-                const sufix = match[2];
-                const tipo = e.target.value;
-                const nombreContainer = document.getElementById(`nombre-container-${numero}-${sufix}`);
-
-                if (tipo === "estatica" || tipo === "proxy") {
-                    nombreContainer.classList.remove("hidden");
-                    await cargarFuentesPorTipo(numero, sufix, tipo);
-                } else if (tipo === "dinamica") {
-                    // Para dinámica, ocultar el container y cargar el ID en segundo plano
-                    nombreContainer.classList.add("hidden");
-                    await cargarFuentesPorTipo(numero, sufix, tipo);
-                } else {
-                    nombreContainer.classList.add("hidden");
-                }
-            }
-        }
-    });
-}
-
-async function cargarFuentesPorTipo(numero, sufix, tipo) {
-    const selectNombre = document.getElementById(`fuente-nombre-${numero}-${sufix}`);
-
-    if (!selectNombre) return;
-
-    try {
-        selectNombre.innerHTML = '<option value="">Cargando fuentes...</option>';
-        selectNombre.disabled = true;
-
-        const response = await fetch(`http://localhost:8086/apiAdministrativa/fuentes?tipo=${tipo}&limit=100`, {
-            headers: { 'Authorization': 'Bearer ' + jwtToken }
-        });
-
-        if (!response.ok) {
-            throw new Error('Error al cargar las fuentes');
-        }
-
-        const data = await response.json();
-        const fuentes = data.content || [];
-
-        if (tipo === "dinamica") {
-            // Para dinámica, guardar el ID en un atributo data
-            if (fuentes.length > 0) {
-                selectNombre.setAttribute('data-fuente-dinamica-id', fuentes[0].id);
-            }
-        } else {
-            // Para estática y proxy, mostrar el select con opciones
-            selectNombre.innerHTML = '<option value="">Seleccione una fuente</option>';
-            fuentes.forEach(fuente => {
-                const option = document.createElement('option');
-                option.value = fuente.id;
-                option.textContent = `${fuente.id} ${fuente.alias !== 'Fuente sin titulo' ? '(' + fuente.alias + ')' : ''}`;
-                selectNombre.appendChild(option);
-            });
-        }
-
-        selectNombre.disabled = false;
-    } catch (error) {
-        console.error('Error al cargar fuentes:', error);
-        selectNombre.innerHTML = '<option value="">Error al cargar fuentes</option>';
-        selectNombre.disabled = true;
-    }
 }
 
 function listenScrollableArrowHome(scrollArrowBtn) {

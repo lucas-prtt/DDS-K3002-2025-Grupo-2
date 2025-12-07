@@ -12,5 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FuenteOutputDto {
     private String id;
+    private String alias;
     private String tipo;
 }

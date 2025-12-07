@@ -53,7 +53,7 @@
                     </div>
                     <div class="info-item items-center">
                         <div class="hecho-info-label">Autor</div>
-                        <div class="hecho-info-value text-black" th:text="*{autor != null ? autor.identidad.nombre + autor.identidad.apellido : 'Anónimo'}">
+                        <div class="hecho-info-value text-black" th:text="*{autor != null ? autor.identidad.nombre + ' '  + autor.identidad.apellido : 'Anónimo'}">
                             Anónimo
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="hecho-info-value" th:if="${!isAdmin}">
+                        <div class="lista-etiquetas" th:if="${!isAdmin}">
                             <span th:each="etiqueta : *{etiquetas}">
                                 <span class="tag-item" th:text="${etiqueta.nombre}"></span>
                             </span>

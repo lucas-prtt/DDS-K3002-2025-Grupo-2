@@ -70,7 +70,6 @@ async function publicarHecho(inputsObligatorios) {
         }
 
         alert('Hecho publicado exitosamente');
-        document.getElementById("salir-crear-hecho").click();
         window.location.reload();
     } catch (error) {
         console.error(error);
