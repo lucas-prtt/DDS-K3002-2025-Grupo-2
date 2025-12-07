@@ -80,7 +80,6 @@ async function guardarEdicion(inputsObligatorios) {
         }
 
         alert("Hecho actualizado con éxito");
-        document.getElementById("salir-editar-hecho").click();
         window.location.reload()
     } catch (error) {
         console.error('Error:', error);

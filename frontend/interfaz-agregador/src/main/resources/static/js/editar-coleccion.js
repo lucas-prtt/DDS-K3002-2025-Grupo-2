@@ -1,272 +1,82 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const editarBtns = Array.from(document.querySelectorAll(".coleccion-card .btn-editar-coleccion"));
     const modal = document.getElementById("modal-editar-coleccion");
+    const agregarFuenteBtn = document.getElementById("agregar-fuente-editar-coleccion")
     const closeBtn = document.getElementById("salir-editar-coleccion");
+    const confirmBtn = document.getElementById("editar-coleccion")
 
-    if(allElementsFound([modal, closeBtn, editarBtns], "editar colecciones")) {
+    if(allElementsFound([editarBtns, modal, closeBtn, confirmBtn, agregarFuenteBtn], "editar colecciones")) {
         colecciones.forEach((coleccion, index) => {
-            listenOpenModal(modal, editarBtns[index], () => autocompletarModalEditarColeccion(coleccion));
+            listenOpenModal(modal, editarBtns[index], () => {
+                window.coleccionActual = structuredClone(coleccion);
+
+                document.getElementById('algoritmo-editar-coleccion').value = coleccion.tipoAlgoritmoConsenso;
+                coleccion.fuentes.forEach(fuente => cargarFuenteColeccion(fuente))
+
+                const containerFuenteCreada = crearContainerFuenteColeccion(0);
+                document.getElementById("fuente-nueva-container-editar-coleccion").appendChild(containerFuenteCreada)
+                document.getElementById('eliminar-fuente-0').remove();
+                listenCambiosTipoFuenteColeccion(0)
+            });
+
+            confirmBtn.addEventListener('click', async function(){
+                await actualizarColeccion(coleccion);
+            });
         });
 
-        listenCloseModal(modal, closeBtn, () => {
-            limpiarModalEditarColeccion();
+        listenCloseModal(modal, closeBtn, () => limpiarModalEditarColeccion());
+
+        document.getElementById("agregar-fuente-editar-coleccion").addEventListener("click", function () {
+            const fuenteIngresada = {
+                id: document.getElementById("fuente-nombre-0").value,
+                alias: document.getElementById("fuente-nombre-0").textContent,
+                tipo: document.getElementById("fuente-tipo-0").value
+            }
+            cargarFuenteColeccion(fuenteIngresada)
         });
-
-        // Event listener para agregar nueva fuente
-        const btnAgregarFuente = document.getElementById('agregar-fuente-editar-coleccion');
-        if (btnAgregarFuente) {
-            const contadorFuentesObject = { cantidadFuentes: 0 };
-            btnAgregarFuente.addEventListener('click', function() {
-                contadorFuentesObject.cantidadFuentes++;
-                agregarFuenteAColeccionEditar(contadorFuentesObject.cantidadFuentes);
-            });
-        }
-
-        // Event listener para cambio de tipo de fuente (delegado)
-        listenCamposFuenteModalEditarColeccion();
-
-        // Event listener para cambio de algoritmo
-        const selectAlgoritmo = document.getElementById('algoritmo-editar-coleccion');
-        if (selectAlgoritmo) {
-            selectAlgoritmo.addEventListener('change', function() {
-                window.algoritmoActual = this.value;
-            });
-        }
-
-        // Event listener para guardar cambios
-        const btnGuardar = document.getElementById('editar-coleccion');
-        if (btnGuardar) {
-            btnGuardar.addEventListener('click', async function(){
-                await guardarCambiosColeccion();
-            });
-        }
     }
 });
 
-function limpiarModalEditarColeccion() {
-    document.getElementById('form-editar-coleccion').reset();
-    document.getElementById('fuentes-container-editar-coleccion').innerHTML = '';
-    window.coleccionActual = null;
-    window.fuentesOriginales = [];
-    window.fuentesActuales = [];
-    window.operacionesPendientes = [];
-    window.algoritmoOriginal = null;
-    window.algoritmoActual = null;
-    window.fuentesNuevas = [];
-}
+async function actualizarColeccion(coleccion) {
+    try {
+        mostrarCargando("editar-coleccion");
 
-function agregarFuenteAColeccionEditar(numeroFuente) {
-    const fuenteDiv = document.createElement('div');
-    fuenteDiv.className = 'fuente-item border border-gray-300 rounded-md py-2 px-3 bg-gray-50 mb-2';
-    fuenteDiv.id = `fuente-editar-${numeroFuente}`;
+        const algoritmoConsenso = document.getElementById("algoritmo-editar-coleccion").value
+        if(algoritmoConsenso !== coleccion.tipoAlgoritmoConsenso) {
+            const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccion.id}/algoritmo`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + jwtToken
+                },
+                body: JSON.stringify({ algoritmoConsenso })
+            });
 
-    fuenteDiv.innerHTML = `
-        <div class="flex justify-between items-center mb-1">
-            <span class="block text-xs font-medium text-gray-600">Nueva Fuente</span>
-            <button id="eliminar-fuente-editar-${numeroFuente}" type="button" data-id="${numeroFuente}" class="btn-eliminar-container py-1">
-                Eliminar
-            </button>
-        </div>
+            if (!response.ok) {
+                throw new Error('Error al actualizar el algoritmo de consenso');
+            }
+        }
 
-        <div class="space-y-2">
-            <label for="fuente-tipo-editar-${numeroFuente}" class="block text-xs font-medium text-gray-600 mb-1">Tipo</label>
-            <select id="fuente-tipo-editar-${numeroFuente}" class="form-input" data-id="editar-${numeroFuente}">
-                <option value="">Seleccione el tipo de fuente</option>
-                <option value="estatica">Estática</option>
-                <option value="dinamica">Dinámica</option>
-                <option value="proxy">Proxy</option>
-            </select>
+        if(window.coleccionActual.fuentes.all(fuenteActual => coleccion.fuentes.some(fuente => fuente.id === fuenteActual.id))) {
+            if(window.coleccionActual.fuentes.length !== coleccion.fuentes.length) {
+                const fuentesNuevas = window.coleccionActual.fuentes.filter(fuenteActual => !coleccion.fuentes.some(fuente => fuente.id === fuenteActual.id))
 
-            <div id="nombre-container-editar-${numeroFuente}" class="hidden">
-                <label for="fuente-nombre-editar-${numeroFuente}" class="block text-xs font-medium text-gray-600 mb-1">
-                    ID de la Fuente
-                </label>
-                <select id="fuente-nombre-editar-${numeroFuente}" class="form-input">
-                    <option value="">Cargando fuentes...</option>
-                </select>
-            </div>
-        </div>
-    `;
+                for (const fuenteNueva of fuentesNuevas) {
+                    const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccion.id}/fuentes`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + jwtToken
+                        },
+                        body: JSON.stringify({ tipo: fuenteNueva.tipo, id: fuenteNueva.id })
+                    });
 
-    document.getElementById('fuentes-container-editar-coleccion').appendChild(fuenteDiv);
-
-    const removeBtn = document.getElementById(`eliminar-fuente-editar-${numeroFuente}`);
-    removeBtn.addEventListener("click", () => {
-        fuenteDiv.remove();
-        // Remover de la lista de fuentes nuevas si existía
-        window.fuentesNuevas = window.fuentesNuevas.filter(f => f.numero !== numeroFuente);
-    });
-}
-
-function listenCamposFuenteModalEditarColeccion() {
-    document.addEventListener("change", async e => {
-        if (e.target.matches("select[id^='fuente-tipo-']")) {
-            const fullId = e.target.id;
-            const match = fullId.match(/fuente-tipo-(.+)/);
-
-            if (match) {
-                const id = match[1]; // ej: "editar-1" o "1-editar-coleccion"
-                const tipo = e.target.value;
-                const nombreContainer = document.getElementById(`nombre-container-${id}`);
-
-                if (nombreContainer) {
-                    if (tipo === "estatica" || tipo === "proxy") {
-                        nombreContainer.classList.remove("hidden");
-                        await cargarFuentesPorTipoEditar(id, tipo);
-                    } else if (tipo === "dinamica") {
-                        // Para dinámica, ocultar el container y cargar el ID en segundo plano
-                        nombreContainer.classList.add("hidden");
-                        await cargarFuentesPorTipoEditar(id, tipo);
-                    } else {
-                        nombreContainer.classList.add("hidden");
+                    if (!response.ok) {
+                        throw new Error(`Error al agregar la fuente ${fuenteNueva.id}`);
                     }
                 }
             }
         }
-    });
-}
-
-async function cargarFuentesPorTipoEditar(id, tipo) {
-    const selectNombre = document.getElementById(`fuente-nombre-${id}`);
-
-    if (!selectNombre) return;
-
-    try {
-        selectNombre.innerHTML = '<option value="">Cargando fuentes...</option>';
-        selectNombre.disabled = true;
-
-        const response = await fetch(`http://localhost:8086/apiAdministrativa/fuentes?tipo=${tipo}&limit=100`, {
-            headers: { 'Authorization': 'Bearer ' + jwtToken }
-        });
-
-        if (!response.ok) {
-            throw new Error('Error al cargar las fuentes');
-        }
-
-        const data = await response.json();
-        const fuentes = data.content || [];
-
-        if (tipo === "dinamica") {
-            // Para dinámica, guardar el ID en un atributo data
-            if (fuentes.length > 0) {
-                selectNombre.setAttribute('data-fuente-dinamica-id', fuentes[0].id);
-            }
-        } else {
-            // Para estática y proxy, mostrar el select con opciones
-            selectNombre.innerHTML = '<option value="">Seleccione una fuente</option>';
-            fuentes.forEach(fuente => {
-                const option = document.createElement('option');
-                option.value = fuente.id;
-                option.textContent = `${fuente.id} ${fuente.alias !== 'Fuente sin titulo' ? '(' + fuente.alias + ')' : ''}`;
-                selectNombre.appendChild(option);
-            });
-        }
-
-        selectNombre.disabled = false;
-    } catch (error) {
-        console.error('Error al cargar fuentes:', error);
-        selectNombre.innerHTML = '<option value="">Error al cargar fuentes</option>';
-        selectNombre.disabled = true;
-    }
-}
-
-function renderizarFuentesActuales() {
-    const container = document.getElementById('fuentes-actuales-editar-coleccion');
-
-    if (!window.fuentesActuales || window.fuentesActuales.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 mb-0">No hay fuentes asociadas</p>';
-        return;
-    }
-
-    container.innerHTML = window.fuentesActuales.map(fuente => `
-        <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
-            <span class="text-black">${fuente.nombre || fuente.id || fuente} (${fuente.tipo || 'N/A'})</span>
-            <button type="button" class="btn btn-sm btn-danger" onclick="quitarFuente('${fuente.id || fuente}')">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-                Quitar
-            </button>
-        </div>
-    `).join('');
-}
-
-function renderizarOperacionesPendientes() {
-    const container = document.getElementById('operaciones-pendientes-container');
-    const lista = document.getElementById('lista-operaciones-pendientes');
-
-    if (!window.operacionesPendientes || window.operacionesPendientes.length === 0) {
-        container.classList.add('hidden');
-        return;
-    }
-
-    container.classList.remove('hidden');
-    lista.innerHTML = window.operacionesPendientes.map((op, index) => `
-        <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
-            <span class="text-black">
-                <strong>${op.tipo === 'AGREGAR' ? '➕ Agregar' : '➖ Quitar'}:</strong> ${op.fuenteId} (${op.tipoFuente || 'N/A'})
-            </span>
-            <button type="button" class="btn btn-sm btn-secondary" onclick="cancelarOperacion(${index})">
-                Cancelar
-            </button>
-        </div>
-    `).join('');
-}
-
-function quitarFuente(fuenteId) {
-    // Eliminar de la lista actual
-    window.fuentesActuales = window.fuentesActuales.filter(f => (f.id || f) !== fuenteId);
-
-    // Si estaba en las fuentes originales, registrar operación DELETE
-    if (window.fuentesOriginales.some(f => (f.id || f) === fuenteId)) {
-        // Cancelar operación POST si existía
-        window.operacionesPendientes = window.operacionesPendientes.filter(op =>
-            !(op.tipo === 'AGREGAR' && op.fuenteId === fuenteId)
-        );
-
-        window.operacionesPendientes.push({
-            tipo: 'QUITAR',
-            fuenteId: fuenteId
-        });
-    } else {
-        // Era una fuente recién agregada, solo cancelar la operación POST
-        window.operacionesPendientes = window.operacionesPendientes.filter(op =>
-            !(op.tipo === 'AGREGAR' && op.fuenteId === fuenteId)
-        );
-    }
-
-    renderizarFuentesActuales();
-    renderizarOperacionesPendientes();
-}
-
-function cancelarOperacion(index) {
-    const operacion = window.operacionesPendientes[index];
-
-    if (operacion.tipo === 'AGREGAR') {
-        // Quitar de la lista actual
-        window.fuentesActuales = window.fuentesActuales.filter(f => (f.id || f) !== operacion.fuenteId);
-    } else {
-        // Volver a agregar a la lista actual
-        const fuenteOriginal = window.fuentesOriginales.find(f => (f.id || f) === operacion.fuenteId);
-        window.fuentesActuales.push(fuenteOriginal);
-    }
-
-    window.operacionesPendientes.splice(index, 1);
-    renderizarFuentesActuales();
-    renderizarOperacionesPendientes();
-}
-
-async function guardarCambiosColeccion() {
-    const btn = document.getElementById('editar-coleccion');
-    const spinner = btn?.querySelector('.spinner-border');
-
-    try {
-        btn.disabled = true;
-        if (spinner) spinner.classList.remove('hidden');
-
-        // Recopilar las nuevas fuentes del formulario
-        const fuentesNuevasContainer = document.getElementById('fuentes-container-editar-coleccion');
-        const fuentesDivs = fuentesNuevasContainer.querySelectorAll('[id^="fuente-editar-"]');
 
         fuentesDivs.forEach(div => {
             const id = div.id.replace('fuente-editar-', '');
@@ -352,13 +162,12 @@ async function guardarCambiosColeccion() {
             }
         }
 
-        alert('✓ Colección actualizada exitosamente');
+        alert("Colección actualizada con éxito");
         window.location.reload();
     } catch (error) {
-        console.error('Error al guardar cambios:', error);
-        alert('Error al guardar los cambios: ' + error.message);
+        console.error(error);
+        alert(error.message);
     } finally {
-        btn.disabled = false;
-        if (spinner) spinner.classList.add('hidden');
+        ocultarCargando("editar-coleccion");
     }
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FuenteDinamica extends Fuente {
     public FuenteDinamica(String id, Conexion conexion) {
-        super(id, conexion);
+        super(id, conexion, "Fuente Dinamica " + id.substring(0, 8));
     }
 
     public FuenteDinamica(String id) {

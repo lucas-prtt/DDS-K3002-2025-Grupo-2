@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FuenteProxy extends Fuente{
     public FuenteProxy(String id, Conexion conexion) {
-        super(id, conexion);
+        super(id, conexion, "Fuente Proxy " + id.substring(0, 10) );
     }
 
     public FuenteProxy(String id) {

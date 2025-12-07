@@ -3,15 +3,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const openBtn = document.getElementById("menu-crear-coleccion")
     const agregarCriterioBtn = document.getElementById("agregar-criterio-crear-coleccion")
     const agregarFuenteBtn = document.getElementById("agregar-fuente-crear-coleccion")
-    const confirmBtn = document.getElementById("crear-coleccion");
     const closeBtn = document.getElementById("salir-crear-coleccion");
+    const confirmBtn = document.getElementById("crear-coleccion");
 
     if(allElementsFound([modal, openBtn, agregarCriterioBtn, agregarFuenteBtn, confirmBtn, closeBtn], "crear colección")) {
         listenOpenModal(modal, openBtn, () => document.getElementById("dropdown-menu").classList.add("hidden"))
         listenCloseModal(modal, closeBtn, () => limpiarModalColeccion(modal, 'crear-coleccion'))
-        listenCriteriosModalColeccion(agregarCriterioBtn, 'crear-coleccion');
-        listenFuentesModalCrearColeccion(agregarFuenteBtn, 'crear-coleccion');
-        listenCamposFuenteModalCrearColeccion();
+        listenCriteriosColeccion(agregarCriterioBtn, 'crear-coleccion');
+        listenFuentesColeccion(agregarFuenteBtn, 'crear-coleccion');
 
         confirmBtn.addEventListener("click", async function() {
             const inputsObligatorios = validarFormularioModalCrearColeccion()
@@ -42,7 +41,6 @@ async function crearColeccion(inputsObligatorios) {
         }
 
         alert("Colección creada con éxito");
-        document.getElementById("salir-crear-coleccion").click();
         window.location.reload()
     } catch (error) {
         console.error(error);
