@@ -236,21 +236,25 @@ public class FuenteService {
                             .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka como fuente metamapa"));
                      fuenteProxy = new FuenteProxy(fuenteEnProxyId);
                 } catch(FuenteNoEncontradaException exe){
-                    ServiceInstance instancia = discoveryClient.getInstances("CARGADOR")
-                            .stream()
-                            .filter(instance -> instance.getMetadata().get("tipoFuente").equals("proxy"))
-                            .findFirst()
-                            .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka como fuente metamapa"));
-                    String uri = instancia.getUri().toString() + "/fuentesProxy/fuentesMetamapa";
+                    try {
+                        ServiceInstance instancia = discoveryClient.getInstances("CARGADOR")
+                                .stream()
+                                .filter(instance -> instance.getMetadata().get("tipoFuente").equals("proxy"))
+                                .findFirst()
+                                .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka como fuente metamapa"));
 
-                    RestTemplate restTemplate = new RestTemplate();
+                        String uri = instancia.getUri().toString() + "/fuentesProxy/fuentesMetamapa";
 
-                    FuenteProxyInputDto response = restTemplate.getForObject(uri, FuenteProxyInputDto.class);
+                        RestTemplate restTemplate = new RestTemplate();
+
+                        FuenteProxyInputDto response = restTemplate.getForObject(uri, FuenteProxyInputDto.class);
 
 
-
-                    FuenteProxyInputMapper fuenteProxyInputMapper = new FuenteProxyInputMapper();
-                    fuenteProxy = fuenteProxyInputMapper.map(response);
+                        FuenteProxyInputMapper fuenteProxyInputMapper = new FuenteProxyInputMapper();
+                        fuenteProxy = fuenteProxyInputMapper.map(response);
+                    } catch (FuenteNoEncontradaException exc) {
+                        throw new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka como fuente metamapa");
+                    }
                 }
                 return this.guardarFuente(fuenteProxy);
             }

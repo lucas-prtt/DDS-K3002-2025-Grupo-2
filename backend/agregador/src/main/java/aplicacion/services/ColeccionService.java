@@ -16,6 +16,7 @@ import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeColecciones;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.integration.IntegrationProperties;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,11 +56,17 @@ public class ColeccionService {
         List<Fuente> fuentes= coleccion.getFuentes().stream().map(fuenteInputMapper::map).toList();
         List<Fuente> fuentesEnSistema = new ArrayList<>();
         for( Fuente fuente : fuentes) {
-            fuentesEnSistema.add(fuenteService.obtenerFuentePorId(fuente.getId()));
+            try {
+                fuentesEnSistema.add(fuenteService.obtenerFuentePorId(fuente.getId()));
+            }catch (FuenteNoEncontradaException e){
+                throw new RuntimeException("aaa se rompio al guardar coleccion: " + e.getMessage());
+            }
         }
         Coleccion coleccionLocal = coleccionInputMapper.map(coleccion);
         coleccionLocal.setFuentes(fuentesEnSistema);
+        System.out.println("cantidad de colecciones" + repositorioDeColecciones.count());
         Coleccion coleccionGuardada = repositorioDeColecciones.save(coleccionLocal);
+        System.out.println("cantidad de colecciones" + repositorioDeColecciones.count());
         this.asociarHechosPreexistentes(coleccionGuardada);
         return coleccionOutputMapper.map(coleccionGuardada);
     }

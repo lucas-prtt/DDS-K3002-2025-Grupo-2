@@ -34,6 +34,7 @@ public class ColeccionController {
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
     public ResponseEntity<ColeccionOutputDto> crearColeccion(@RequestBody ColeccionInputDto coleccion) {//todo ver como mandan el id de agregador
+        System.out.print("hola" + coleccion);
         ColeccionOutputDto coleccionOutput = coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
         System.out.println("Colección creada: " + coleccionOutput.getId());
