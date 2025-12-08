@@ -1,6 +1,5 @@
 package aplicacion.domain.colecciones.fuentes;
 
-import aplicacion.domain.conexiones.Conexion;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 

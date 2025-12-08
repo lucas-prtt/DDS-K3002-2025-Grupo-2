@@ -4,7 +4,6 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteDinamica;
 import aplicacion.domain.colecciones.fuentes.FuenteEstatica;
 import aplicacion.domain.colecciones.fuentes.FuenteProxy;
-import aplicacion.domain.conexiones.Conexion;
 import aplicacion.services.FuenteService;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @Component
 public class CargarFuentesScheduler {
