@@ -4,7 +4,6 @@ import aplicacion.domain.facts.FactHecho;
 import aplicacion.domain.hechosYSolicitudes.Hecho;
 import aplicacion.repositories.agregador.HechoRepository;
 import aplicacion.repositories.olap.*;
-import aplicacion.repositories.olap.ConfiguracionGlobalRepository;
 import aplicacion.utils.ConfiguracionGlobal;
 import aplicacion.utils.etl.HechoFactProcesor;
 import org.springframework.data.domain.PageRequest;

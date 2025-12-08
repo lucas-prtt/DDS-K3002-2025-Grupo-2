@@ -5,12 +5,10 @@ import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 // FUENTE DEMO

@@ -2,7 +2,6 @@ package aplicacion.services;
 
 import aplicacion.domain.fuentesProxy.FuenteProxy;
 import aplicacion.domain.fuentesProxy.fuentesDemo.FuenteDemo;
-import aplicacion.domain.fuentesProxy.fuentesDemo.HechoBuilder;
 import aplicacion.domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
 import aplicacion.dto.input.FuenteProxyInputDto;
 import aplicacion.dto.mappers.FuenteProxyInputMapper;
@@ -13,7 +12,6 @@ import aplicacion.dto.output.HechoOutputDto;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import aplicacion.repositories.FuenteProxyRepository;
 import aplicacion.excepciones.FuenteNoEncontradaException;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import aplicacion.domain.hechos.Hecho;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,8 +67,7 @@ public class FuenteProxyService {
     }
     @Transactional
     public void pedirHechosFuente (FuenteProxy fuente){ // es fuente demo porque solo lo usa fuentes demo
-        if (fuente instanceof FuenteDemo) {
-            FuenteDemo fuenteDemo = (FuenteDemo) fuente;
+        if (fuente instanceof FuenteDemo fuenteDemo) {
             Map<String, Object> datos;
             Hecho hecho;
             while((datos = fuenteDemo.getBiblioteca().siguienteHecho(fuenteDemo.getUrl(), fuenteDemo.getUltimaConsulta())) != null) {

@@ -1,17 +1,12 @@
 package fuentesDemo;
 
-import aplicacion.domain.fuentesProxy.fuentesDemo.Conexion;
 import aplicacion.domain.fuentesProxy.fuentesDemo.ConexionPrueba;
 import aplicacion.domain.fuentesProxy.fuentesDemo.FuenteDemo;
-import aplicacion.domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.repositories.FuenteProxyRepository;
 import aplicacion.services.FuenteProxyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 class ServiceTest{

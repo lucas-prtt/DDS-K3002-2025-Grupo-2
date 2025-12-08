@@ -2,10 +2,8 @@ package aplicacion.services.depurador;
 
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.services.FuenteMutexManager;
 import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
-import aplicacion.utils.ProgressBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,6 @@
 package aplicacion.repositories.olap;
 
 import aplicacion.domain.facts.FactSolicitud;
-import aplicacion.dtos.CantidadSolicitudesPorTipo;
 import aplicacion.dtos.CantidadSolicitudesPorTipoInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

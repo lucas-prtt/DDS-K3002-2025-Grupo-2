@@ -1,7 +1,6 @@
 package aplicacion.controllers;
 
 import aplicacion.excepciones.*;
-import aplicacion.services.FuenteMutexManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

@@ -2,7 +2,6 @@ package aplicacion.services;
 
 import aplicacion.domain.colecciones.fuentes.*;
 import aplicacion.dto.input.FuenteAliasDto;
-import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.input.FuenteProxyInputDto;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.FuenteInputMapper;
@@ -15,23 +14,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import aplicacion.repositories.FuenteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -114,7 +108,7 @@ public class FuenteService {
                 List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
                 guardarFuente(fuente); // Updateo la fuente
                 //entityManager.flush(); // En teoria fuerza la actualizacion
-                logger.debug("Fuente " + fuente.getId() + " actualizada con última petición: " + fuente.getUltimaPeticion());
+                logger.debug("Fuente {} actualizada con última petición: {}", fuente.getId(), fuente.getUltimaPeticion());
                 hashMap.put(fuente, hechos);
             }catch (RuntimeException e){
                 logger.debug(e.getMessage());
@@ -155,10 +149,10 @@ public class FuenteService {
             response = restTemplate.getForEntity(url, String.class);
             json = response.getBody();
             hechos = mapper.readValue(json, new TypeReference<>() {});
-            logger.debug("Se recibieron correctamente los hechos de la fuente " + fuente.getId() + " " + fuente.getAlias());
+            logger.debug("Se recibieron correctamente los hechos de la fuente {} {}", fuente.getId(), fuente.getAlias());
         } catch (Exception e) {
             fuente.setUltimaPeticion(fechaAnterior); // rollback si falla
-            logger.warn("⚠️ Error al consumir la API en fuente " + fuente.getId() + ": " + e.getMessage());
+            logger.warn("⚠\uFE0F Error al consumir la API en fuente {}: {}", fuente.getId(), e.getMessage());
         }
 
         return hechos;
@@ -171,17 +165,12 @@ public class FuenteService {
         List<ServiceInstance> dinamicas = Optional.ofNullable(discoveryClient.getInstances("fuentesDinamicas")).orElse(Collections.emptyList());
         List<ServiceInstance> estaticas = Optional.ofNullable(discoveryClient.getInstances("fuentesEstaticas")).orElse(Collections.emptyList());
 
-        logger.debug("Instancias de fuentes online  -->  proxy: " + proxy.size() +
-                ", dinámicas: " + dinamicas.size() +
-                ", estáticas: " + estaticas.size());
+        logger.debug("Instancias de fuentes online  -->  proxy: {}, dinámicas: {}, estáticas: {}", proxy.size(), dinamicas.size(), estaticas.size());
 
         List<ServiceInstance> combinadas = Stream.of(proxy, dinamicas, estaticas).flatMap(Collection::stream).toList();
-        logger.debug("Buscando URI para: " + fuente.getId() + " | " +
-                "Fuentes disponibles: " +
-                        combinadas.stream()
-                                .map(inst -> inst.getMetadata().get("fuentesDisponibles"))
-                                .toList()
-        );
+        logger.debug("Buscando URI para: {} | Fuentes disponibles: {}", fuente.getId(), combinadas.stream()
+                .map(inst -> inst.getMetadata().get("fuentesDisponibles"))
+                .toList());
         ServiceInstance instance = combinadas.stream()
                 .filter(inst -> inst.getMetadata().get("fuentesDisponibles").contains(fuente.getId()))//TODO cambiar metadata en fuenteDinamica y fuenteProxy
                 .findFirst()

@@ -1,10 +1,8 @@
 package aplicacion.services;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class FuenteMutexManager {
         getMutex(key).unlock();
     }
     public void lockAll(Set<String> keys) {
-        logger.debug("Locking: " + keys);
+        logger.debug("Locking: {}", keys);
         // Ordenar las claves para evitar deadlocks
         String[] sortedKeys = keys.toArray(new String[0]);
         Arrays.sort(sortedKeys);
@@ -49,15 +47,15 @@ public class FuenteMutexManager {
             }
             throw e;
         }
-        logger.debug("Finished locking: " + keys);
+        logger.debug("Finished locking: {}", keys);
     }
     public void unlockAll(Set<String> locks) {
-        logger.debug("Unlocking: " + locks);
+        logger.debug("Unlocking: {}", locks);
         for (String lock : locks) {
             if (getMutex(lock).isHeldByCurrentThread()) {
                 getMutex(lock).unlock();
             }
         }
-        logger.debug("Finished Unlocking: " + locks);
+        logger.debug("Finished Unlocking: {}", locks);
     }
 }
