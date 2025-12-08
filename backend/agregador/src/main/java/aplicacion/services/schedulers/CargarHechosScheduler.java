@@ -153,6 +153,10 @@ public class CargarHechosScheduler {
             for(Fuente fuente : coleccion.getFuentes()){
                 indiceFuente++;
                 List<Hecho> hechosObtenidos = hechosPorFuente.get(fuente);
+                /*if (hechosObtenidos == null || hechosObtenidos.isEmpty()) {
+                    System.out.println("   ⚠ Fuente " + indiceFuente + " (" + fuente.getAlias() + "): No devolvió hechos o falló la conexión. Saltando...");
+                    continue; // Pasamos a la siguiente fuente sin romper el bucle
+                }*/
                 ProgressBar progressBar = new ProgressBar(hechosObtenidos.size(), "Fuente: "+indiceFuente+" / " + coleccion.getFuentes().size());
                 // hechosObtenidos = hechosObtenidos.stream.filter(hecho->hecho.noEstaPresente).toList();
                 for (Hecho hecho : hechosObtenidos) {

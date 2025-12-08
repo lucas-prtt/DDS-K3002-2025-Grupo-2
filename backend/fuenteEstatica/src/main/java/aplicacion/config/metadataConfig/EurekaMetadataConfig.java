@@ -39,7 +39,7 @@ public class EurekaMetadataConfig {
         List<String> fuentes = archivoService.listarFuentes();
 
         appInfoManager.getInfo().getMetadata()
-                .put("fuentes", String.join(",", fuentes));
+                .put("fuentesDisponibles", String.join(",", fuentes));
         appInfoManager.getInfo().getMetadata().put("tipoFuente", "estatica");
 
         // Fuerza que Eureka reciba la actualización

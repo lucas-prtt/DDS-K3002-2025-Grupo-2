@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
         @JsonSubTypes.Type(value = FuenteProxyInputDto.class, name = "proxy")
 })
 @AllArgsConstructor
+@Getter
 public class FuenteInputDto {
     private String id; // nombre
 }

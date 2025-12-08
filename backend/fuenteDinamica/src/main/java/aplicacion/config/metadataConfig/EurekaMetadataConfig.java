@@ -23,7 +23,7 @@ public class EurekaMetadataConfig {
 
     @PostConstruct
     public void inicializarMetadata() {
-        appInfoManager.getInfo().getMetadata().put("fuentes", fuenteId);
+        appInfoManager.getInfo().getMetadata().put("fuentesDisponibles", fuenteId);
         appInfoManager.getInfo().getMetadata().put("tipoFuente", "dinamica");
 
         // Fuerza que Eureka reciba la actualización
