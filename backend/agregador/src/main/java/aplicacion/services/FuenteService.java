@@ -112,7 +112,7 @@ public class FuenteService {
         for (Fuente fuente : fuentes) {
             String uri = this.obtenerUri(fuente);//todo trycatchear
             List<HechoInputDto> hechosDto = getHechosUltimaPeticion(uri, fuente);
-                    //fuente.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
+            //fuente.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
             List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
             guardarFuente(fuente); // Updateo la fuente
             //entityManager.flush(); // En teoria fuerza la actualizacion
@@ -188,33 +188,43 @@ public class FuenteService {
 
     public Fuente obtenerFuentePorId(String fuenteId) throws FuenteNoEncontradaException {
         try{
+
             return repositorioDeFuentes.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
         } catch (FuenteNoEncontradaException e){
             try{
-            String tipoFuente = discoveryClient.getInstances("CARGADOR")
-                   .stream()
-                   .filter(instance -> {
-                       String fuentesDisponibles = instance.getMetadata().get("fuentesDisponibles");
-                       return fuentesDisponibles != null && Arrays.asList(fuentesDisponibles.split(",")).contains(fuenteId);
-                   })
-                   .findFirst()
-                    .map(instance -> instance.getMetadata().get("tipoDeFuente"))
-                   .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka"));
-            switch (tipoFuente) {
-                case "estatica" -> {
-                    return new FuenteEstatica(fuenteId);
+
+                String tipoFuente = discoveryClient.getInstances("CARGADOR")
+                        .stream()
+                        .filter(instance -> {
+                            String fuentesDisponibles = instance.getMetadata().get("fuentesDisponibles");
+                            if (fuentesDisponibles == null) return false;
+
+                            return Arrays.stream(fuentesDisponibles.split(","))
+                                    .map(String::trim)
+                                    .anyMatch(id -> id.equals(fuenteId));
+                        })
+                        .findFirst()
+                        .map(instance -> instance.getMetadata().get("tipoFuente"))
+                        .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka"));
+                switch (tipoFuente) {
+                    case "estatica" -> {
+                        System.out.println("Creando fuente estatica con id: " + fuenteId);
+                        return new FuenteEstatica(fuenteId);
+                    }
+                    case "dinamica" -> {
+                        System.out.println("Creando fuente dinamica con id: " + fuenteId);
+                        return new FuenteDinamica(fuenteId);
+                    }
+                    case "proxy" -> {
+                        System.out.println("Creando fuente prxoy con id: " + fuenteId);
+                        return new FuenteProxy(fuenteId);
+                    }
+                    default -> {
+                        throw new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada y no se pudo determinar su tipo");
+                    }
                 }
-                case "dinamica" -> {
-                    return new FuenteDinamica(fuenteId);
-                }
-                case "proxy" -> {
-                    return new FuenteProxy(fuenteId);
-                }
-                default -> {
-                    throw new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada y no se pudo determinar su tipo");
-                }
-            }
             }catch (FuenteNoEncontradaException ex){
+
                 String agregadorId = discoveryClient.getInstances("AGREGADOR")
                         .stream()
                         .filter(instance -> instance.getMetadata().get("agregadorID").equals(fuenteId))
@@ -225,7 +235,8 @@ public class FuenteService {
 
                 FuenteProxy fuenteProxy;
                 try {
-                     String fuenteEnProxyId = discoveryClient.getInstances("CARGADOR")
+
+                    String fuenteEnProxyId = discoveryClient.getInstances("CARGADOR")
                             .stream()
                             .filter(instance -> {
                                 String fuentesDisponibles = instance.getMetadata().get("fuentesDisponibles");
@@ -234,9 +245,10 @@ public class FuenteService {
                             .findFirst()
                             .map(instance -> "agregador-" + agregadorId)
                             .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka como fuente metamapa"));
-                     fuenteProxy = new FuenteProxy(fuenteEnProxyId);
+                    fuenteProxy = new FuenteProxy(fuenteEnProxyId);
                 } catch(FuenteNoEncontradaException exe){
                     try {
+
                         ServiceInstance instancia = discoveryClient.getInstances("CARGADOR")
                                 .stream()
                                 .filter(instance -> instance.getMetadata().get("tipoFuente").equals("proxy"))

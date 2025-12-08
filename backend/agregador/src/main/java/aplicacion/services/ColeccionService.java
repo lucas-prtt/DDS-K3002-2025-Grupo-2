@@ -4,6 +4,7 @@ import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.algoritmos.*;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
+import aplicacion.domain.colecciones.fuentes.FuenteProxy;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
@@ -14,6 +15,7 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeColecciones;
+import aplicacion.repositorios.RepositorioDeFuentes;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.integration.IntegrationProperties;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 public class ColeccionService {
     private final RepositorioDeColecciones repositorioDeColecciones;
     private final HechoService hechoService;
+    private final RepositorioDeFuentes repositorioDeFuentes;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
     private final ColeccionInputMapper coleccionInputMapper;
     private final ColeccionOutputMapper coleccionOutputMapper;
@@ -39,10 +42,10 @@ public class ColeccionService {
     private final FuenteService fuenteService;
     private final FuenteInputMapper fuenteInputMapper;
     private final DiscoveryClient discoveryClient;
-
-    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper, @Qualifier("compositeDiscoveryClient") DiscoveryClient discoveryClient) {
+    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeFuentes repositorioDeFuentes, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper, @Qualifier("compositeDiscoveryClient") DiscoveryClient discoveryClient) {
         this.repositorioDeColecciones = repositorioDeColecciones;
         this.hechoService = hechoService;
+        this.repositorioDeFuentes =repositorioDeFuentes;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.coleccionInputMapper = coleccionInputMapper;
         this.coleccionOutputMapper = coleccionOutputMapper;
@@ -80,8 +83,10 @@ public class ColeccionService {
     }
     @Transactional
     public void asociarHechosPreexistentesDeFuenteAColeccion(Coleccion coleccion, Fuente fuente){
-        System.out.println("Asociando " + coleccion.getId() + " " + coleccion.getTitulo() + " con " + fuente.getHechos().size() + " hechos");
-        List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuente.getId());
+        Fuente fuenteGuardada;
+        fuenteGuardada = repositorioDeFuentes.save(fuente);
+        System.out.println("Asociando " + coleccion.getId() + " " + coleccion.getTitulo() + " con " + fuenteGuardada.getHechos().size() + " hechos");
+        List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuenteGuardada.getId());
         List<Hecho> hechosQueCumplenCriterios = hechosDeFuente.stream()
                 .filter(coleccion::cumpleCriterios)
                 .toList();
