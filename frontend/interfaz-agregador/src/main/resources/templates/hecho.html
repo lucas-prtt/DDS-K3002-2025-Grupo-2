@@ -141,7 +141,7 @@
                             Solicitar eliminación
                         </button>
                         <th:block th:replace="~{fragments/modal :: modalSolicitudEliminacion}" />
-                        <th:block th:if="${!hecho.anonimato and hecho.autor != null and hecho.autor.id == userId}">
+                        <th:block th:if="${!hecho.anonimato and hecho.autor != null and hecho.autor.id == userId and puedeEditarHecho}">
                             <th:block th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar', null)}" />
                         </th:block>
                     </div>
