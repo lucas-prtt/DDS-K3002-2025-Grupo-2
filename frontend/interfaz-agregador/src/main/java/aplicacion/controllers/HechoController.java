@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,6 +37,11 @@ public class HechoController {
         }
 
         model.addAttribute("hecho", hecho);
+
+        // Calcular si ha pasado más de una semana desde la fecha de carga
+        boolean puedeEditar = hecho.getFechaCarga() != null &&
+            Duration.between(hecho.getFechaCarga(), LocalDateTime.now()).toDays() <= 7;
+        model.addAttribute("puedeEditarHecho", puedeEditar);
 
         return "hecho";
     }
