@@ -40,20 +40,20 @@ public class CargarFuentesScheduler {
     }
 
     public List<? extends Fuente> obtenerInstanciasDeFuentes(Class<? extends Fuente> tipoFuente, ServiceInstance conexion){
-        System.out.println("Descubriendo fuentes de " + conexion.getUri() + "  " + tipoFuente.toString());
+        System.out.println("Descubriendo fuentes de " + conexion.getUri() + "  " + tipoFuente.getSimpleName());
         List<? extends Fuente> fuentesObtenidas = null;
         try {
             if (tipoFuente == FuenteEstatica.class) {
                 List<String> fuentes = List.of(Objects.requireNonNull(restTemplate.getForEntity(conexion.getUri() + "/fuentesEstaticas", String[].class).getBody()));
-                fuentes.forEach(f -> System.out.println("ID: " + f));
+                fuentes.forEach(f -> System.out.println("FE - ID: " + f));
                 fuentesObtenidas = fuentes.stream().map(FuenteEstatica::new).toList();
             } else if (tipoFuente == FuenteDinamica.class) {
                 List<String> fuentes = List.of(Objects.requireNonNull(restTemplate.getForEntity(conexion.getUri() + "/fuentesDinamicas", String[].class).getBody()));
-                fuentes.forEach(f -> System.out.println("ID: " + f));
+                fuentes.forEach(f -> System.out.println("FD - ID: " + f));
                 fuentesObtenidas = fuentes.stream().map(FuenteDinamica::new).toList();
             } else if (tipoFuente == FuenteProxy.class) {
                 List<String> fuentes = List.of(Objects.requireNonNull(restTemplate.getForEntity(conexion.getUri() + "/fuentesProxy", String[].class).getBody()));
-                fuentes.forEach(f -> System.out.println("ID: " + f));
+                fuentes.forEach(f -> System.out.println("FP - ID: " + f));
                 fuentesObtenidas = fuentes.stream().map(FuenteProxy::new).toList();
             }
         } catch (Exception e) {
@@ -75,5 +75,6 @@ public class CargarFuentesScheduler {
                 fuenteService.guardarFuentesSiNoExisten(fuentes);
             }
         }
+        System.out.println("Importacion de nuevas fuentes terminada");
     }
 }

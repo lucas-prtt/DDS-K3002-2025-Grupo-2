@@ -123,6 +123,11 @@ public class FuenteService {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
+        if(fuente instanceof FuenteEstatica fuenteEstatica){
+            if(fuenteEstatica.getFueConsultada())
+                return new ArrayList<>();
+            fuenteEstatica.setFueConsultada(true);
+        }
 
         LocalDateTime fechaAnterior = fuente.getUltimaPeticion();
         List<HechoInputDto> hechos = new ArrayList<>();
@@ -159,13 +164,17 @@ public class FuenteService {
         List<ServiceInstance> dinamicas = Optional.ofNullable(discoveryClient.getInstances("fuentesDinamicas")).orElse(Collections.emptyList());
         List<ServiceInstance> estaticas = Optional.ofNullable(discoveryClient.getInstances("fuentesEstaticas")).orElse(Collections.emptyList());
 
-        System.out.println("proxy count " + proxy.size() + "\n");
-        System.out.println("dinamicas count " + dinamicas.size());
-        System.out.println("estaticas count " + estaticas.size());
+        System.out.println("Instancias de fuentes online  -->  proxy: " + proxy.size() +
+                ", dinámicas: " + dinamicas.size() +
+                ", estáticas: " + estaticas.size());
 
         List<ServiceInstance> combinadas = Stream.of(proxy, dinamicas, estaticas).flatMap(Collection::stream).toList();
-        System.out.println(combinadas.stream().map(ServiceInstance::getMetadata).map(metadata -> metadata.get("fuentesDisponibles")).toList());
-        System.out.println("Buscando URI para la fuente " + fuente.getId());
+        System.out.println("Buscando URI para: " + fuente.getId() + " | " +
+                "Fuentes disponibles: " +
+                        combinadas.stream()
+                                .map(inst -> inst.getMetadata().get("fuentesDisponibles"))
+                                .toList()
+        );
         ServiceInstance instance = combinadas.stream()
                 .filter(inst -> inst.getMetadata().get("fuentesDisponibles").contains(fuente.getId()))//TODO cambiar metadata en fuenteDinamica y fuenteProxy
                 .findFirst()
