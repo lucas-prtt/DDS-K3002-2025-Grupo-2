@@ -13,6 +13,7 @@ import aplicacion.dto.output.HechoOutputDto;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import aplicacion.repositories.FuenteProxyRepository;
 import aplicacion.excepciones.FuenteNoEncontradaException;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import aplicacion.domain.hechos.Hecho;
 import org.springframework.transaction.annotation.Transactional;
