@@ -6,7 +6,6 @@ import aplicacion.dto.input.HechoReporteInputDto;
 import aplicacion.dto.mappers.EtiquetaOutputMapper;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.*;
-import aplicacion.services.FuenteMutexManager;
 import aplicacion.services.HechoService;
 import aplicacion.services.schedulers.CargarHechosScheduler;
 import aplicacion.services.schedulers.EjecutarAlgoritmoConsensoScheduler;

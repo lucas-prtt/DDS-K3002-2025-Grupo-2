@@ -1,6 +1,5 @@
 package aplicacion.config.metadataConfig;
 
-import aplicacion.services.ArchivoService;
 import aplicacion.services.AwsS3FileServerService;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;

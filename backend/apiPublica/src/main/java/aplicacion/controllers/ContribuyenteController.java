@@ -3,7 +3,6 @@ package aplicacion.controllers;
 import aplicacion.config.ConfigService;
 import domain.helpers.UrlHelper;
 import domain.peticiones.ResponseWrapper;
-import org.apache.hc.client5.http.HttpHostConnectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;

@@ -85,12 +85,12 @@ public class EstadisticasController {
 
     @GetMapping("/solicitudesDeEliminacionSpam")
     public ResponseEntity<?> solicitudesSpam(@RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
-        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/solicitudesDeEliminacionSpam");
+        String url = urlBaseEstadisticas + "/solicitudesDeEliminacionSpam";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), headers, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url, headers, String.class));
     }
 
 

@@ -1,7 +1,6 @@
 package aplicacion.services.schedulers;
 
 import aplicacion.prometheus.PrometheusClient;
-import aplicacion.services.FuenteMutexManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;

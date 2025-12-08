@@ -2,12 +2,10 @@ package aplicacion.services;
 
 import aplicacion.domain.dimensiones.DimensionCategoria;
 import aplicacion.domain.dimensiones.DimensionColeccion;
-import aplicacion.domain.hechosYSolicitudes.solicitudes.EstadoSolicitudSpam;
 import aplicacion.dtos.*;
 import aplicacion.repositories.olap.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

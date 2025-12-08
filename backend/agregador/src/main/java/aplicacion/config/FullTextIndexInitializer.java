@@ -1,6 +1,5 @@
 package aplicacion.config;
 
-import aplicacion.controllers.HechoController;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

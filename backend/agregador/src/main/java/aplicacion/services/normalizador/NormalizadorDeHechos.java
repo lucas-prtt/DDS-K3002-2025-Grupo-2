@@ -8,7 +8,6 @@ import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.utils.ProgressBar;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.slf4j.Logger;

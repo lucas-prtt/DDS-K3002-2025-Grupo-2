@@ -7,7 +7,6 @@ import aplicacion.clasesIntermedias.HechoXColeccionId;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositories.HechoXColeccionRepository;
 import aplicacion.services.ColeccionService;
-import aplicacion.services.FuenteMutexManager;
 import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
 import lombok.Setter;

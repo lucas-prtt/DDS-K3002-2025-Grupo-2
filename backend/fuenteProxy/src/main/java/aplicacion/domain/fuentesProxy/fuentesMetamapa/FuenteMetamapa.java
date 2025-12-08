@@ -1,16 +1,9 @@
 package aplicacion.domain.fuentesProxy.fuentesMetamapa;
 
-import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
-import java.util.Objects;
 
 import aplicacion.domain.fuentesProxy.FuenteProxy;
 
