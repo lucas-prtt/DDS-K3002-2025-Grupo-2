@@ -22,6 +22,8 @@ services:
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: agregador
+      API_PUBLICA_IP: api-publica
+      API_ADMINISTRATIVA_IP: api-administrativa
     networks:
       - metamapa
 
@@ -35,6 +37,8 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: api-publica
+      API_PUBLICA_IP: api-publica
+      INTERFAZ_AGREGADOR_IP: interfaz-agregador
     networks:
       - metamapa
 
@@ -48,6 +52,8 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: api-administrativa
+      INTERFAZ_AGREGADOR_IP: interfaz-agregador
+      API_ADMINISTRATIVA_IP: api-administrativa
     networks:
       - metamapa
 
@@ -76,6 +82,8 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: interfaz-agregador
+      API_PUBLICA_IP: api-publica
+      API_ADMINISTRATIVA_IP: api-administrativa
     networks:
       - metamapa
 

@@ -34,6 +34,8 @@ public class ContribuyenteService {
     private WebClient webClient;
     @Value("${api.publica.port}")
     private Integer apiPublicaPort;
+    @Value("${api.publica.ip}")
+    private String apiPublicaIp;
 
     public ContribuyenteService(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
@@ -42,7 +44,7 @@ public class ContribuyenteService {
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
-                .baseUrl("http://api-publica:" + apiPublicaPort + "/apiPublica")
+                .baseUrl("http://" + apiPublicaIp + ":" + apiPublicaPort + "/apiPublica")
                 .build();
     }
 

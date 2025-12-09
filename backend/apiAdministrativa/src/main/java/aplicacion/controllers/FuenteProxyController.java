@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/apiAdministrativa")
+@RequestMapping
 public class FuenteProxyController {
     private final ConfigService configService;
 

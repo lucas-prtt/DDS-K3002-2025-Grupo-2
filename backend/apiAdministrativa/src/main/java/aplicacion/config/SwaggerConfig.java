@@ -10,6 +10,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,6 +25,9 @@ public class SwaggerConfig {
                 .packagesToScan("")
                 .build();
     }
+
+    @Value("${api.administrativa.ip}")
+    private String apiAdministrativaIp;
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -967,7 +971,7 @@ public class SwaggerConfig {
                 )
                 .servers(List.of(
                         new io.swagger.v3.oas.models.servers.Server()
-                                .url("http://api-administrativa:8086")
+                                .url("http://" + apiAdministrativaIp + ":8086")
                                 .description("Servidor de desarrollo")
                 ))
                 .paths(paths);

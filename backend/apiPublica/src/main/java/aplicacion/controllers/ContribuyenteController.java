@@ -13,7 +13,7 @@ import domain.peticiones.SolicitudesHttp;
 import org.springframework.web.client.ResourceAccessException;
 
 @RestController
-@RequestMapping("/apiPublica")
+@RequestMapping
 public class ContribuyenteController {
     private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;

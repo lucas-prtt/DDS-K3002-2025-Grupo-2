@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/apiPublica")
+@RequestMapping
 public class ColeccionController {
 
     private final SolicitudesHttp solicitudesHttp;

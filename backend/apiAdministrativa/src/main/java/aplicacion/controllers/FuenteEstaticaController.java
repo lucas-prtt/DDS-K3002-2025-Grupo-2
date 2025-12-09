@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/apiAdministrativa")
+@RequestMapping
 public class FuenteEstaticaController {
     private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;

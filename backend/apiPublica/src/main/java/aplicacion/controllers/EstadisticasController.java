@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/apiPublica")
+@RequestMapping
 public class EstadisticasController {
     private final SolicitudesHttp solicitudesHttp;
     private final ConfigService configService;

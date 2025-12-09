@@ -15,13 +15,15 @@ public class CorsConfig {
 
     @Value("${interfaz.agregador.port}")
     private Integer interfazAgregadorPort;
+    @Value("${interfaz.agregador.ip}")
+    private String interfazAgregadorIp;
 
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
         // Permitir peticiones desde el frontend en el puerto 8094
-        config.setAllowedOrigins(List.of("http://interfaz-agregador:" + interfazAgregadorPort));
+        config.setAllowedOrigins(List.of("http://" + interfazAgregadorIp + ":" + interfazAgregadorPort));
 
         // Permitir todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/apiAdministrativa")
+@RequestMapping
 public class ColeccionController {
     private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;
