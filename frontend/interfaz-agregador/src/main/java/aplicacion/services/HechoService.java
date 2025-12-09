@@ -210,7 +210,7 @@ public class HechoService {
                             })
                     )
                     .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoOutputDto>>() {})
-                    .block(Duration.ofSeconds(10));
+                    .block(Duration.ofSeconds(30));
 
             if (pageWrapper == null || pageWrapper.getContent() == null) {
                 return new PageWrapper<>();
@@ -219,6 +219,7 @@ public class HechoService {
             return pageWrapper;
         } catch (WebClientResponseException e) {
             System.err.println("ERROR WebClient al obtener hechos pendientes: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
+            throw e; // Se propaga al errorhandler
         } catch (Exception e) {
             System.err.println("ERROR al obtener hechos pendientes: " + e.getMessage());
         }
