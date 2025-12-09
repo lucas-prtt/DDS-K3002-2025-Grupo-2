@@ -31,7 +31,7 @@ function agregarEtiqueta() {
 
     mostrarCargando("btn-agregar-etiqueta");
 
-    fetch(`http://api-administrativa:8086/apiAdministrativa/hechos/${hechoId}/tags`, {
+    fetch(apiAdministrativaUrl + `/hechos/${hechoId}/tags`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
         body: JSON.stringify(nombre)
@@ -103,7 +103,7 @@ function eliminarEtiqueta(nombreEtiqueta, btnId) {
 
     mostrarCargando(btnId);
 
-    fetch(`http://api-administrativa:8086/apiAdministrativa/hechos/${hechoId}/tags/${nombreCodificado}`, {
+    fetch(apiAdministrativaUrl + `/hechos/${hechoId}/tags/${nombreCodificado}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken }
     })

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/apiPublica")
+@RequestMapping
 public class HechoController {
     private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;

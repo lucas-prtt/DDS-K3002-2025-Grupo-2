@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/apiAdministrativa")
+@RequestMapping
 public class EstadisticasController {
     private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());

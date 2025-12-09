@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/apiAdministrativa")
+@RequestMapping
 public class HechoController {
     private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;

@@ -247,7 +247,7 @@ async function publicarFuente(inputsObligatorios) {
         if (tipoFuente === 'estatica') {
             if (cargaUrl) {
                 // Cargar por URL - el backend espera solo el string de la URL
-                endpoint = 'http://api-administrativa:8086/apiAdministrativa/archivos/por-url';
+                endpoint = apiAdministrativaUrl + '/archivos/por-url';
                 headers['Content-Type'] = 'application/json';
                 const urlValue = inputsObligatorios.url.value.trim();
                 requestData = JSON.stringify(urlValue);
@@ -255,7 +255,7 @@ async function publicarFuente(inputsObligatorios) {
                 console.log('Request body:', requestData);
             } else {
                 // Cargar archivos - el parámetro debe llamarse 'files' no 'archivos'
-                endpoint = 'http://api-administrativa:8086/apiAdministrativa/archivos';
+                endpoint = apiAdministrativaUrl + '/archivos';
                 const formData = new FormData();
 
                 // Agregar todos los archivos seleccionados con el nombre 'files'
@@ -274,7 +274,7 @@ async function publicarFuente(inputsObligatorios) {
             if (tipoProxy === 'demo') {
                 // Para demo, enviar biblioteca con tipo "prueba"
                 // Si hubiera URL, se incluiría en el body
-                endpoint = 'http://api-administrativa:8086/apiAdministrativa/fuentesProxy?tipo=demo';
+                endpoint = apiAdministrativaUrl + '/fuentesProxy?tipo=demo';
                 const body = {
                     biblioteca: {
                         tipo: "prueba"
@@ -312,7 +312,7 @@ async function publicarFuente(inputsObligatorios) {
                 }
 
                 // Si la validación fue exitosa, preparar el request para crear la fuente proxy
-                endpoint = 'http://api-administrativa:8086/apiAdministrativa/fuentesProxy?tipo=metamapa';
+                endpoint = apiAdministrativaUrl + '/fuentesProxy?tipo=metamapa';
                 requestData = JSON.stringify({
                     url: normalizedUrl
                 });

@@ -22,11 +22,13 @@ public class ColeccionService {
 
     @Value("${api.publica.port}")
     private Integer apiPublicaPort;
+    @Value("${api.publica.ip}")
+    private String apiPublicaIp;
 
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
-                .baseUrl("http://api-publica:" + apiPublicaPort + "/apiPublica")
+                .baseUrl("http://" + apiPublicaIp +":" + apiPublicaPort + "/apiPublica")
                 // aumento el buffer para respuestas grandes
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->

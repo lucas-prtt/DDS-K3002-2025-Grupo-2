@@ -27,10 +27,14 @@ import java.util.ArrayList;
 public class HechoService {
     @Value("${api.publica.port}")
     private Integer apiPublicaPort;
+    @Value("${api.publica.ip}")
+    private String apiPublicaIp;
     private WebClient webClientPublica;
 
     @Value("${api.administrativa.port}")
     private String apiAdministrativaPort;
+    @Value("${api.administrativa.ip}")
+    private String apiAdministrativaIp;
     private WebClient webClientAdministrativa;
 
     private final GeocodingService geocodingService;
@@ -42,7 +46,7 @@ public class HechoService {
     @PostConstruct
     public void init() {
         this.webClientPublica = WebClient.builder()
-                .baseUrl("http://api-publica:" + apiPublicaPort + "/apiPublica")
+                .baseUrl("http://" + apiPublicaIp + ":" + apiPublicaPort + "/apiPublica")
                 // aumento el buffer para respuestas grandes
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->
@@ -51,7 +55,7 @@ public class HechoService {
                         .build())
                 .build();
         this.webClientAdministrativa = WebClient.builder()
-                .baseUrl("http://api-administrativa:" + apiAdministrativaPort + "/apiAdministrativa")
+                .baseUrl("http://" + apiAdministrativaIp + ":" + apiAdministrativaPort + "/apiAdministrativa")
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->
                                 configurer.defaultCodecs().maxInMemorySize(20 * 1024 * 1024) // 20MB

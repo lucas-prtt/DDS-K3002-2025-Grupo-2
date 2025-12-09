@@ -3,6 +3,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.media.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.*;
@@ -23,6 +24,10 @@ public class SwaggerConfig {
                 .packagesToScan("")
                 .build();
     }*/
+
+    @Value("${api.publica.ip}")
+    private String apiPublicaIp;
+
     @Bean
     public OpenAPI customOpenAPI() {
 
@@ -1540,7 +1545,7 @@ public class SwaggerConfig {
                 )
                 .servers(List.of(
                         new io.swagger.v3.oas.models.servers.Server()
-                                .url("http://api-publica:8085")
+                                .url("http://" + apiPublicaIp + ":8085")
                                 .description("Servidor de desarrollo")
                 ))
                 .paths(paths);

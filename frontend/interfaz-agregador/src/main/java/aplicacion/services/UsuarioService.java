@@ -18,10 +18,12 @@ public class UsuarioService {
     private WebClient webClient;
     @Value("${api.publica.port}")
     private Integer apiPublicaPort;
+    @Value("${api.publica.ip}")
+    private String apiPublicaIp;
 
     @PostConstruct
     public void init() {
-        this.webClient = WebClient.create("http://api-publica:" + apiPublicaPort + "/apiPublica");
+        this.webClient = WebClient.create("http://" + apiPublicaIp + ":" + apiPublicaPort + "/apiPublica");
     }
 
     public ContribuyenteOutputDto registrarUsuarioSiNoExiste(OidcUser oidcUser) {
