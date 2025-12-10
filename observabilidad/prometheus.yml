@@ -6,44 +6,44 @@ scrape_configs:
   # ------------ MICROSERVICIOS METAMAPA -----------------
 
   - job_name: "agregador"
-    metrics_path: "/actuator/prometheus"
+    metrics_path: "/agregador/actuator/prometheus"
     static_configs:
-      - targets: ["54.94.108.1:8084"]
+      - targets: ["host.docker.internal:8084"]
 
   - job_name: "api-publica"
-    metrics_path: "/actuator/prometheus"
+    metrics_path: "/apiPublica/actuator/prometheus"
     static_configs:
-      - targets: ["54.94.108.1:8085"]
+      - targets: ["host.docker.internal:8085"]
 
   - job_name: "api-administrativa"
-    metrics_path: "/actuator/prometheus"
+    metrics_path: "/apiAdministrativa/actuator/prometheus"
     static_configs:
-      - targets: ["54.94.108.1:8086"]
+      - targets: ["host.docker.internal:8086"]
 
   - job_name: "estadisticas"
-    metrics_path: "/actuator/prometheus"
+    metrics_path: "/estadisticas/actuator/prometheus"
     static_configs:
-      - targets: ["54.94.108.1:8087"]
+      - targets: ["host.docker.internal:8087"]
 
   - job_name: "fuente-estatica"
-    metrics_path: "/actuator/prometheus"
+    metrics_path: "/fuenteEstatica/actuator/prometheus"
     static_configs:
-      - targets: ["54.94.108.1:8081"]
+      - targets: ["host.docker.internal:8081"]
 
   - job_name: "fuente-dinamica"
-    metrics_path: "/actuator/prometheus"
+    metrics_path: "/fuenteDinamica/actuator/prometheus"
     static_configs:
-      - targets: ["54.94.108.1:8082"]
+      - targets: ["host.docker.internal:8082"]
 
   - job_name: "fuente-proxy"
-    metrics_path: "/actuator/prometheus"
+    metrics_path: "/fuenteProxy/actuator/prometheus"
     static_configs:
-      - targets: ["54.94.108.1:8083"]
+      - targets: ["host.docker.internal:8083"]
 
   - job_name: "interfaz-agregador"
     metrics_path: "/actuator/prometheus"
     static_configs:
-      - targets: ["54.94.108.1:8094"]
+      - targets: ["host.docker.internal:8094"]
 
   # ------------ OBSERVABILIDAD LOCAL (misma EC2) -----------------
 
