@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function() {
         for (let i = 0; i < eliminarEtiquetaBtns.length; i++) {
             const etiquetaNombre = eliminarEtiquetaBtns[i].dataset.nombre;
             const btnId = `btn-eliminar-${etiquetaNombre}`;
-            console.log(`Nombre etiqueta ${i+1}: ${etiquetaNombre}`)
 
             const borrarBtn = document.getElementById(`eliminar-etiqueta-${etiquetaNombre}`)
             borrarBtn.addEventListener("click", () => eliminarEtiqueta(etiquetaNombre, btnId));
@@ -24,9 +23,14 @@ function agregarEtiqueta() {
         return;
     }
 
+    if (nombre.length > 50) {
+        alert("El nombre de la etiqueta no puede superar los 50 caracteres");
+        return;
+    }
+
     mostrarCargando("btn-agregar-etiqueta");
 
-    fetch(`http://localhost:8086/apiAdministrativa/hechos/${hechoId}/tags`, {
+    fetch(apiAdministrativaUrl + `/hechos/${hechoId}/tags`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
         body: JSON.stringify(nombre)
@@ -98,7 +102,7 @@ function eliminarEtiqueta(nombreEtiqueta, btnId) {
 
     mostrarCargando(btnId);
 
-    fetch(`http://localhost:8086/apiAdministrativa/hechos/${hechoId}/tags/${nombreCodificado}`, {
+    fetch(apiAdministrativaUrl + `/hechos/${hechoId}/tags/${nombreCodificado}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken }
     })

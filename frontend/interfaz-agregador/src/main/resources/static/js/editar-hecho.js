@@ -61,9 +61,8 @@ async function guardarEdicion(inputsObligatorios) {
             console.error(error)
             return
         }
-        console.log(`Enviando Payload: ${JSON.stringify(payload, null, 2)}`);
 
-        const endpoint = isAdmin ? `http://localhost:8086/apiAdministrativa/hechos/${hechoId}` : `http://localhost:8085/apiPublica/hechos/${hechoId}`
+        const endpoint = isAdmin ? apiAdministrativaUrl + `/hechos/${hechoId}` : apiPublicaUrl + `/hechos/${hechoId}`
 
         const response = await fetch(endpoint, {
             method: 'PATCH',

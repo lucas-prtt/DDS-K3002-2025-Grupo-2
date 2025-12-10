@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const confirmBtn = document.getElementById("crear-hecho")
     const modalTitle = document.getElementById("modal-crear-hecho-titulo")
     const agregarBtn = document.getElementById("modal-crear-hecho-agregar-multimedia")
-    console.log(agregarBtn)
+
     if(allElementsFound([modal, openBtn, closeBtn, confirmBtn], "crear hecho")) {
         listenOpenModal(modal, openBtn, () => {
             document.getElementById("dropdown-menu").classList.add("hidden")
@@ -52,19 +52,15 @@ async function publicarHecho(inputsObligatorios) {
             payload.autor = window.autorData.id
         }
 
-        console.log(`Enviando Payload: ${JSON.stringify(payload, null, 2)}`);
-
         const endpoint = isAdmin
-            ? 'http://localhost:8086/apiAdministrativa/hechos'
-            : 'http://localhost:8085/apiPublica/hechos';
+            ? apiAdministrativaUrl + '/hechos'
+            : apiPublicaUrl + 'hechos';
 
         const headers = {
             'Content-Type': 'application/json',
         }
 
-        if (isAdmin) {
-            headers['Authorization'] = 'Bearer ' + jwtToken;
-        } else if (!payload.anonimato) {
+        if (isAdmin || !payload.anonimato) {
             headers['Authorization'] = 'Bearer ' + jwtToken;
         }
 

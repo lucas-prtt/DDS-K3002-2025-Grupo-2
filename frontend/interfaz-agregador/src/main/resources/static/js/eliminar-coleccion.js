@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if(allElementsFound([coleccionesCards], "eliminar colección")) {
         coleccionesCards.forEach((coleccionCard, index) => {
             const coleccionId = coleccionCard.dataset.id;
-            console.log(`ID Colección ${index + 1}: ${coleccionId}`)
 
             const borrarBtn = document.getElementById(`eliminar-coleccion-${coleccionId}`)
             borrarBtn.addEventListener("click", async function(){await eliminarColeccion(coleccionId)});
@@ -22,7 +21,7 @@ async function eliminarColeccion(id) {
         eliminarBtn.classList.add("hidden")
         spinnerEliminarColeccion.classList.remove("hidden")
 
-        const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${id}`, {
+        const response = await fetch(apiAdministrativaUrl + `/colecciones/${id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken }
         })

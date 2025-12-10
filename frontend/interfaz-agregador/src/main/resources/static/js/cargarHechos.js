@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("actualizar-hechos-colecciones").addEventListener("click", cargarHechos);
+})
+
 function mostrarConfirmacion() {
     document.getElementById("confirm-overlay").style.display = "flex";
 }
@@ -26,7 +30,7 @@ function cargarHechos() {
     btnYes.onclick = function () {
         mostrarSpinner();
 
-        fetch('http://localhost:8086/apiAdministrativa/cargarHechos', {
+        fetch(apiAdministrativaUrl + "/cargarHechos", {
             method: "POST",
             headers: { 'Authorization': 'Bearer ' + jwtToken },
         })

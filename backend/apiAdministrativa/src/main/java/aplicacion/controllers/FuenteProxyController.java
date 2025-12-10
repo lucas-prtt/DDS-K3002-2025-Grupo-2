@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/apiAdministrativa")
+@RequestMapping
 public class FuenteProxyController {
     private final ConfigService configService;
 
@@ -32,10 +32,5 @@ public class FuenteProxyController {
             return ResponseEntity.badRequest().body("Tipo de fuente no válido");
         }
         return ResponseWrapper.wrapResponse(solicitudesHttp.post(configService.getUrlFuentesProxy() + path, body, String.class));
-    }
-
-    @GetMapping("/agregadores")
-    public ResponseEntity<?> obtenerAgregadores() {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.get(configService.getUrlAgregador() + "/agregadores", String.class));
     }
 }

@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function() {
             validarInputsObligatorios([inputMotivo]);
 
             if(!inputMotivo.classList.contains("form-not-completed")) {
-                console.log("HOLA")
                 await enviarSolicitudEliminacion(inputMotivo)
             }
         });
@@ -36,9 +35,8 @@ async function enviarSolicitudEliminacion(inputMotivo) {
             hechoId: hechoId,
             motivo: inputMotivo.value
         }
-        console.log("Enviando Payload:", JSON.stringify(payload, null, 2));
 
-        const response = await fetch('http://localhost:8085/apiPublica/solicitudes', {
+        const response = await fetch(apiPublicaUrl + '/solicitudes', {
             method: 'POST',
             headers: getHeaders(),
             body: JSON.stringify(payload)

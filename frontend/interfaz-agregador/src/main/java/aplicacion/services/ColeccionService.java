@@ -20,13 +20,13 @@ import java.net.URI;
 public class ColeccionService {
     private WebClient webClient;
 
-    @Value("${api.publica.port}")
-    private Integer apiPublicaPort;
+    @Value("${api.publica.url}")
+    private String apiPublicaUrl;
 
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
-                .baseUrl("http://localhost:" + apiPublicaPort + "/apiPublica")
+                .baseUrl(apiPublicaUrl)
                 // aumento el buffer para respuestas grandes
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->

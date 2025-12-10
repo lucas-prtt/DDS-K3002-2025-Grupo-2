@@ -9,8 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/apiPublica")
-@CrossOrigin(origins = "http://localhost:8094", allowCredentials = "true")
+@RequestMapping
 public class SolicitudController {
     private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;

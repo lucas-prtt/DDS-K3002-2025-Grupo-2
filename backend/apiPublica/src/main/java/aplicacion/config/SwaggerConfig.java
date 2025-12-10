@@ -3,6 +3,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.media.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.*;
@@ -23,6 +24,10 @@ public class SwaggerConfig {
                 .packagesToScan("")
                 .build();
     }*/
+
+    @Value("${api.publica.ip}")
+    private String apiPublicaIp;
+
     @Bean
     public OpenAPI customOpenAPI() {
 
@@ -1490,6 +1495,28 @@ public class SwaggerConfig {
                         )
                 ));
 
+        // ============= HEALTH CHECK =============
+        paths.addPathItem("/health", new PathItem()
+                .get(new Operation()
+                        .tags(List.of("health-controller"))
+                        .summary("Health check del servicio")
+                        .description("Verifica que el servicio de API Pública esté funcionando correctamente")
+                        .responses(new ApiResponses()
+                                .addApiResponse("200", new ApiResponse()
+                                        .description("Servicio funcionando correctamente")
+                                        .content(new Content()
+                                                .addMediaType("application/json",
+                                                        new MediaType()
+                                                                .schema(new ObjectSchema()
+                                                                        .addProperty("status", new StringSchema().example("ok"))
+                                                                )
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+
         return new OpenAPI()
                 .info(new io.swagger.v3.oas.models.info.Info()
                         .title("API Pública de Metamapa")
@@ -1540,7 +1567,7 @@ public class SwaggerConfig {
                 )
                 .servers(List.of(
                         new io.swagger.v3.oas.models.servers.Server()
-                                .url("http://localhost:8085")
+                                .url("http://" + apiPublicaIp + ":8085")
                                 .description("Servidor de desarrollo")
                 ))
                 .paths(paths);

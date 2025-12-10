@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnNext = document.getElementById("pagination-mis-hechos-next");
     const pageInfo = document.getElementById("pagination-mis-hechos-info");
 
-    const baseEndpoint = `http://localhost:8085/apiPublica/contribuyentes/${autorId}/hechos`;
+    const baseEndpoint = apiPublicaUrl + `/contribuyentes/${autorId}/hechos`;
 
     let currentPage = 0;
     const pageSize = 10;
@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     currentPage = data.number !== undefined ? data.number : page;
 
                     if (content.length !== 0) {
-                        console.log("Hechos cargados:", content);
                         let html = "";
                         content.forEach(hecho => {
                             const actionButton = hecho.visible
