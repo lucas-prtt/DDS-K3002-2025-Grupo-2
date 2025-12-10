@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.ClientAuthorizationException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
@@ -49,13 +50,25 @@ public class KeycloakTokenRefreshFilter extends OncePerRequestFilter {
         OAuth2AuthorizedClient client = authorizedClientRepository.loadAuthorizedClient("keycloak", auth, req);
 
         if (client != null) {
-            // Token válido: intentamos refrescarlo y seguimos
-            clientManager.authorize(
-                    OAuth2AuthorizeRequest.withClientRegistrationId("keycloak")
-                            .principal(auth)
-                            .build()
-            );
-            chain.doFilter(req, res);
+            try {
+
+                // Token válido: intentamos refrescarlo y seguimos
+                clientManager.authorize(
+                        OAuth2AuthorizeRequest.withClientRegistrationId("keycloak")
+                                .principal(auth)
+                                .build()
+                );
+                chain.doFilter(req, res);
+            } catch ( ClientAuthorizationException e){ // Si el refresh token es invalido
+                Cookie cookie = new Cookie("JSESSIONID", "");
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                res.addCookie(cookie);
+
+                authorizedClientRepository.removeAuthorizedClient("keycloak", auth, req, res);
+                res.sendRedirect(req.getRequestURI());
+                return;
+            }
             return;
         }
 
