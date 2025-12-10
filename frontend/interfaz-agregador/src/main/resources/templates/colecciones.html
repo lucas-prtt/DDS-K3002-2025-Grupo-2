@@ -35,10 +35,6 @@
                 </div>
             </div>
 
-            <th:block th:replace="~{fragments/pagination-controls :: paginationControls(
-                @{/colecciones(page=${currentPage - 1}, size=${pageSize})},
-                @{/colecciones(page=${currentPage + 1}, size=${pageSize})}
-            )}" />
 
             <th:block th:if="${isAdmin}" th:replace="~{fragments/modal :: modalVerColeccion}" />
             <th:block th:if="${isAdmin}" th:replace="~{fragments/modal :: modalEditarColeccion}" />
@@ -53,14 +49,16 @@
             </p>
         </div>
 
+        <th:block th:replace="~{fragments/pagination-controls :: paginationControls(
+            @{/colecciones(page=${currentPage - 1}, size=${pageSize})},
+            @{/colecciones(page=${currentPage + 1}, size=${pageSize})}
+        )}" />
 
         <div id="confirm-overlay" class="confirm-overlay" style="display:none;">
             <div class="confirm-box">
                 <h2 class="confirm-title">¿Está seguro que desea cargar los hechos?</h2>
                 <p class="confirm-subtitle">
                     Este proceso se realiza de forma automática cada 1 hora. Puede tardar bastante.
-                </p>
-                </span>
                 </p>
 
                 <div class="confirm-buttons">

@@ -11,8 +11,9 @@ import reactor.core.publisher.Mono;
 public class SolicitudService {
     private final WebClient webClient;
 
-    public SolicitudService(WebClient webClient) {
-        this.webClient = webClient;
+    // Inyectar específicamente el bean apiAdministrativaWebClient que tiene el filtro
+    public SolicitudService(WebClient apiAdministrativaWebClient) {
+        this.webClient = apiAdministrativaWebClient;
     }
 
     public Mono<PageWrapper<SolicitudOutputDto>> obtenerSolicitudes(int page, int size) {

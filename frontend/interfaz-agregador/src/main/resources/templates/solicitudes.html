@@ -10,7 +10,8 @@
             <h1 class="page-title">
                 Solicitudes Pendientes
             </h1>
-            <div class="solicitudes-grid">
+
+            <div th:unless="${solicitudes == null || solicitudes.isEmpty()}" class="solicitudes-grid">
                 <div th:each="solicitud : ${solicitudes}" class="solicitud-card">
                     <h2 class="solicitud-card-title">
                         Solicitud

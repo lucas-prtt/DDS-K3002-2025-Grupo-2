@@ -1,6 +1,5 @@
 package aplicacion.services;
 
-import aplicacion.config.TokenContext;
 import aplicacion.dto.GraphQLHechosResponse;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.HechoMapaOutputDto;
@@ -30,15 +29,13 @@ public class HechoService {
 
     private WebClient webClientPublica;
 
-    @Value("${api.administrativa.url}")
-    private String apiAdministrativaUrl;
-
-    private WebClient webClientAdministrativa;
-
+    private final WebClient webClientAdministrativa;
     private final GeocodingService geocodingService;
 
-    public HechoService(GeocodingService geocodingService) {
+    // Inyectar el bean apiAdministrativaWebClient que tiene el filtro de autenticación
+    public HechoService(GeocodingService geocodingService, WebClient apiAdministrativaWebClient) {
         this.geocodingService = geocodingService;
+        this.webClientAdministrativa = apiAdministrativaWebClient;
     }
 
     @PostConstruct
@@ -46,14 +43,6 @@ public class HechoService {
         this.webClientPublica = WebClient.builder()
                 .baseUrl(apiPublicaUrl)
                 // aumento el buffer para respuestas grandes
-                .exchangeStrategies(ExchangeStrategies.builder()
-                        .codecs(configurer ->
-                                configurer.defaultCodecs().maxInMemorySize(20 * 1024 * 1024) // 20MB
-                        )
-                        .build())
-                .build();
-        this.webClientAdministrativa = WebClient.builder()
-                .baseUrl(apiAdministrativaUrl)
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->
                                 configurer.defaultCodecs().maxInMemorySize(20 * 1024 * 1024) // 20MB
@@ -194,7 +183,7 @@ public class HechoService {
 
     public PageWrapper<HechoOutputDto> obtenerHechosPendientes(int page, int size) {
         try {
-            String token = TokenContext.getToken();
+            // El token se agrega automáticamente por el filtro del WebClient
             PageWrapper<HechoOutputDto> pageWrapper = webClientAdministrativa.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/hechos")
@@ -202,7 +191,6 @@ public class HechoService {
                             .queryParam("page", page)
                             .queryParam("size", size)
                             .build())
-                    .header("Authorization", "Bearer " + token)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .onStatus(status -> status.is4xxClientError(), resp ->
@@ -233,10 +221,9 @@ public class HechoService {
     public ResponseEntity<String> gestionarRevision(String hechoId, CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto) throws HttpClientErrorException {
 
         try {
-            String token = TokenContext.getToken();
-            ResponseEntity<String> response = webClientAdministrativa.patch() // USAR webClientAdministrativa
-                    .uri("/hechos/{hechoId}/estadoRevision", hechoId) // URI relativo
-                    .header("Authorization", "Bearer " + token)
+            // El token se agrega automáticamente por el filtro del WebClient
+            ResponseEntity<String> response = webClientAdministrativa.patch()
+                    .uri("/hechos/{hechoId}/estadoRevision", hechoId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(cambioEstadoRevisionInputDto)
                     .retrieve()

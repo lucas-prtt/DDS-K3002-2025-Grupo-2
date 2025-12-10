@@ -1,7 +1,7 @@
 function allElementsFound(elementsList, desiredAction) {
-    if(elementsList.some(e => e === null)) {
+    /*if(elementsList.some(e => e === null)) {
         console.log("No se pudo encontrar algún elemento para " + desiredAction)
-    }
+    }*/
 
     return !elementsList.some(e => e === null);
 }

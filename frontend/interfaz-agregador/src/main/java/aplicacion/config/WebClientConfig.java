@@ -30,8 +30,8 @@ public class WebClientConfig {
                         )
                         .build())
                 .filter((request, next) -> {
-
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
                     if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
                         OAuth2AuthorizedClient client = clientService.loadAuthorizedClient(
                                 oauthToken.getAuthorizedClientRegistrationId(),
@@ -39,10 +39,12 @@ public class WebClientConfig {
                         );
 
                         if (client != null && client.getAccessToken() != null) {
-                            TokenContext.setToken(client.getAccessToken().getTokenValue());
+                            String token = client.getAccessToken().getTokenValue();
+                            TokenContext.setToken(token);
+
                             return next.exchange(
                                     ClientRequest.from(request)
-                                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + client.getAccessToken().getTokenValue())
+                                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                                             .build()
                             );
                         }

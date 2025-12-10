@@ -58,7 +58,6 @@ public class SolicitudController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<SolicitudOutputDto>> obtenerSolicitudes(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                        @RequestParam(name = "size", defaultValue = "3") Integer size) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(solicitudService.obtenerSolicitudesDTO(pageable));
     }
