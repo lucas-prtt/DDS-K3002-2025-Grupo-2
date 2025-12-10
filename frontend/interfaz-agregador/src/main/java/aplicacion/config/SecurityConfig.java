@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -23,14 +24,17 @@ public class SecurityConfig {
     private final CustomOidcUserService customOidcUserService;
     @Autowired
     private CustomAuthenticationSuccessHandler successHandler;
-
+    @Autowired
+    private CsrfPreloadFilter csrfPreloadFilter;
     public SecurityConfig(CustomOidcUserService customOidcUserService) {
         this.customOidcUserService = customOidcUserService;
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, KeycloakTokenRefreshFilter keycloakTokenRefreshFilter) throws Exception {
+        CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
+        csrfTokenRequestAttributeHandler.setCsrfRequestAttributeName("_csrf");
         http.csrf(csrf -> csrf
+                        .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
                         // Spring Security 6+ usa RequestMatcher. La ruta debe ser el endpoint POST.
                         .ignoringRequestMatchers("/gestionar-solicitud/{id}","/editarIdentidad"))
                 .addFilterBefore(keycloakTokenRefreshFilter, OAuth2AuthorizationRequestRedirectFilter.class)
