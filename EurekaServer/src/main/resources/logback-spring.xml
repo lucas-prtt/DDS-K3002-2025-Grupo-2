@@ -14,7 +14,7 @@
         </http>
         <format>
             <label>
-                <pattern>app=apiAdministrativa,host=${HOSTNAME},level=%level</pattern>
+                <pattern>app=EurekaServer,host=${HOSTNAME},level=%level</pattern>
             </label>
             <message>
                 <pattern>${FILE_LOG_PATTERN}</pattern>

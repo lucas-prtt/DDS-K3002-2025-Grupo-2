@@ -9,41 +9,64 @@ scrape_configs:
     metrics_path: "/agregador/actuator/prometheus"
     static_configs:
       - targets: ["host.docker.internal:8084"]
+        labels:
+          service_name: "agregador"
 
   - job_name: "api-publica"
     metrics_path: "/apiPublica/actuator/prometheus"
     static_configs:
       - targets: ["host.docker.internal:8085"]
+        labels:
+          service_name: "apiPublica"
 
   - job_name: "api-administrativa"
     metrics_path: "/apiAdministrativa/actuator/prometheus"
     static_configs:
       - targets: ["host.docker.internal:8086"]
+        labels:
+          service_name: "apiAdministrativa"
 
   - job_name: "estadisticas"
     metrics_path: "/estadisticas/actuator/prometheus"
     static_configs:
       - targets: ["host.docker.internal:8087"]
+        labels:
+          service_name: "estadisticas"
 
   - job_name: "fuente-estatica"
-    metrics_path: "/fuenteEstatica/actuator/prometheus"
+    metrics_path: "/fuentesEstaticas/actuator/prometheus"
     static_configs:
       - targets: ["host.docker.internal:8081"]
+        labels:
+          service_name: "fuenteEstatica"
 
   - job_name: "fuente-dinamica"
-    metrics_path: "/fuenteDinamica/actuator/prometheus"
+    metrics_path: "/fuentesDinamicas/actuator/prometheus"
     static_configs:
       - targets: ["host.docker.internal:8082"]
+        labels:
+          service_name: "fuenteDinamica"
 
   - job_name: "fuente-proxy"
-    metrics_path: "/fuenteProxy/actuator/prometheus"
+    metrics_path: "/fuentesProxy/actuator/prometheus"
     static_configs:
       - targets: ["host.docker.internal:8083"]
+        labels:
+          service_name: "fuenteProxy"
 
   - job_name: "interfaz-agregador"
     metrics_path: "/actuator/prometheus"
     static_configs:
       - targets: ["host.docker.internal:8094"]
+        labels:
+          service_name: "interfazAgregador"
+
+  - job_name: "eureka-server"
+    metrics_path: "/actuator/prometheus"
+    static_configs:
+      - targets: ["host.docker.internal:8761"]
+        labels:
+          service_name: "EurekaServer"
 
   # ------------ OBSERVABILIDAD LOCAL (misma EC2) -----------------
 

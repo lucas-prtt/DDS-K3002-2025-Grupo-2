@@ -10,6 +10,8 @@ services:
       - "8761:8761"
     environment:
       EUREKA_INSTANCE_HOSTNAME: eureka-server
+      ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
+      LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
     networks:
       - metamapa
 
