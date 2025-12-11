@@ -1,0 +1,3 @@
+regex:keycloak\.admin-client\.secret=.*==>keycloak.admin-client.secret=REDACTED
+regex:client_secret\"\s*:\s*\".*\"==>client_secret":"REDACTED"
+regex:AWS_ACCESS_KEY_ID=REDACTED
