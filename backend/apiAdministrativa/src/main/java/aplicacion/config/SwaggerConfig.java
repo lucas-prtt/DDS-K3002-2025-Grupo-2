@@ -18,8 +18,8 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-    @Value("${api.administrativa.ip}")
-    private String apiAdministrativaIp;
+    @Value("${api.administrativa.url}")
+    private String apiAdministrativaUrl;
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -984,7 +984,7 @@ public class SwaggerConfig {
                 )
                 .servers(List.of(
                         new io.swagger.v3.oas.models.servers.Server()
-                                .url("http://" + apiAdministrativaIp + ":8086")
+                                .url(apiAdministrativaUrl)
                                 .description("Servidor de desarrollo")
                 ))
                 .paths(paths);

@@ -25,8 +25,8 @@ public class SwaggerConfig {
                 .build();
     }*/
 
-    @Value("${api.publica.ip}")
-    private String apiPublicaIp;
+    @Value("${api.publica.url}")
+    private String apiPublicaUrl;
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -1567,7 +1567,7 @@ public class SwaggerConfig {
                 )
                 .servers(List.of(
                         new io.swagger.v3.oas.models.servers.Server()
-                                .url("http://" + apiPublicaIp + ":8085")
+                                .url(apiPublicaUrl)
                                 .description("Servidor de desarrollo")
                 ))
                 .paths(paths);

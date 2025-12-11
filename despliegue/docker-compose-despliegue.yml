@@ -49,7 +49,7 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: api-publica
-      API_PUBLICA_IP: api-publica
+      API_PUBLICA_URL: http://api-publica:8085
       INTERFAZ_AGREGADOR_URL: http://interfaz-agregador:8094
       ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
       LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
@@ -67,7 +67,7 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: api-administrativa
-      API_ADMINISTRATIVA_IP: api-administrativa
+      API_ADMINISTRATIVA_URL: http://api-administrativa:8086
       INTERFAZ_AGREGADOR_URL: http://interfaz-agregador:8094
       ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
       LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
