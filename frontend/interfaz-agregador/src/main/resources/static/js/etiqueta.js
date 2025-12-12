@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", function() {
             const borrarBtn = document.getElementById(`eliminar-etiqueta-${etiquetaNombre}`)
             borrarBtn.addEventListener("click", () => eliminarEtiqueta(etiquetaNombre, btnId));
         }
+
+        // Inicializar autocompletado de etiquetas
+        initializeAutocomplete("nueva-etiqueta", apiPublicaUrl + "/etiquetas/index");
     }
 });
 

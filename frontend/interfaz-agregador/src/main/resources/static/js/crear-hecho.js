@@ -25,6 +25,9 @@ document.addEventListener("DOMContentLoaded", function() {
         listenCamposUbicacionCrearHecho()
         listenAgregarMultimediaModalHecho(agregarBtn)
 
+        // Inicializar autocompletado de categorías
+        initializeAutocomplete("modal-hecho-categoria", apiPublicaUrl + "/categorias/index")
+
         confirmBtn.addEventListener('click', async function() {
             const inputsObligatorios = validarFormularioModalHecho()
 

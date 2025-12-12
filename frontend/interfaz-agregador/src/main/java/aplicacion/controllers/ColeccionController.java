@@ -174,7 +174,7 @@ public class ColeccionController {
 
         return "mapa";
     }
-
+/*
     @GetMapping("/colecciones/{id}")
     public String paginaColeccion(@PathVariable(name = "id") String id, Model model) {
         TokenContext.addToken(model);
@@ -186,5 +186,5 @@ public class ColeccionController {
         model.addAttribute("coleccion", coleccion);
         model.addAttribute("algoritmosDisponibles", TipoAlgoritmoConsenso.values());
         return "coleccion";
-    }
+    }*/
 }

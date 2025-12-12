@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 listenCambiosTipoFuenteColeccion(0)
             });
         });
-        listenCloseModal(modal, closeBtn, () => limpiarModalEditarColeccion(agregarFuenteBtn));
+        listenCloseModal(modal, closeBtn, () => limpiarModalEditarColeccion());
         listenFuentesActualesColeccion()
 
         confirmBtn.addEventListener('click', async function() {

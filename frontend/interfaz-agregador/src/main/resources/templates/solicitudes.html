@@ -1,41 +1,9 @@
 <th:block th:fragment="pageScripts">
     <script th:inline="javascript">
         const userId = /*[[${userId}]]*/ null;
-
-        function aprobarSolicitud(solicitudId) {
-            if (!confirm('¿Estás seguro de que deseas aprobar esta solicitud?')) {
-                return;
-            }
-            modificarEstadoSolicitud(solicitudId, 'ACEPTADA');
-        }
-
-        function rechazarSolicitud(solicitudId) {
-            if (!confirm('¿Estás seguro de que deseas rechazar esta solicitud?')) {
-                return;
-            }
-            modificarEstadoSolicitud(solicitudId, 'RECHAZADA');
-        }
-
-        function modificarEstadoSolicitud(solicitudId, nuevoEstado) {
-            fetch(apiAdministrativaUrl + `/solicitudes/${solicitudId}/estado`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
-                body: JSON.stringify({ nuevoEstado: nuevoEstado, adminId: userId }),
-            })
-                    .then(response => {
-                        if (response.ok) {
-                            // Recargar la página para mostrar el estado actualizado
-                            window.location.reload();
-                        } else {
-                            alert('Error al actualizar el estado de la solicitud');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error al actualizar el estado de la solicitud');
-                    });
-        }
+        const solicitudes = /*[[${solicitudes}]]*/ null;
     </script>
+    <script th:src="@{/js/gestionar-solicitud.js}"></script>
 </th:block>
 
 <th:block th:fragment="pageStyles">
@@ -48,7 +16,7 @@
     <main th:inline="javascript" class="main-padding">
         <div class="solicitudes-container flex flex-column">
             <h1 class="page-title">
-                Solicitudes Pendientes
+                Solicitudes de Eliminación
             </h1>
 
             <div th:unless="${solicitudes == null || solicitudes.isEmpty()}" class="solicitudes-grid">
@@ -88,18 +56,8 @@
 
                     <!-- Botones Aprobar y Rechazar -->
                     <div class="botones-revision" th:if="${#strings.equalsIgnoreCase(solicitud.estado.estado, 'PENDIENTE')}">
-                        <button class="btn-aprobar" th:onclick="|aprobarSolicitud(${solicitud.id})|">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="btn-icon">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                            </svg>
-                            Aprobar
-                        </button>
-                        <button class="btn-rechazar" th:onclick="|rechazarSolicitud(${solicitud.id})|">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="btn-icon">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
-                            Rechazar
-                        </button>
+                        <div th:insert="~{fragments/form :: spinnerButton('Aprobar', |aprobar-solicitud-${solicitud.id}|, 'btn-aprobar')}"></div>
+                        <div th:insert="~{fragments/form :: spinnerButton('Rechazar', |rechazar-solicitud-${solicitud.id}|, 'btn-rechazar')}"></div>
                     </div>
                 </div>
             </div>
