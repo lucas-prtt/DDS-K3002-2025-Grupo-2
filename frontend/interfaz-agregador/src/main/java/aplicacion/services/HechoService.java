@@ -87,8 +87,7 @@ public class HechoService {
                     PageWrapper<HechoMapaOutputDto> emptyWrapper = new PageWrapper<>();
                     emptyWrapper.setContent(new ArrayList<>());
                     return emptyWrapper;
-                })
-                .doOnError(e -> System.err.println("Error al obtener hechos de la API Pública: " + e.getMessage()));
+                });
     }
 
     public HechoOutputDto obtenerHecho(String id) {
