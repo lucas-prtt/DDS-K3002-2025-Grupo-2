@@ -19,10 +19,10 @@ public class GlobalModelAttributes {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalModelAttributes.class);
 
-    @Value("${api.publica.url")
+    @Value("${api.publica.url}")
     private String apiPublicaUrl;
 
-    @Value("${api.administrativa.url")
+    @Value("${api.administrativa.url}")
     private String apiAdministrativaUrl;
 
     public GlobalModelAttributes(ContribuyenteService contribuyenteService) {
