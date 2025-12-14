@@ -14,13 +14,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class CustomOidcUserService extends OidcUserService {
-
-    private final UsuarioService usuarioService;
-
-    public CustomOidcUserService(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest ) throws OAuth2AuthenticationException {
         // 1. Obtenemos el usuario de Keycloak como lo haría Spring por defecto
