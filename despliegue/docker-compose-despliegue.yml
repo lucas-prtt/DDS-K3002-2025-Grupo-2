@@ -176,7 +176,7 @@ services:
   
   nginx:
     image: nginx:1.25-alpine
-    container_name: nignx
+    container_name: nginx
     restart: unless-stopped
     ports:
       - "80:80"
