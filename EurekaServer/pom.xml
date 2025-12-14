@@ -10,9 +10,10 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>org.springframework</groupId>
-        <artifactId>DDS-K3002-2025-Grupo-2</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.0</version>
+        <relativePath/>
     </parent>
 
     <properties>
