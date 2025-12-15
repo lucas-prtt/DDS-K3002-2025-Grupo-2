@@ -110,7 +110,7 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: interfaz-agregador
-      KEYCLOAK_URL: http://15.228.250.174:8888/realms/metamapa
+      KEYCLOAK_URL: http://15.228.250.174:8888
       ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
       LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
       STATIC_LOCATIONS: classpath:/static/
