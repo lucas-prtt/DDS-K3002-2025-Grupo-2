@@ -54,11 +54,13 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/fragments/**"),
                                 new AntPathRequestMatcher("/stats/**"),
                                 new AntPathRequestMatcher("/favicon.ico"),
-                                // Endpoints de Actuator para monitoreo (Prometheus, health checks, etc.)
-                                new AntPathRequestMatcher("/actuator/**"),
                                 new AntPathRequestMatcher("/login/oauth2/**"),
                                 new AntPathRequestMatcher("/oauth2/**"),
-                                new AntPathRequestMatcher("/error")
+                                new AntPathRequestMatcher("/error"),
+                                new AntPathRequestMatcher("/api-publica/**"),
+                                new AntPathRequestMatcher("/api-administrativa/**"),
+                                // Endpoints de Actuator para monitoreo (Prometheus, health checks, etc.)
+                                new AntPathRequestMatcher("/actuator/**")
                         ).permitAll()
                         // Cualquier otra petición requerirá autenticación
                         .anyRequest().authenticated()

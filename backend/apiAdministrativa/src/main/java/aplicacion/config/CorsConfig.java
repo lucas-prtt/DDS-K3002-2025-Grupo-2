@@ -21,7 +21,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // Permitir peticiones desde el frontend
-        config.setAllowedOrigins(List.of(interfazAgregadorUrl));
+        config.setAllowedOrigins(List.of(interfazAgregadorUrl, "https://metamapa.site", "https://www.metamapa.site"));
 
         // Permitir todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
