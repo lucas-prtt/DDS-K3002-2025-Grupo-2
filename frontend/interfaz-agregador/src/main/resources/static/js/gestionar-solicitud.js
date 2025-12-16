@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     solicitudes.forEach(solicitud => {
         if(solicitud.estado.estado.toLowerCase() === 'pendiente') {
-            document.getElementById(`nombre-aprobar-solicitud-${solicitud.id}`).addEventListener("click", async function() {
+            document.getElementById(`aprobar-solicitud-${solicitud.id}`).addEventListener("click", async function() {
                 await aprobarSolicitud(solicitud.id);
             })
 
-            document.getElementById(`nombre-rechazar-solicitud-${solicitud.id}`).addEventListener("click", async function() {
+            document.getElementById(`rechazar-solicitud-${solicitud.id}`).addEventListener("click", async function() {
                 await rechazarSolicitud(solicitud.id);
             })
         }

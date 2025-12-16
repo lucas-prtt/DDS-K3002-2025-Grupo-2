@@ -56,8 +56,8 @@
 
                     <!-- Botones Aprobar y Rechazar -->
                     <div class="botones-revision" th:if="${#strings.equalsIgnoreCase(solicitud.estado.estado, 'PENDIENTE')}">
-                        <div th:insert="~{fragments/form :: spinnerButton('Aprobar', |aprobar-solicitud-${solicitud.id}|, 'btn-aprobar')}"></div>
-                        <div th:insert="~{fragments/form :: spinnerButton('Rechazar', |rechazar-solicitud-${solicitud.id}|, 'btn-rechazar')}"></div>
+                        <th:block th:replace="~{fragments/form :: spinnerButton('Aprobar', |aprobar-solicitud-${solicitud.id}|, 'btn-aprobar')}"></th:block>
+                        <th:block th:replace="~{fragments/form :: spinnerButton('Rechazar', |rechazar-solicitud-${solicitud.id}|, 'btn-rechazar')}"></th:block>
                     </div>
                 </div>
             </div>
