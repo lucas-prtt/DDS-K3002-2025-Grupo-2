@@ -8,6 +8,12 @@ MetaMapa es un Sistema de código abierto diseñado para la recopilación, visib
 
 MetaMapa está construido sobre una arquitectura de microservicios, orientada a garantizar escalabilidad, mantenibilidad y una clara separación de responsabilidades entre los distintos componentes del sistema.
 
+<br>
+
+![Diagrama de despliegue](https://github.com/lucas-prtt/DDS-K3002-2025-Grupo-2/blob/main/diagrama-despliegue.jpeg?raw=true)
+
+
+
 La plataforma se organiza en los siguientes módulos principales:
 
 - ### Agregador
